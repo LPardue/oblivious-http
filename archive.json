@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-06-19T00:34:24.975618+00:00",
+  "timestamp": "2022-06-21T00:34:37.151968+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1527,7 +1527,7 @@
       "labels": [],
       "body": "Something that came up during Vienna during the rate limiting topic is how these signals are consumed and acted upon by proxies. We know that the proxy sending additional bits per client might allow the target to partition the anonymity set to detrimental effect. But we haven't fully explored how target->proxy signals, like rate limits, are consumed and applied. \r\n\r\nGenerally speaking, I think that proxies need to act on any target->proxy signals independently of client requests, as otherwise a target can use this signal to try and partition the anonymity set. That means, for example, that a proxy should not apply rate limits to just one bad-behaving client, but apply limits uniformly across all client requests.",
       "createdAt": "2022-03-28T15:49:40Z",
-      "updatedAt": "2022-06-17T12:39:45Z",
+      "updatedAt": "2022-06-20T13:04:28Z",
       "closedAt": null,
       "comments": [
         {
@@ -1606,6 +1606,41 @@
           "body": "> Do we have to frame differential treatment in terms of things that the client accepts, just like we do for added information? Because we might frame differential treatment as being roughly equated to adding information to requests.\r\n\r\nThis would be a reasonable framing, yeah. Something something \"if you misuse this proxy, you run the risk of revealing information to the target\"?",
           "createdAt": "2022-06-17T12:39:45Z",
           "updatedAt": "2022-06-17T12:39:45Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "NONE",
+          "body": "> > Do you think the proposed mechanism is safe to protect the client privacy or it can possibly be abused by the target ?\r\n> \r\n> No, I don't, as [demonstrated above](https://github.com/ietf-wg-ohai/oblivious-http/issues/114#issuecomment-1081235293).\r\n\r\nIn your example of three clients, the proxy does not rate-limit the requests from client C1 based on a single feedback from proxy. The proxy will block traffic from C1 only after it sees such a feedback signal for multiple requests from C1. Assuming the threshold is 10 requests, the probability score will be (0.000016) to send successive 10 feedback signals to C1. The mechanism only works if the target sees an attack pattern or garbage data in multiple requests from C1. An legitimate client will never send requests which are linkable unlike a malicious client which will send malformed requests. ",
+          "createdAt": "2022-06-19T07:35:31Z",
+          "updatedAt": "2022-06-19T07:35:31Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@tireddy2 Well, this is different from the example I proposed. Nevertheless, I'm not convinced this changes the situation in any meaningful way. I think we need to be clear about the risks here, and stating them in a way like @martinthomson proposed seems like a good way to do that.",
+          "createdAt": "2022-06-20T12:03:38Z",
+          "updatedAt": "2022-06-20T12:03:38Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "NONE",
+          "body": "> @tireddy2 Well, this is different from the example I proposed. Nevertheless, I'm not convinced this changes the situation in any meaningful way. I think we need to be clear about the risks here, and stating them in a way like @martinthomson proposed seems like a good way to do that.\r\n\r\nAgreed, I was trying to show the proposed mechanism does not adversely impact the privacy of legitimate clients. ",
+          "createdAt": "2022-06-20T12:41:36Z",
+          "updatedAt": "2022-06-20T12:41:36Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "NONE",
+          "body": "> So I'm seeing some fairly positive things in the new version of the feedback draft. What I think we should do is first take this discussion to the mailing list, but then talk about whether just providing rate limiting signals is the right approach or whether a more generic communication path needs to be established.\r\n> \r\n> Rate limiting does allow us to address a good number of the use cases we have identified so far, but it could be constraining if we find that request resources need to be updated piecemeal to enable new use cases later. A more generic signaling scheme might relieve some of that pressure.\r\n> \r\n> It might be that all we need is a negotiation system whereby the request resource signals what it is willing to keep outside of encapsulation and the target then uses those. Given likely deployment scenarios, that might work even without signaling in some cases, but a more explicit scheme might be better for interoperability.\r\n\r\nSounds good, we can introduce a new header (e.g., h=header1:header2:header3) for the request resource to signal that it will keep header1, header2 and header3 outside of the encapsulation so the target can decide to use those headers. RateLimit-Limit can be one of the headers to start with. \r\n",
+          "createdAt": "2022-06-20T13:03:22Z",
+          "updatedAt": "2022-06-20T13:03:22Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Agreed, I was trying to show the proposed mechanism does not adversely impact the privacy of legitimate clients.\r\n\r\nSorry, but I don't think this is true. I'm saying that we've _not_ demonstrated this to be the case, and the burden is on us to do so if we are to recommend it in the spec.",
+          "createdAt": "2022-06-20T13:04:27Z",
+          "updatedAt": "2022-06-20T13:04:27Z"
         }
       ]
     },
