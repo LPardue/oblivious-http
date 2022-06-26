@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-06-23T00:31:15.715699+00:00",
+  "timestamp": "2022-06-26T00:39:11.572177+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1803,7 +1803,7 @@
       "labels": [],
       "body": "In \"Appendix A. Complete Example of a Request and Response\", when describing the client HPKE context setup:\r\n\r\n> This context is constructed from the following ephemeral public key:\r\n>     25845c6ed6802abfd09628b5c677842b10dd53a3aad5775aa3c20cbae1c0cb65\r\n> The corresponding private key is:\r\n>    88894d1fb4e76e215d9d9c87c44d9e0a6053c1c84c836a4106ea547344504658\r\n\r\n> Applying the Seal operation from the HPKE context produces an encrypted message, allowing the client to construct the following encapsulated request:\r\n\r\n>   010020000100012485c2eee03135aac82e572d51639b2e141102c431d544e346\r\n>   0a0784a908b41b676943ae0b3ed8eff581ee8be5f47303a314de092e2e27e3f0\r\n>   2a03b9357de1d414cadacabaa1621cf9\r\n\r\nThis test vector looks wrong. If I'm understanding the format correctly, the encapsulated request should contain the encoded ephemeral public key (`enc`) following the key configuration that the client selects.\r\n\r\nThe string given implies that the client ephemeral public key is `2485c2eee03135aac82e572d51639b2e141102c431d544e3460a0784a908b41b`, which is not equal to `25845c6ed6802abfd09628b5c677842b10dd53a3aad5775aa3c20cbae1c0cb65`.\r\n\r\nBased on the comments that these values were generated from https://github.com/martinthomson/ohttp, I can see that the `rust-hpke` version does not utilize the [keypair supplied by the test harness](https://github.com/martinthomson/ohttp/blob/11218fa089055476ac35b13a7aee66cbff886dbf/ohttp/src/rh/hpke.rs#L172-L173), whereas the [NSS version does](https://github.com/martinthomson/ohttp/blob/11218fa089055476ac35b13a7aee66cbff886dbf/ohttp/src/nss/hpke.rs#L118).\r\n\r\nThis is visible in the result:\r\n\r\n```\r\n# Running with NSS\r\n$ RUST_LOG=ohttp cargo test --features nss,client,server --no-default-features -p ohttp -\\-lib -\\- -\\-nocapture request_response\r\n   Compiling ohttp v0.1.0 (/mnt/quickcode/ohttp/ohttp)\r\n    Finished test [unoptimized + debuginfo] target(s) in 0.42s\r\n     Running unittests src/lib.rs (target/debug/deps/ohttp-06023bcac1d000ea)\r\n\r\nrunning 1 test\r\n[TRACE ohttp::nss::hpke] Generated key pair: sk=PrivateKey 53a2a4b5ab0d91ed4d873683851bd83fb3a840bb16fa983e8e7b6dd25d0ccf1d pk=PublicKey d474edfb24507d97776e5242ccbe537753d5607c2648a722e3d92973ddbcc81d\r\n[TRACE ohttp::test] Config: 010020d474edfb24507d97776e5242ccbe537753d5607c2648a722e3d92973ddbcc81d00080001000100010003\r\n[TRACE ohttp::nss::hpke] Generated key pair: sk=PrivateKey 1c46414f7b5c3ae7ba2a481b468490a5c7eebea1d6dbee49133294d348055a98 pk=PublicKey 8b56b67ec0baf962bf214b9b5c44aa96e4fe7f643dfe7c554e2a45201bbb575e\r\n[TRACE ohttp::test] Request: 00034745540568747470730b6578616d706c652e636f6d012f\r\n[TRACE ohttp::test] Encapsulated Request: 010020000100018b56b67ec0baf962bf214b9b5c44aa96e4fe7f643dfe7c554e2a45201bbb575e4773a2615b809e23b5f9935460fe71d121a5dc643bc3b30526a89b4958e3cf53120ecc5c9bc628874c\r\n[TRACE ohttp::nss::hkdf] HKDF extract: salt=8b56b67ec0baf962bf214b9b5c44aa96e4fe7f643dfe7c554e2a45201bbb575e04f905ca28bf886e232e52ef0e27a90b ikm=a1ad98ec9478dcae4800323e2447b821 prk=212b0bd56dc01db8d87786a66e27107746f3671601aeb7627416ae172a2ddb73\r\n[TRACE ohttp::nss::hkdf] HKDF expand_key: prk=212b0bd56dc01db8d87786a66e27107746f3671601aeb7627416ae172a2ddb73 info=6b6579 okm=ce80721e68af62973b2dab6d7ad57396\r\n[TRACE ohttp::nss::hkdf] HKDF expand_data: prk=212b0bd56dc01db8d87786a66e27107746f3671601aeb7627416ae172a2ddb73 info=6e6f6e6365 okm=121d389d1ba91aead6561cc9\r\n[TRACE ohttp::nss::aead] New AEAD: key=ce80721e68af62973b2dab6d7ad57396 nonce_base=121d389d1ba91aead6561cc9\r\n[TRACE ohttp::test] Encapsulated Response: 04f905ca28bf886e232e52ef0e27a90ba3ffa5d6791ff0464f43b53540996c71213917\r\n[TRACE ohttp::nss::hkdf] HKDF extract: salt=8b56b67ec0baf962bf214b9b5c44aa96e4fe7f643dfe7c554e2a45201bbb575e04f905ca28bf886e232e52ef0e27a90b ikm=a1ad98ec9478dcae4800323e2447b821 prk=212b0bd56dc01db8d87786a66e27107746f3671601aeb7627416ae172a2ddb73\r\n[TRACE ohttp::nss::hkdf] HKDF expand_key: prk=212b0bd56dc01db8d87786a66e27107746f3671601aeb7627416ae172a2ddb73 info=6b6579 okm=ce80721e68af62973b2dab6d7ad57396\r\n[TRACE ohttp::nss::hkdf] HKDF expand_data: prk=212b0bd56dc01db8d87786a66e27107746f3671601aeb7627416ae172a2ddb73 info=6e6f6e6365 okm=121d389d1ba91aead6561cc9\r\n[TRACE ohttp::nss::aead] New AEAD: key=ce80721e68af62973b2dab6d7ad57396 nonce_base=121d389d1ba91aead6561cc9\r\n[TRACE ohttp::test] Response: 0140c8\r\ntest test::request_response ... ok\r\n\r\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.06s\r\n```\r\n(Note the presence of `8b56b67ec0baf962bf214b9b5c44aa96e4fe7f643dfe7c554e2a45201bbb575e`, the client ephemeral public key in the Encapsulated Request)\r\n\r\ncompared to the rust-hpke version:\r\n\r\n```\r\n$ RUST_LOG=ohttp cargo test --features rust-hpke,client,server --no-default-features -p ohttp -\\-lib -\\- -\\-nocapture request_response\r\n   Compiling ohttp v0.1.0 (/mnt/quickcode/ohttp/ohttp)\r\n    Finished test [unoptimized + debuginfo] target(s) in 0.58s\r\n     Running unittests src/lib.rs (target/debug/deps/ohttp-2f1c06ca734a0e41)\r\n\r\nrunning 1 test\r\n[TRACE ohttp::rh::hpke] Generated key pair: sk=PrivateKey 0847d7930831f6e3b47a224f7b6701e8c56422a96ed74469ae6c086e6558f476 pk=PublicKey fe24c796be9f91097e52984e1be6cab287c0898d17386b8ae9253bdeda3e3a76\r\n[TRACE ohttp::test] Config: 010020fe24c796be9f91097e52984e1be6cab287c0898d17386b8ae9253bdeda3e3a7600080001000100010003\r\n[TRACE ohttp::rh::hpke] Generated key pair: sk=PrivateKey 9034a8653e53df664ac266e47d5e8bcacea7bffefa051ea7f3158347e7688f5a pk=PublicKey 0b78d06a8f630a9bc2640ac8bc211b2bec516b858159ae2ea612d25c2b59dc57\r\n[TRACE ohttp::test] Request: 00034745540568747470730b6578616d706c652e636f6d012f\r\n[TRACE ohttp::test] Encapsulated Request: 01002000010001534e54c797e20ac2451f7adc64763087f90cb221a850160c52f94b14dd02086cbbb9931ccf58f65af528495905b5eaf288e11aed832610fa89a06c732d85a712bd58fc4a6dc5dac4fe\r\n[TRACE ohttp::rh::hkdf] HKDF extract: salt=534e54c797e20ac2451f7adc64763087f90cb221a850160c52f94b14dd02086cf8d785aba84e4130b74b37ff69e246f5 ikm=SymKey 23cc85bffa2c5dfd21169cb0fd61b453 prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7\r\n[TRACE ohttp::rh::hkdf] HKDF expand_data: prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7 info=6b6579 len=16 okm=\"f8056d2c40b034ab1dbad7f0db4de138\"\r\n[TRACE ohttp::rh::hkdf] HKDF expand_key: prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7 info=6b6579 okm=SymKey f8056d2c40b034ab1dbad7f0db4de138\r\n[TRACE ohttp::rh::hkdf] HKDF expand_data: prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7 info=6e6f6e6365 len=12 okm=\"36d86055e14d76a1feacd150\"\r\n[TRACE ohttp::test] Encapsulated Response: f8d785aba84e4130b74b37ff69e246f5acdb6fc42b7a1b6d504b8ef1cd26c9ce5a13bc\r\n[TRACE ohttp::rh::hkdf] HKDF extract: salt=534e54c797e20ac2451f7adc64763087f90cb221a850160c52f94b14dd02086cf8d785aba84e4130b74b37ff69e246f5 ikm=SymKey 23cc85bffa2c5dfd21169cb0fd61b453 prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7\r\n[TRACE ohttp::rh::hkdf] HKDF expand_data: prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7 info=6b6579 len=16 okm=\"f8056d2c40b034ab1dbad7f0db4de138\"\r\n[TRACE ohttp::rh::hkdf] HKDF expand_key: prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7 info=6b6579 okm=SymKey f8056d2c40b034ab1dbad7f0db4de138\r\n[TRACE ohttp::rh::hkdf] HKDF expand_data: prk=SymKey 8de46a943a76598aa22f300521331c2d290741bee7adb97bc8715c2789bf27e7 info=6e6f6e6365 len=12 okm=\"36d86055e14d76a1feacd150\"\r\n[TRACE ohttp::test] Response: 0140c8\r\ntest test::request_response ... ok\r\n\r\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s\r\n```\r\n\r\n(Note the lack of `0b78d06a8f630a9bc2640ac8bc211b2bec516b858159ae2ea612d25c2b59dc57` in the encapsulated request).",
       "createdAt": "2022-06-22T22:39:46Z",
-      "updatedAt": "2022-06-22T23:38:44Z",
+      "updatedAt": "2022-06-24T13:07:01Z",
       "closedAt": null,
       "comments": [
         {
@@ -1812,6 +1812,44 @@
           "body": "Wow, thanks for the detailed report @mingtaoy.  I can indeed see that there is a bug of some sort with the rust-hpke version of my code.  I will look into that.\r\n\r\nAs for the draft, it's probably down to a transcription error on my part.  I'll double-check and maybe redo the example.",
           "createdAt": "2022-06-22T23:38:44Z",
           "updatedAt": "2022-06-22T23:38:44Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK, I can explain the apparent bug in the rust-hpke version of the code now.  See https://github.com/martinthomson/ohttp/issues/18 for details on that bit.  I'll get a patch up for that, but the upshot there is that the rust-hpke version won't be able to log client keys any more.\r\n\r\nThe rest of this is likely down to me failing to transcribe the messages properly.  I'll put up a pull request with updated values.",
+          "createdAt": "2022-06-23T04:21:24Z",
+          "updatedAt": "2022-06-23T04:21:24Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> As for the draft, it's probably down to a transcription error on my part. I'll double-check and maybe redo the example.\r\n\r\nI think this one is on me, @martinthomson =)",
+          "createdAt": "2022-06-24T13:07:01Z",
+          "updatedAt": "2022-06-24T13:07:01Z"
+        }
+      ]
+    },
+    {
+      "number": 126,
+      "id": "I_kwDOE6fLGM5Mgz4G",
+      "title": "intro: Without a limited ability?",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/126",
+      "state": "CLOSED",
+      "author": "LPardue",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "> This information allows the client to make a request of an oblivious target resource without that resource having only a limited ability to correlate that request with the client IP or other requests that the client might make to that server.\r\n\r\nseems like a typo",
+      "createdAt": "2022-06-24T12:07:31Z",
+      "updatedAt": "2022-06-24T12:13:58Z",
+      "closedAt": "2022-06-24T12:13:58Z",
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "body": "nvm, I was looking at an old version, this seems fixed in the editors copy",
+          "createdAt": "2022-06-24T12:13:56Z",
+          "updatedAt": "2022-06-24T12:13:56Z"
         }
       ]
     }
@@ -8046,6 +8084,73 @@
           "createdAt": "2022-06-17T12:01:02Z",
           "updatedAt": "2022-06-17T12:01:02Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 125,
+      "id": "PR_kwDOE6fLGM46TgSa",
+      "title": "New example",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/125",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #124.",
+      "createdAt": "2022-06-24T10:44:33Z",
+      "updatedAt": "2022-06-24T15:33:10Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "280b1a33f3891cf0e60bda437b4489cf1086df09",
+      "headRepository": "martinthomson/oblivious-http",
+      "headRefName": "new-example",
+      "headRefOid": "422860627dccbd4aab6483416e340680ae5b339f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM48siSG",
+          "commit": {
+            "abbreviatedOid": "0b5a71e"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-24T10:45:06Z",
+          "updatedAt": "2022-06-24T10:45:07Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "```suggestion\r\ncce12ceb52ef5e0cb3c320f9dc1fb4bf199174868a0b2eecc13205c2ce40c5d5\r\n7fd9ff\r\n```",
+              "createdAt": "2022-06-24T10:45:07Z",
+              "updatedAt": "2022-06-24T10:45:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM48sjR6",
+          "commit": {
+            "abbreviatedOid": "4228606"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-06-24T10:49:31Z",
+          "updatedAt": "2022-06-24T10:49:35Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "This unfortunately makes reproducing the test vectors painful :-( But these presumably shouldn't change much more.",
+              "createdAt": "2022-06-24T10:49:31Z",
+              "updatedAt": "2022-06-24T10:49:35Z"
+            }
+          ]
         }
       ]
     }
