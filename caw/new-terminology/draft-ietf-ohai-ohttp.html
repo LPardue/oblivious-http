@@ -1165,10 +1165,10 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-hpke-encapsulation" class="xref">HPKE Encapsulation</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-encapsulation-of-requests" class="xref">Encapsulation of Requests</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-request-encryption" class="xref">Request Encryption</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-encapsulation-of-responses" class="xref">Encapsulation of Responses</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-response-encryption" class="xref">Response Encryption</a></p>
 </li>
             </ul>
 </li>
@@ -1346,18 +1346,19 @@ server.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <figure id="figure-1">
         <div id="section-2-4.1">
           <div class="alignLeft art-svg artwork" id="section-2-4.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="336" width="568" viewBox="0 0 568 336" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="464" width="568" viewBox="0 0 568 464" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 8,32 L 8,80" fill="none" stroke="black"></path>
-              <path d="M 48,80 L 48,320" fill="none" stroke="black"></path>
+              <path d="M 48,80 L 48,448" fill="none" stroke="black"></path>
               <path d="M 88,32 L 88,80" fill="none" stroke="black"></path>
               <path d="M 144,32 L 144,80" fill="none" stroke="black"></path>
-              <path d="M 184,80 L 184,320" fill="none" stroke="black"></path>
+              <path d="M 184,80 L 184,448" fill="none" stroke="black"></path>
               <path d="M 232,32 L 232,80" fill="none" stroke="black"></path>
               <path d="M 288,32 L 288,80" fill="none" stroke="black"></path>
-              <path d="M 352,80 L 352,320" fill="none" stroke="black"></path>
+              <path d="M 352,80 L 352,448" fill="none" stroke="black"></path>
               <path d="M 416,32 L 416,80" fill="none" stroke="black"></path>
               <path d="M 472,32 L 472,80" fill="none" stroke="black"></path>
-              <path d="M 512,80 L 512,320" fill="none" stroke="black"></path>
+              <path d="M 512,80 L 512,192" fill="none" stroke="black"></path>
+              <path d="M 512,240 L 512,448" fill="none" stroke="black"></path>
               <path d="M 560,32 L 560,80" fill="none" stroke="black"></path>
               <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
               <path d="M 144,32 L 232,32" fill="none" stroke="black"></path>
@@ -1367,18 +1368,18 @@ server.<a href="#section-2-3" class="pilcrow">¶</a></p>
               <path d="M 144,80 L 232,80" fill="none" stroke="black"></path>
               <path d="M 288,80 L 416,80" fill="none" stroke="black"></path>
               <path d="M 472,80 L 560,80" fill="none" stroke="black"></path>
-              <path d="M 48,144 L 176,144" fill="none" stroke="black"></path>
-              <path d="M 184,176 L 344,176" fill="none" stroke="black"></path>
-              <path d="M 352,192 L 504,192" fill="none" stroke="black"></path>
-              <path d="M 360,240 L 512,240" fill="none" stroke="black"></path>
-              <path d="M 192,272 L 352,272" fill="none" stroke="black"></path>
-              <path d="M 56,304 L 184,304" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="512,192 500,186.4 500,197.6" fill="black" transform="rotate(0,504,192)"></polygon>
-              <polygon class="arrowhead" points="368,240 356,234.4 356,245.6" fill="black" transform="rotate(180,360,240)"></polygon>
-              <polygon class="arrowhead" points="352,176 340,170.4 340,181.6" fill="black" transform="rotate(0,344,176)"></polygon>
-              <polygon class="arrowhead" points="200,272 188,266.4 188,277.6" fill="black" transform="rotate(180,192,272)"></polygon>
-              <polygon class="arrowhead" points="184,144 172,138.4 172,149.6" fill="black" transform="rotate(0,176,144)"></polygon>
-              <polygon class="arrowhead" points="64,304 52,298.4 52,309.6" fill="black" transform="rotate(180,56,304)"></polygon>
+              <path d="M 48,176 L 176,176" fill="none" stroke="black"></path>
+              <path d="M 184,240 L 344,240" fill="none" stroke="black"></path>
+              <path d="M 352,256 L 504,256" fill="none" stroke="black"></path>
+              <path d="M 360,304 L 512,304" fill="none" stroke="black"></path>
+              <path d="M 192,368 L 352,368" fill="none" stroke="black"></path>
+              <path d="M 56,432 L 184,432" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="512,256 500,250.4 500,261.6" fill="black" transform="rotate(0,504,256)"></polygon>
+              <polygon class="arrowhead" points="368,304 356,298.4 356,309.6" fill="black" transform="rotate(180,360,304)"></polygon>
+              <polygon class="arrowhead" points="352,240 340,234.4 340,245.6" fill="black" transform="rotate(0,344,240)"></polygon>
+              <polygon class="arrowhead" points="200,368 188,362.4 188,373.6" fill="black" transform="rotate(180,192,368)"></polygon>
+              <polygon class="arrowhead" points="184,176 172,170.4 172,181.6" fill="black" transform="rotate(0,176,176)"></polygon>
+              <polygon class="arrowhead" points="64,432 52,426.4 52,437.6" fill="black" transform="rotate(180,56,432)"></polygon>
               <g class="text">
                 <text x="44" y="52">Client</text>
                 <text x="176" y="52">Proxy</text>
@@ -1389,14 +1390,30 @@ server.<a href="#section-2-3" class="pilcrow">¶</a></p>
                 <text x="516" y="68">Resource</text>
                 <text x="80" y="116">Proxy</text>
                 <text x="88" y="132">Request</text>
-                <text x="244" y="148">Encapsulated</text>
-                <text x="224" y="164">Request</text>
-                <text x="392" y="180">Request</text>
-                <text x="468" y="228">Response</text>
-                <text x="292" y="244">Encapsulated</text>
-                <text x="308" y="260">Response</text>
-                <text x="152" y="276">Proxy</text>
-                <text x="140" y="292">Response</text>
+                <text x="68" y="148">[+</text>
+                <text x="120" y="148">Encrypted</text>
+                <text x="112" y="164">Request</text>
+                <text x="152" y="164">]</text>
+                <text x="244" y="180">Encapsulated</text>
+                <text x="224" y="196">Request</text>
+                <text x="204" y="212">[+</text>
+                <text x="256" y="212">Encrypted</text>
+                <text x="248" y="228">Request</text>
+                <text x="288" y="228">]</text>
+                <text x="392" y="244">Request</text>
+                <text x="468" y="292">Response</text>
+                <text x="292" y="308">Encapsulated</text>
+                <text x="308" y="324">Response</text>
+                <text x="244" y="340">[+</text>
+                <text x="296" y="340">Encrypted</text>
+                <text x="292" y="356">Response</text>
+                <text x="336" y="356">]</text>
+                <text x="152" y="372">Proxy</text>
+                <text x="140" y="388">Response</text>
+                <text x="76" y="404">[+</text>
+                <text x="128" y="404">Encrypted</text>
+                <text x="124" y="420">Response</text>
+                <text x="168" y="420">]</text>
               </g>
             </svg><a href="#section-2-4.1.1" class="pilcrow">¶</a>
 </div>
@@ -1411,10 +1428,10 @@ occur, as shown in <a href="#fig-overview" class="xref">Figure 1</a>:<a href="#s
 <li id="section-2-6.1">The client constructs an HTTP request for an oblivious target resource.<a href="#section-2-6.1" class="pilcrow">¶</a>
 </li>
         <li id="section-2-6.2">The client encodes the HTTP request in a binary HTTP message and then
-encapsulates that message using HPKE and the process from <a href="#request" class="xref">Section 4.1</a>.<a href="#section-2-6.2" class="pilcrow">¶</a>
+encrypts that message using HPKE and the process from <a href="#request" class="xref">Section 4.1</a>.<a href="#section-2-6.2" class="pilcrow">¶</a>
 </li>
         <li id="section-2-6.3">The client sends a POST request to the oblivious proxy resource with the
-encapsulated request as the content of that message.<a href="#section-2-6.3" class="pilcrow">¶</a>
+encrypted request as the content of that message.<a href="#section-2-6.3" class="pilcrow">¶</a>
 </li>
         <li id="section-2-6.4">The oblivious proxy resource forwards this request to the oblivious encapsulation
 resource.<a href="#section-2-6.4" class="pilcrow">¶</a>
@@ -1428,13 +1445,13 @@ URI, method, fields, and content of the request it acquires.<a href="#section-2-
         <li id="section-2-6.7">The oblivious target resource answers this HTTP request with an HTTP
 response.<a href="#section-2-6.7" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.8">The oblivious encapsulation resource encapsulates the HTTP response following the
+        <li id="section-2-6.8">The oblivious encapsulation resource encrypts the HTTP response following the
 process in <a href="#response" class="xref">Section 4.2</a> and sends this in response to the request from the
 oblivious proxy resource.<a href="#section-2-6.8" class="pilcrow">¶</a>
 </li>
         <li id="section-2-6.9">The oblivious proxy resource forwards this response to the client.<a href="#section-2-6.9" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.10">The client removes the encapsulation to obtain the response to the original
+        <li id="section-2-6.10">The client removes the encryption to obtain the response to the original
 request.<a href="#section-2-6.10" class="pilcrow">¶</a>
 </li>
       </ol>
@@ -1757,16 +1774,16 @@ Request {
 <a href="#name-plaintext-request-content" class="selfRef">Plaintext Request Content</a>
         </figcaption></figure>
 </div>
-<p id="section-4-4">An Encapsulated Request is comprised of a key identifier and a HPKE-protected
+<p id="section-4-4">An Encrypted Request is comprised of a key identifier and a HPKE-protected
 request message. HPKE protection includes an encapsulated KEM shared secret (or
-<code>enc</code>), plus the AEAD-protected request message. An Encapsulated Request is
+<code>enc</code>), plus the AEAD-protected request message. An Encrypted Request is
 shown in <a href="#fig-enc-request" class="xref">Figure 4</a>. <a href="#request" class="xref">Section 4.1</a> describes the process for constructing
-and processing an Encapsulated Request.<a href="#section-4-4" class="pilcrow">¶</a></p>
-<span id="name-encapsulated-request"></span><div id="fig-enc-request">
+and processing an Encrypted Request.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<span id="name-encrypted-request"></span><div id="fig-enc-request">
 <figure id="figure-4">
         <div class="alignLeft art-text artwork" id="section-4-5.1">
 <pre>
-Encapsulated Request {
+Encrypted Request {
   Key Identifier (8),
   KEM Identifier (16),
   KDF Identifier (16),
@@ -1777,11 +1794,11 @@ Encapsulated Request {
 </pre>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
-<a href="#name-encapsulated-request" class="selfRef">Encapsulated Request</a>
+<a href="#name-encrypted-request" class="selfRef">Encrypted Request</a>
         </figcaption></figure>
 </div>
 <p id="section-4-6">The Nenc parameter corresponding to the HpkeKdfId can be found in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>.<a href="#section-4-6" class="pilcrow">¶</a></p>
-<p id="section-4-7">An encapsulated HTTP response includes a binary-encoded HTTP message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>
+<p id="section-4-7">An encrypted HTTP response includes a binary-encoded HTTP message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>
 and no other content; see <a href="#fig-res-pt" class="xref">Figure 5</a>.<a href="#section-4-7" class="pilcrow">¶</a></p>
 <span id="name-plaintext-response-content"></span><div id="fig-res-pt">
 <figure id="figure-5">
@@ -1798,19 +1815,19 @@ Response {
 </div>
 <p id="section-4-9">Responses are bound to responses and so consist only of AEAD-protected content.
 <a href="#response" class="xref">Section 4.2</a> describes the process for constructing and processing an
-Encapsulated Response.<a href="#section-4-9" class="pilcrow">¶</a></p>
-<span id="name-encapsulated-response"></span><div id="fig-enc-response">
+Encrypted Response.<a href="#section-4-9" class="pilcrow">¶</a></p>
+<span id="name-encrypted-response"></span><div id="fig-enc-response">
 <figure id="figure-6">
         <div class="alignLeft art-text artwork" id="section-4-10.1">
 <pre>
-Encapsulated Response {
+Encrypted Response {
   Nonce (Nk),
   AEAD-Protected Response (..),
 }
 </pre>
 </div>
 <figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
-<a href="#name-encapsulated-response" class="selfRef">Encapsulated Response</a>
+<a href="#name-encrypted-response" class="selfRef">Encrypted Response</a>
         </figcaption></figure>
 </div>
 <p id="section-4-11">The Nenc and Nk parameters corresponding to the HpkeKdfId can be found in
@@ -1818,10 +1835,10 @@ Encapsulated Response {
 bytes; Nk refers to the size of the AEAD key for the HPKE ciphersuite, in bits.<a href="#section-4-11" class="pilcrow">¶</a></p>
 <div id="request">
 <section id="section-4.1">
-        <h3 id="name-encapsulation-of-requests">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-encapsulation-of-requests" class="section-name selfRef">Encapsulation of Requests</a>
+        <h3 id="name-request-encryption">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-request-encryption" class="section-name selfRef">Request Encryption</a>
         </h3>
-<p id="section-4.1-1">Clients encapsulate a request <code>request</code> using values from a key configuration:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">Clients encrypt a request <code>request</code> using values from a key configuration:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.1">the key identifier from the configuration, <code>keyID</code>, with the corresponding KEM
 identified by <code>kemID</code>,<a href="#section-4.1-2.1" class="pilcrow">¶</a>
@@ -1832,7 +1849,7 @@ identified by <code>kemID</code>,<a href="#section-4.1-2.1" class="pilcrow">¶</
 <code>aeadID</code>.<a href="#section-4.1-2.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-4.1-3">The client then constructs an encapsulated request, <code>enc_request</code>, from a binary
+<p id="section-4.1-3">The client then constructs an Encrypted Request, <code>enc_request</code>, from a binary
 encoded HTTP request, <code>request</code>, as follows:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-4">
 <li id="section-4.1-4.1">Compute an HPKE context using <code>pkR</code> and a label of "message/bhttp request",
@@ -1845,7 +1862,7 @@ integers, respectively, each in network byte order.<a href="#section-4.1-4.2" cl
           <li id="section-4.1-4.3">Encrypt (seal) <code>request</code> with <code>aad</code> as associated data using <code>context</code>,
 yielding ciphertext <code>ct</code>.<a href="#section-4.1-4.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.1-4.4">Concatenate the values of <code>aad</code>, <code>enc</code>, and <code>ct</code>, yielding an Encapsulated
+          <li id="section-4.1-4.4">Concatenate the values of <code>aad</code>, <code>enc</code>, and <code>ct</code>, yielding an Encrypted
 Request <code>enc_request</code>.<a href="#section-4.1-4.4" class="pilcrow">¶</a>
 </li>
         </ol>
@@ -1863,8 +1880,8 @@ ct = context.Seal(aad, request)
 enc_request = concat(aad, enc, ct)
 </pre><a href="#section-4.1-7" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-8">Servers decrypt an Encapsulated Request by reversing this process. Given an
-Encapsulated Request <code>enc_request</code>, a server:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">Servers decrypt an Encrypted Request by reversing this process. Given an
+Encrypted Request <code>enc_request</code>, a server:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-9">
 <li id="section-4.1-9.1">
             <p id="section-4.1-9.1.1">Parses <code>enc_request</code> into <code>keyID</code>, <code>kemID</code>, <code>kdfID</code>, <code>aeadID</code>, <code>enc</code>, and
@@ -1903,11 +1920,11 @@ request, error = context.Open(aad, ct)
 </div>
 <div id="response">
 <section id="section-4.2">
-        <h3 id="name-encapsulation-of-responses">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-encapsulation-of-responses" class="section-name selfRef">Encapsulation of Responses</a>
+        <h3 id="name-response-encryption">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-response-encryption" class="section-name selfRef">Response Encryption</a>
         </h3>
 <p id="section-4.2-1">Given an HPKE context <code>context</code>, a request message <code>request</code>, and a response
-<code>response</code>, servers generate an Encapsulated Response <code>enc_response</code> as
+<code>response</code>, servers generate an Encrypted Response <code>enc_response</code> as
 follows:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.2-2">
 <li id="section-4.2-2.1">Export a secret <code>secret</code> from <code>context</code>, using the string "message/bhttp
@@ -1933,7 +1950,7 @@ the length of the nonce used by the AEAD. Generating <code>nonce</code> uses a l
           <li id="section-4.2-2.6">Encrypt <code>response</code>, passing the AEAD function Seal the values of <code>key</code>,
 <code>nonce</code>, empty <code>aad</code>, and a <code>pt</code> input of <code>request</code>, which yields <code>ct</code>.<a href="#section-4.2-2.6" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.2-2.7">Concatenate <code>response_nonce</code> and <code>ct</code>, yielding an Encapsulated Response
+          <li id="section-4.2-2.7">Concatenate <code>response_nonce</code> and <code>ct</code>, yielding an Encrypted Response
 <code>enc_response</code>. Note that <code>response_nonce</code> is of fixed-length, so there is no
 ambiguity in parsing either <code>response_nonce</code> or <code>ct</code>.<a href="#section-4.2-2.7" class="pilcrow">¶</a>
 </li>
@@ -1951,7 +1968,7 @@ ct = Seal(aead_key, aead_nonce, "", response)
 enc_response = concat(response_nonce, ct)
 </pre><a href="#section-4.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-4.2-5">Clients decrypt an Encapsulated Request by reversing this process. That is,
+<p id="section-4.2-5">Clients decrypt an Encrypted Response by reversing this process. That is,
 they first parse <code>enc_response</code> into <code>response_nonce</code> and <code>ct</code>. They then
 follow the same process to derive values for <code>aead_key</code> and <code>aead_nonce</code>.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.2-6">The client uses these values to decrypt <code>ct</code> using the Open function provided by
@@ -1971,21 +1988,21 @@ reponse, error = Open(aead_key, aead_nonce, "", ct)
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-http-usage" class="section-name selfRef">HTTP Usage</a>
       </h2>
 <p id="section-5-1">A client interacts with the oblivious proxy resource by constructing an
-encapsulated request.  This encapsulated request is included as the content of a
+encrypted request.  This encrypted request is included as the content of a
 POST request to the oblivious proxy resource.  This request <span class="bcp14">MUST</span> only contain
-those fields necessary to carry the encapsulated request: a method of POST, a
+those fields necessary to carry the encrypted request: a method of POST, a
 target URI of the oblivious proxy resource, a header field containing
-the content type (see (<a href="#media-types" class="xref">Section 6</a>), and the encapsulated request as the
+the content type (see (<a href="#media-types" class="xref">Section 6</a>), and the encrypted request as the
 request content. In the request to the oblivious proxy resource, clients <span class="bcp14">MAY</span>
 include additional fields. However, those fields <span class="bcp14">MUST</span> be independent of the
-encapsulated request and <span class="bcp14">MUST</span> be fields that the oblivious proxy resource will
-remove before forwarding the encapsulated request towards the target, such as the
+encrypted request and <span class="bcp14">MUST</span> be fields that the oblivious proxy resource will
+remove before forwarding the encrypted request towards the target, such as the
 Connection or Proxy-Authorization header fields <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">The client role in this protocol acts as an HTTP client both with respect to the
 oblivious proxy resource and the oblivious target resource.  For the request the
 clients makes to the oblivious target resource, this diverges from typical HTTP
 assumptions about the use of a connection (see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-3.3" class="relref">Section 3.3</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>) in that
-the request and response are encapsulated rather than sent over a connection.
+the request and response are encrypted rather than sent over a connection.
 The oblivious proxy resource and the oblivious encapsulation resource also act as HTTP
 clients toward the oblivious encapsulation resource and oblivious target resource
 respectively.<a href="#section-5-2" class="pilcrow">¶</a></p>
@@ -2036,11 +2053,11 @@ received.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 response with a 4xx status code.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">Errors detected by the oblivious proxy resource and errors detected by the
 oblivious encapsulation resource before removing protection (including being unable to
-remove encapsulation for any reason) result in the status code being sent
+remove encryption for any reason) result in the status code being sent
 without protection in response to the POST request made to that resource.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.2-3">Errors detected by the oblivious encapsulation resource after successfully removing
-encapsulation and errors detected by the oblivious target resource <span class="bcp14">MUST</span> be sent
-in an encapsulated response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+encryption and errors detected by the oblivious target resource <span class="bcp14">MUST</span> be sent
+in an encrypted response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2050,15 +2067,15 @@ in an encapsulated response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
       <h2 id="name-media-types">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-media-types" class="section-name selfRef">Media Types</a>
       </h2>
-<p id="section-6-1">Media types are used to identify encapsulated requests and responses.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">Evolution of the format of encapsulated requests and responses is supported
+<p id="section-6-1">Media types are used to identify encrypted requests and responses.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Evolution of the format of encrypted requests and responses is supported
 through the definition of new formats that are identified by new media types.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <div id="messageohttp-req-media-type">
 <section id="section-6.1">
         <h3 id="name-message-ohttp-req-media-typ">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-message-ohttp-req-media-typ" class="section-name selfRef">message/ohttp-req Media Type</a>
         </h3>
-<p id="section-6.1-1">The "message/ohttp-req" identifies an encapsulated binary HTTP request.  This
+<p id="section-6.1-1">The "message/ohttp-req" identifies an encrypted binary HTTP request.  This
 is a binary format that is defined in <a href="#request" class="xref">Section 4.1</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-6.1-2">
           <dt id="section-6.1-2.1">Type name:</dt>
@@ -2166,7 +2183,7 @@ is a binary format that is defined in <a href="#request" class="xref">Section 4.
         <h3 id="name-message-ohttp-res-media-typ">
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-message-ohttp-res-media-typ" class="section-name selfRef">message/ohttp-res Media Type</a>
         </h3>
-<p id="section-6.2-1">The "message/ohttp-res" identifies an encapsulated binary HTTP response. This
+<p id="section-6.2-1">The "message/ohttp-res" identifies an encrypted binary HTTP response. This
 is a binary format that is defined in <a href="#response" class="xref">Section 4.2</a>.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-6.2-2">
           <dt id="section-6.2-2.1">Type name:</dt>
@@ -2290,7 +2307,7 @@ the future.<a href="#section-7-2.2" class="pilcrow">¶</a>
       </ol>
 <p id="section-7-3">In order to ensure this, the client selects a proxy (that serves the
 oblivious proxy resource) that it trusts will protect this information
-by forwarding the encapsulated request and response without passing it
+by forwarding the encrypted request and response without passing it
 to the server (that serves the oblivious encapsulation resource).<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">In this section, a deployment where there are three entities is considered:<a href="#section-7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2313,9 +2330,9 @@ described above. Informally, this means:<a href="#section-7-7" class="pilcrow">�
 <li id="section-7-8.1">Requests and responses are known only to clients and targets in possession
 of the corresponding response encapsulation key and HPKE keying material.
 In particular, the oblivious proxy knows the origin and destination of an
-encapsulated request and response, yet does not know the decapsulated
+encrypted request and response, yet does not know the decrypted
 contents. Likewise, targets know only the oblivious encapsulation origin, i.e.,
-the proxy, and the decapsulated request. Only the client knows both the
+the proxy, and the decrypted request. Only the client knows both the
 plaintext request and response.<a href="#section-7-8.1" class="pilcrow">¶</a>
 </li>
         <li id="section-7-8.2">Targets cannot link requests from the same client in the absence of unique
@@ -2331,7 +2348,7 @@ this document; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#sectio
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-client-responsibilities" class="section-name selfRef">Client Responsibilities</a>
         </h3>
 <p id="section-7.1-1">Clients <span class="bcp14">MUST</span> ensure that the key configuration they select for generating
-encapsulated requests is integrity protected and authenticated so that it can
+encrypted requests is integrity protected and authenticated so that it can
 be attributed to the oblivious encapsulation resource; see <a href="#key-configuration" class="xref">Section 3</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <p id="section-7.1-2">Since clients connect directly to the proxy instead of the target, application
 configurations wherein clients make policy decisions about target connections,
@@ -2343,7 +2360,7 @@ provide the same properties as policies enforced directly on target
 connections. When this difference is relevant, applications can instead connect
 directly to the target at the cost of either privacy or performance.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <p id="section-7.1-3">Clients <span class="bcp14">MUST NOT</span> include identifying information in the request that is
-encapsulated. Identifying information includes cookies <span>[<a href="#COOKIES" class="xref">COOKIES</a>]</span>,
+encrypted. Identifying information includes cookies <span>[<a href="#COOKIES" class="xref">COOKIES</a>]</span>,
 authentication credentials or tokens, and any information that might reveal
 client-specific information such as account credentials.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <p id="section-7.1-4">Clients cannot carry connection-level state between requests as they only
@@ -2360,16 +2377,16 @@ requests being linked, reuse could expose request and response contents to the
 proxy.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 <p id="section-7.1-6">The request the client sends to the oblivious proxy resource only requires
 minimal information; see <a href="#http-usage" class="xref">Section 5</a>. The request that carries the
-encapsulated request and is sent to the oblivious proxy resource <span class="bcp14">MUST NOT</span>
+encrypted request and is sent to the oblivious proxy resource <span class="bcp14">MUST NOT</span>
 include identifying information unless the client ensures that this information
 is removed by the proxy. A client <span class="bcp14">MAY</span> include information only for the
 oblivious proxy resource in header fields identified by the Connection header
 field if it trusts the proxy to remove these as required by Section 7.6.1 of
 <span>[<a href="#HTTP" class="xref">HTTP</a>]</span>. The client needs to trust that the proxy does not replicate the
 source addressing information in the request it forwards.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
-<p id="section-7.1-7">Clients rely on the oblivious proxy resource to forward encapsulated requests
+<p id="section-7.1-7">Clients rely on the oblivious proxy resource to forward encrypted requests
 and responses. However, the proxy can only refuse to forward messages, it
-cannot inspect or modify the contents of encapsulated requests or responses.<a href="#section-7.1-7" class="pilcrow">¶</a></p>
+cannot inspect or modify the contents of encrypted requests or responses.<a href="#section-7.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="proxy-responsibilities">
@@ -2403,7 +2420,7 @@ the proxy can reduce the size of the anonymity set of clients at a server.<a hre
 <p id="section-7.2-6">A proxy can also generate responses, though it assumed to not be able to
 examine the content of a request (other than to observe the choice of key
 identifier, KDF, and AEAD), so it is also assumed that it cannot generate an
-encapsulated response.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
+encrypted response.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
 <div id="dos">
 <section id="section-7.2.1">
           <h4 id="name-denial-of-service">
@@ -2432,7 +2449,7 @@ rate might choose to authenticate the proxy to enable the higher rate.<a href="#
 protected by HTTPS.  This protects information about which resources are the
 subject of request and prevents a network observer from being able to trivially
 correlate messages on either side of a proxy.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-2">As the time at which encapsulated request or response messages are sent can
+<p id="section-7.2.2-2">As the time at which encrypted request or response messages are sent can
 reveal information to a network observer. Though messages exchanged between the
 oblivious proxy resource and the oblivious encapsulation resource might be sent in a
 single connection, traffic analysis could be used to match messages that are
@@ -2455,8 +2472,8 @@ providing larger sets of messages that need to be matched.<a href="#section-7.2.
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-server-responsibilities" class="section-name selfRef">Server Responsibilities</a>
         </h3>
 <p id="section-7.3-1">A server that operates both oblivious encapsulation and oblivious target resources is
-responsible for removing request encapsulation, generating a response the
-encapsulated request, and encapsulating the response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+responsible for removing request encryption, generating a response to the
+encrypted request, and encrypting the response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.3-2">Servers should account for traffic analysis based on response size or generation
 time.  Techniques such as padding or timing delays can help protect against such
 attacks; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
@@ -2472,11 +2489,11 @@ key identifier that it does not understand or that corresponds to a key that has
 been replaced, the server can respond with an HTTP 422 (Unprocessable Content)
 status code.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
 <p id="section-7.3-5">A server can also use a 422 status code if the server has a key that corresponds
-to the key identifier, but the encapsulated request cannot be successfully
+to the key identifier, but the encrypted request cannot be successfully
 decrypted using the key.<a href="#section-7.3-5" class="pilcrow">¶</a></p>
 <p id="section-7.3-6">A server <span class="bcp14">MUST</span> ensure that the HPKE keys it uses are not valid for any other
 protocol that uses HPKE with the "message/bhttp request" label.  Designers of
-protocols that reuse this encapsulation format, especially new versions of this
+protocols that reuse this encryption format, especially new versions of this
 protocol, can ensure key diversity by choosing a different label in their use of
 HPKE.  The "message/bhttp response" label was chosen for symmetry only as it
 provides key diversity only within the HPKE context created using the
@@ -2491,10 +2508,10 @@ the effect of replays does not adversely affect clients or resources; see
         <h3 id="name-replay-attacks">
 <a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-replay-attacks" class="section-name selfRef">Replay Attacks</a>
         </h3>
-<p id="section-7.4-1">Encapsulated requests can be copied and replayed by the oblivious proxy
+<p id="section-7.4-1">Encrypted requests can be copied and replayed by the oblivious proxy
 resource. The threat model for oblivious HTTP allows the possibility that an
 oblivious proxy resource might replay requests. Furthermore, if a client sends
-an encapsulated request in TLS early data (see <span><a href="https://rfc-editor.org/rfc/rfc8446#section-8" class="relref">Section 8</a> of [<a href="#TLS" class="xref">TLS</a>]</span> and
+an encrypted request in TLS early data (see <span><a href="https://rfc-editor.org/rfc/rfc8446#section-8" class="relref">Section 8</a> of [<a href="#TLS" class="xref">TLS</a>]</span> and
 <span>[<a href="#RFC8470" class="xref">RFC8470</a>]</span>), a network-based adversary might be able to cause the request to
 be replayed. In both cases, the effect of a replay attack and the mitigations
 that might be employed are similar to TLS early data.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
@@ -2534,7 +2551,7 @@ replayed.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
           <h4 id="name-use-of-date-for-anti-replay">
 <a href="#section-7.4.1" class="section-number selfRef">7.4.1. </a><a href="#name-use-of-date-for-anti-replay" class="section-name selfRef">Use of Date for Anti-Replay</a>
           </h4>
-<p id="section-7.4.1-1">Clients <span class="bcp14">SHOULD</span> include a <code>Date</code> header field in encapsulated requests.  Though
+<p id="section-7.4.1-1">Clients <span class="bcp14">SHOULD</span> include a <code>Date</code> header field in encrypted requests.  Though
 HTTP requests often do not include a <code>Date</code> header field, the value of this
 field might be used by a server to limit the amount of requests it needs to
 track if it needs to prevent replay attacks.<a href="#section-7.4.1-1" class="pilcrow">¶</a></p>
@@ -2643,7 +2660,7 @@ proxies close to servers was most effective in minimizing additional latency.<a 
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-resource-mappings" class="section-name selfRef">Resource Mappings</a>
         </h3>
 <p id="section-9.2-1">This protocol assumes a fixed, one-to-one mapping between the Oblivious Proxy
-Resource and the Oblivious Encapsulation Resource. This means that any encapsulated
+Resource and the Oblivious Encapsulation Resource. This means that any encrypted
 request sent to the Oblivious Proxy Resource will always be forwarded to the
 Oblivious Encapsulation Resource. This constraint was imposed to simplify proxy
 configuration and mitigate against the Oblivious Proxy Resource being used as
@@ -2680,19 +2697,18 @@ content is accessible to middleboxes.<a href="#section-9.3-2" class="pilcrow">¶
       <h2 id="name-repurposing-the-encapsulati">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-repurposing-the-encapsulati" class="section-name selfRef">Repurposing the Encapsulation Format</a>
       </h2>
-<p id="section-10-1">The encapsulated payload of an OHTTP request and response is a binary HTTP
-message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>. Client and target agree on this encapsulated payload type by
-specifying the media type "message/bhttp" in the HPKE encapsulation info string
-and HPKE export context string for request and response encapsulation,
-respectively.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-10-1">The encrypted payload of an OHTTP request and response is a binary HTTP
+message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>. Client and target agree on this encrypted payload type by
+specifying the media type "message/bhttp" in the HPKE info string and HPKE
+export context string for request and response encryption, respectively.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">Future specifications may repurpose the encapsulation mechanism described in
-<a href="#hpke-encapsulation" class="xref">Section 4</a>, provided that the content type of the encapsulated
+<a href="#hpke-encapsulation" class="xref">Section 4</a>, provided that the content type of the encrypted
 payload is appropriately reflected in the HPKE info and context strings. For
-example, if a future specification were to use the encapsulation mechanism in
+example, if a future specification were to use the encryption mechanism in
 this specification for DNS messages, identified by the "application/dns-message"
 media type, then the HPKE info string <span class="bcp14">SHOULD</span> be "application/dns-message
-request" for request encapsulation, and the HPKE export context string should be
-"application/dns-message response" for response encapsulation.<a href="#section-10-2" class="pilcrow">¶</a></p>
+request" for request encryption, and the HPKE export context string should be
+"application/dns-message response" for response encryption.<a href="#section-10-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -2880,7 +2896,7 @@ e23c23155374725580ec69fecead76afd9726fb4c47f30100400b363551ac737
 </pre><a href="#appendix-A-11" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-12">Applying the Seal operation from the HPKE context produces an encrypted
-message, allowing the client to construct the following encapsulated request:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
+message, allowing the client to construct the following encrypted request:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-13">
 <pre>
 01002000010001e23c23155374725580ec69fecead76afd9726fb4c47f301004
@@ -2897,7 +2913,7 @@ Host: proxy.example.org
 Content-Type: message/ohttp-req
 Content-Length: 78
 
-&lt;content is the encapsulated request above&gt;
+&lt;content is the encrypted request above&gt;
 </pre><a href="#appendix-A-15" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-16">The oblivious proxy resource receives this request and forwards it to the
@@ -2909,7 +2925,7 @@ Host: example.com
 Content-Type: message/ohttp-req
 Content-Length: 78
 
-&lt;content is the encapsulated request above&gt;
+&lt;content is the encrypted request above&gt;
 </pre><a href="#appendix-A-17" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-18">The oblivous request resource receives this request, selects the key it
@@ -2930,7 +2946,7 @@ code) as follows:<a href="#appendix-A-18" class="pilcrow">¶</a></p>
 c08eab474f732914c39ca1b70fe25519
 </pre><a href="#appendix-A-21" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-22">The key derivation for the encapsulated response uses both the encapsulated KEM
+<p id="appendix-A-22">The key derivation for the encrypted response uses both the encapsulated KEM
 key from the request and a randomly selected nonce. This produces a salt of:<a href="#appendix-A-22" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-23">
 <pre>
@@ -2960,7 +2976,7 @@ generate a 12-byte nonce:<a href="#appendix-A-28" class="pilcrow">¶</a></p>
 </pre><a href="#appendix-A-29" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-30">The AEAD Seal function is then used to encrypt the response, which is added
-to the randomized nonce value to produce the encapsulated response:<a href="#appendix-A-30" class="pilcrow">¶</a></p>
+to the randomized nonce value to produce the encrypted response:<a href="#appendix-A-30" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-31">
 <pre>
 cce12ceb52ef5e0cb3c320f9dc1fb4bf199174868a0b2eecc13205c2ce40c5d5
@@ -2976,12 +2992,12 @@ Cache-Control: private, no-store
 Content-Type: message/ohttp-res
 Content-Length: 38
 
-&lt;content is the encapsulated response&gt;
+&lt;content is the encrypted response&gt;
 </pre><a href="#appendix-A-33" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-34">The same response might then be generated by the oblivious proxy resource which
 might change as little as the Date header. The client is then able to use the
-HPKE context it created and the nonce from the encapsulated response to
+HPKE context it created and the nonce from the encrypted response to
 construct the AEAD key and nonce and decrypt the response.<a href="#appendix-A-34" class="pilcrow">¶</a></p>
 </section>
 </div>
