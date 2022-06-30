@@ -165,10 +165,11 @@ Table of Contents
       HPKE algorithms that are used with that key.
 
    *  The identity of an Oblivious Relay Resource that will accept relay
-      requests carrying an encapsulated request body and forward these
-      request bodies to a single Oblivious Gateway Resource.  See
-      Section 9.2 for more information about the mapping between
-      Oblivious Relay and oblivious encapsulation resources.
+      requests carrying an encapsulated request as its content and
+      forward the content in these requests to a single Oblivious
+      Gateway Resource.  See Section 9.2 for more information about the
+      mapping between Oblivious Relay and oblivious encapsulation
+      resources.
 
    This information allows the client to make a request of an oblivious
    target resource with that resource having only a limited ability to
@@ -323,16 +324,16 @@ Table of Contents
       the use of oblivious HTTP to reach it.
 
    Relay Request:  An HTTP request from Client to Relay that contains an
-      encapsulated request as its body.
+      encapsulated request as the content.
 
    Relay Response:  An HTTP response from Relay to Client that contains
-      an encapsulated response as its body.
+      an encapsulated response as the content.
 
    Gateway Request:  An HTTP request from Relay to Gateway that contains
-      an encapsulated request as its body.
+      an encapsulated request as the content.
 
    Gateway Response:  An HTTP response from Gateway to Relay that
-      contains an encapsulated response as its body.
+      contains an encapsulated response as the content.
 
    This draft includes pseudocode that uses the functions and
    conventions defined in [HPKE].

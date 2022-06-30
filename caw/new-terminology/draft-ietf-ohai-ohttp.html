@@ -1332,9 +1332,9 @@ accepts, including an identifier for that key and the HPKE algorithms that
 are used with that key.<a href="#section-2-2.2" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-2-2.3">The identity of an Oblivious Relay Resource that will accept relay requests
-carrying an encapsulated request body and forward these request bodies to
-a single Oblivious Gateway Resource. See <a href="#proxy-state" class="xref">Section 9.2</a> for more
-information about the mapping between Oblivious Relay and oblivious
+carrying an encapsulated request as its content and forward the content in
+these requests to a single Oblivious Gateway Resource. See <a href="#proxy-state" class="xref">Section 9.2</a>
+for more information about the mapping between Oblivious Relay and oblivious
 encapsulation resources.<a href="#section-2-2.3" class="pilcrow">¶</a>
 </li>
       </ul>
@@ -1555,22 +1555,22 @@ ignorant of the use of oblivious HTTP to reach it.<a href="#section-2.2-2.12.1" 
           <dd class="break"></dd>
 <dt id="section-2.2-2.13">Relay Request:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.14">
-            <p id="section-2.2-2.14.1">An HTTP request from Client to Relay that contains an encapsulated request as its body.<a href="#section-2.2-2.14.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-2.14.1">An HTTP request from Client to Relay that contains an encapsulated request as the content.<a href="#section-2.2-2.14.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-2.2-2.15">Relay Response:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.16">
-            <p id="section-2.2-2.16.1">An HTTP response from Relay to Client that contains an encapsulated response as its body.<a href="#section-2.2-2.16.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-2.16.1">An HTTP response from Relay to Client that contains an encapsulated response as the content.<a href="#section-2.2-2.16.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-2.2-2.17">Gateway Request:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.18">
-            <p id="section-2.2-2.18.1">An HTTP request from Relay to Gateway that contains an encapsulated request as its body.<a href="#section-2.2-2.18.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-2.18.1">An HTTP request from Relay to Gateway that contains an encapsulated request as the content.<a href="#section-2.2-2.18.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-2.2-2.19">Gateway Response:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.20">
-            <p id="section-2.2-2.20.1">An HTTP response from Gateway to Relay that contains an encapsulated response as its body.<a href="#section-2.2-2.20.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-2.20.1">An HTTP response from Gateway to Relay that contains an encapsulated response as the content.<a href="#section-2.2-2.20.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
