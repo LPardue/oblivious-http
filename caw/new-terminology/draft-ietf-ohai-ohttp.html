@@ -1294,7 +1294,7 @@ can make inferences about the people involved. The use of persistent
 connections to make multiple requests improves performance, but provides
 servers with additional certainty about the identity of clients in a similar
 fashion.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Use of an HTTP proxy can provide a degree of protection against servers
+<p id="section-1-3">Use of an HTTP proxy or relay can provide a degree of protection against servers
 correlating requests. Systems like virtual private networks or the Tor network
 <span>[<a href="#Dingledine2004" class="xref">Dingledine2004</a>]</span>, provide other options for clients.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">Though the overhead imposed by these methods varies, the cost for each request
@@ -1311,7 +1311,7 @@ responses and enables a deployment architecture that can separate the identity
 of a requester from the request.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">Though this scheme requires that servers and proxies explicitly support it,
 this design represents a performance improvement over options that perform just
-one request in each connection. With limited trust placed in the proxy (see
+one request in each connection. With limited trust placed in the relay (see
 <a href="#security" class="xref">Section 7</a>), clients are assured that requests are not uniquely attributed to
 them or linked to other requests.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
@@ -1331,7 +1331,7 @@ resource supports.<a href="#section-2-2.1" class="pilcrow">¶</a>
 accepts, including an identifier for that key and the HPKE algorithms that
 are used with that key.<a href="#section-2-2.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-2.3">The identity of an Oblivious Relay Resource that will accept proxy requests
+        <li class="normal" id="section-2-2.3">The identity of an Oblivious Relay Resource that will accept relay requests
 carrying an encapsulated request body and forward these request bodies to
 a single Oblivious Gateway Resource. See <a href="#proxy-state" class="xref">Section 9.2</a> for more
 information about the mapping between Oblivious Relay and oblivious
@@ -1346,73 +1346,73 @@ server.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <figure id="figure-1">
         <div id="section-2-4.1">
           <div class="alignLeft art-svg artwork" id="section-2-4.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="464" width="528" viewBox="0 0 528 464" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="464" width="536" viewBox="0 0 536 464" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 8,32 L 8,80" fill="none" stroke="black"></path>
               <path d="M 48,80 L 48,448" fill="none" stroke="black"></path>
               <path d="M 88,32 L 88,80" fill="none" stroke="black"></path>
-              <path d="M 144,32 L 144,80" fill="none" stroke="black"></path>
-              <path d="M 184,80 L 184,448" fill="none" stroke="black"></path>
-              <path d="M 232,32 L 232,80" fill="none" stroke="black"></path>
-              <path d="M 288,32 L 288,80" fill="none" stroke="black"></path>
-              <path d="M 352,80 L 352,448" fill="none" stroke="black"></path>
-              <path d="M 376,32 L 376,80" fill="none" stroke="black"></path>
-              <path d="M 432,32 L 432,80" fill="none" stroke="black"></path>
-              <path d="M 472,80 L 472,448" fill="none" stroke="black"></path>
-              <path d="M 520,32 L 520,80" fill="none" stroke="black"></path>
+              <path d="M 152,32 L 152,80" fill="none" stroke="black"></path>
+              <path d="M 192,80 L 192,448" fill="none" stroke="black"></path>
+              <path d="M 240,32 L 240,80" fill="none" stroke="black"></path>
+              <path d="M 296,32 L 296,80" fill="none" stroke="black"></path>
+              <path d="M 360,80 L 360,448" fill="none" stroke="black"></path>
+              <path d="M 384,32 L 384,80" fill="none" stroke="black"></path>
+              <path d="M 440,32 L 440,80" fill="none" stroke="black"></path>
+              <path d="M 480,80 L 480,448" fill="none" stroke="black"></path>
+              <path d="M 528,32 L 528,80" fill="none" stroke="black"></path>
               <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
-              <path d="M 144,32 L 232,32" fill="none" stroke="black"></path>
-              <path d="M 288,32 L 376,32" fill="none" stroke="black"></path>
-              <path d="M 432,32 L 520,32" fill="none" stroke="black"></path>
+              <path d="M 152,32 L 240,32" fill="none" stroke="black"></path>
+              <path d="M 296,32 L 384,32" fill="none" stroke="black"></path>
+              <path d="M 440,32 L 528,32" fill="none" stroke="black"></path>
               <path d="M 8,80 L 88,80" fill="none" stroke="black"></path>
-              <path d="M 144,80 L 232,80" fill="none" stroke="black"></path>
-              <path d="M 288,80 L 376,80" fill="none" stroke="black"></path>
-              <path d="M 432,80 L 520,80" fill="none" stroke="black"></path>
-              <path d="M 48,176 L 176,176" fill="none" stroke="black"></path>
-              <path d="M 184,240 L 344,240" fill="none" stroke="black"></path>
-              <path d="M 352,256 L 464,256" fill="none" stroke="black"></path>
-              <path d="M 360,304 L 472,304" fill="none" stroke="black"></path>
-              <path d="M 192,368 L 352,368" fill="none" stroke="black"></path>
-              <path d="M 56,432 L 184,432" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="472,256 460,250.4 460,261.6" fill="black" transform="rotate(0,464,256)"></polygon>
-              <polygon class="arrowhead" points="368,304 356,298.4 356,309.6" fill="black" transform="rotate(180,360,304)"></polygon>
-              <polygon class="arrowhead" points="352,240 340,234.4 340,245.6" fill="black" transform="rotate(0,344,240)"></polygon>
-              <polygon class="arrowhead" points="200,368 188,362.4 188,373.6" fill="black" transform="rotate(180,192,368)"></polygon>
-              <polygon class="arrowhead" points="184,176 172,170.4 172,181.6" fill="black" transform="rotate(0,176,176)"></polygon>
+              <path d="M 152,80 L 240,80" fill="none" stroke="black"></path>
+              <path d="M 296,80 L 384,80" fill="none" stroke="black"></path>
+              <path d="M 440,80 L 528,80" fill="none" stroke="black"></path>
+              <path d="M 48,176 L 184,176" fill="none" stroke="black"></path>
+              <path d="M 192,240 L 352,240" fill="none" stroke="black"></path>
+              <path d="M 360,256 L 472,256" fill="none" stroke="black"></path>
+              <path d="M 368,304 L 480,304" fill="none" stroke="black"></path>
+              <path d="M 200,368 L 360,368" fill="none" stroke="black"></path>
+              <path d="M 56,432 L 192,432" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="480,256 468,250.4 468,261.6" fill="black" transform="rotate(0,472,256)"></polygon>
+              <polygon class="arrowhead" points="376,304 364,298.4 364,309.6" fill="black" transform="rotate(180,368,304)"></polygon>
+              <polygon class="arrowhead" points="360,240 348,234.4 348,245.6" fill="black" transform="rotate(0,352,240)"></polygon>
+              <polygon class="arrowhead" points="208,368 196,362.4 196,373.6" fill="black" transform="rotate(180,200,368)"></polygon>
+              <polygon class="arrowhead" points="192,176 180,170.4 180,181.6" fill="black" transform="rotate(0,184,176)"></polygon>
               <polygon class="arrowhead" points="64,432 52,426.4 52,437.6" fill="black" transform="rotate(180,56,432)"></polygon>
               <g class="text">
                 <text x="44" y="52">Client</text>
-                <text x="176" y="52">Relay</text>
-                <text x="328" y="52">Gateway</text>
-                <text x="468" y="52">Target</text>
-                <text x="188" y="68">Resource</text>
-                <text x="332" y="68">Resource</text>
-                <text x="476" y="68">Resource</text>
-                <text x="80" y="116">Proxy</text>
+                <text x="184" y="52">Relay</text>
+                <text x="336" y="52">Gateway</text>
+                <text x="476" y="52">Target</text>
+                <text x="196" y="68">Resource</text>
+                <text x="340" y="68">Resource</text>
+                <text x="484" y="68">Resource</text>
+                <text x="80" y="116">Relay</text>
                 <text x="88" y="132">Request</text>
                 <text x="68" y="148">[+</text>
-                <text x="120" y="148">Encrypted</text>
+                <text x="132" y="148">Encapsulated</text>
                 <text x="112" y="164">Request</text>
                 <text x="152" y="164">]</text>
-                <text x="244" y="180">Encapsulated</text>
-                <text x="224" y="196">Request</text>
-                <text x="204" y="212">[+</text>
-                <text x="256" y="212">Encrypted</text>
-                <text x="248" y="228">Request</text>
-                <text x="288" y="228">]</text>
-                <text x="392" y="244">Request</text>
-                <text x="428" y="292">Response</text>
-                <text x="292" y="308">Encapsulated</text>
-                <text x="308" y="324">Response</text>
-                <text x="244" y="340">[+</text>
-                <text x="296" y="340">Encrypted</text>
-                <text x="292" y="356">Response</text>
-                <text x="336" y="356">]</text>
-                <text x="152" y="372">Proxy</text>
-                <text x="140" y="388">Response</text>
-                <text x="76" y="404">[+</text>
-                <text x="128" y="404">Encrypted</text>
-                <text x="124" y="420">Response</text>
-                <text x="168" y="420">]</text>
+                <text x="232" y="180">Gateway</text>
+                <text x="232" y="196">Request</text>
+                <text x="212" y="212">[+</text>
+                <text x="276" y="212">Encapsulated</text>
+                <text x="256" y="228">Request</text>
+                <text x="296" y="228">]</text>
+                <text x="400" y="244">Request</text>
+                <text x="436" y="292">Response</text>
+                <text x="320" y="308">Gateway</text>
+                <text x="316" y="324">Response</text>
+                <text x="236" y="340">[+</text>
+                <text x="300" y="340">Encapsulated</text>
+                <text x="300" y="356">Response</text>
+                <text x="344" y="356">]</text>
+                <text x="160" y="372">Relay</text>
+                <text x="148" y="388">Response</text>
+                <text x="68" y="404">[+</text>
+                <text x="132" y="404">Encapsulated</text>
+                <text x="132" y="420">Response</text>
+                <text x="176" y="420">]</text>
               </g>
             </svg><a href="#section-2-4.1.1" class="pilcrow">¶</a>
 </div>
@@ -2021,7 +2021,7 @@ request, except that the target URI is the Oblivious Gateway Resource.  The
 content of this request is copied from the client.  The Oblivious Relay Resource
 <span class="bcp14">MUST NOT</span> add information to the request without the client being aware of
 the type of information that might be added; see
-<a href="#relay-responsibilities" class="xref">Section 7.2</a> for more information on proxy responsibilities.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<a href="#relay-responsibilities" class="xref">Section 7.2</a> for more information on relay responsibilities.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">When a response is received from the Oblivious Gateway Resource, the
 Oblivious Relay Resource forwards the response according to the rules of an
 HTTP proxy; see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-7.6" class="relref">Section 7.6</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
@@ -2314,7 +2314,7 @@ connection).<a href="#section-7-2.1" class="pilcrow">¶</a>
 the future.<a href="#section-7-2.2" class="pilcrow">¶</a>
 </li>
       </ol>
-<p id="section-7-3">In order to ensure this, the client selects a proxy (that serves the
+<p id="section-7-3">In order to ensure this, the client selects a relay (that serves the
 Oblivious Relay Resource) that it trusts will protect this information
 by forwarding the Encapsulated Request and response without passing it
 to the server (that serves the Oblivious Gateway Resource).<a href="#section-7-3" class="pilcrow">¶</a></p>
@@ -2322,7 +2322,7 @@ to the server (that serves the Oblivious Gateway Resource).<a href="#section-7-3
 <ul class="normal">
 <li class="normal" id="section-7-5.1">A client makes requests and receives responses<a href="#section-7-5.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-7-5.2">A proxy operates the Oblivious Relay Resource<a href="#section-7-5.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-7-5.2">A relay operates the Oblivious Relay Resource<a href="#section-7-5.2" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-7-5.3">A server operates both the Oblivious Gateway Resource and the oblivious
 target resource<a href="#section-7-5.3" class="pilcrow">¶</a>
@@ -2341,7 +2341,7 @@ of the corresponding response encapsulation key and HPKE keying material.
 In particular, the Oblivious Relay knows the origin and destination of an
 Encapsulated Request and response, yet does not know the decrypted
 contents. Likewise, targets know only the Oblivious Gateway origin, i.e.,
-the proxy, and the decrypted request. Only the client knows both the
+the relay, and the decrypted request. Only the client knows both the
 plaintext request and response.<a href="#section-7-8.1" class="pilcrow">¶</a>
 </li>
         <li id="section-7-8.2">Targets cannot link requests from the same client in the absence of unique
@@ -2657,7 +2657,7 @@ for ensuring the key configurations are consistent between different clients.<a 
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-performance-overhead" class="section-name selfRef">Performance Overhead</a>
         </h3>
 <p id="section-9.1-1">Using Oblivious HTTP adds both cryptographic and latency to requests relative to
-a simple HTTP request-response exchange.  Deploying proxy services that are on
+a simple HTTP request-response exchange.  Deploying relay services that are on
 path between clients and servers avoids adding significant additional delay due
 to network topology.  A study of a similar system <span>[<a href="#ODoH" class="xref">ODoH</a>]</span> found that deploying
 proxies close to servers was most effective in minimizing additional latency.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
@@ -2671,9 +2671,9 @@ proxies close to servers was most effective in minimizing additional latency.<a 
 <p id="section-9.2-1">This protocol assumes a fixed, one-to-one mapping between the Oblivious Proxy
 Resource and the Oblivious Gateway Resource. This means that any encrypted
 request sent to the Oblivious Relay Resource will always be forwarded to the
-Oblivious Gateway Resource. This constraint was imposed to simplify proxy
+Oblivious Gateway Resource. This constraint was imposed to simplify relay
 configuration and mitigate against the Oblivious Relay Resource being used as
-a generic proxy for unknown Oblivious Gateway Resources. The proxy will only
+a generic relay for unknown Oblivious Gateway Resources. The relay will only
 forward for Oblivious Gateway Resources that it has explicitly configured and
 allowed.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.2-2">It is possible for a server to be configured with multiple Oblivious Proxy
