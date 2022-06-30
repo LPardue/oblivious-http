@@ -1324,7 +1324,7 @@ them or linked to other requests.<a href="#section-1-6" class="pilcrow">¶</a></
 <p id="section-2-1">A client must initially know the following:<a href="#section-2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-2.1">The identity of an Oblivious Gateway Resource.  This might include some
-information about what oblivious target resources the Oblivious Gateway
+information about what Oblivious Target Resources the Oblivious Gateway
 resource supports.<a href="#section-2-2.1" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-2-2.2">The details of an HPKE public key that the Oblivious Gateway Resource
@@ -1542,7 +1542,7 @@ clients and a single Oblivious Gateway Resource.<a href="#section-2.2-2.8.1" cla
 <dt id="section-2.2-2.9">Oblivious Gateway Resource:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.10">
             <p id="section-2.2-2.10.1">A resource that can receive an encapsulated request, extract the contents of
-that request, forward it to an oblivious target resource, receive a response,
+that request, forward it to an Oblivious Target Resource, receive a response,
 encapsulate that response, then return that response.<a href="#section-2.2-2.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
@@ -2008,12 +2008,12 @@ Encapsulated Request and <span class="bcp14">MUST</span> be fields that the Obli
 remove before forwarding the Encapsulated Request towards the target, such as the
 Connection or Proxy-Authorization header fields <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">The client role in this protocol acts as an HTTP client both with respect to the
-Oblivious Relay Resource and the oblivious target resource.  For the request the
-clients makes to the oblivious target resource, this diverges from typical HTTP
+Oblivious Relay Resource and the Oblivious Target Resource.  For the request the
+clients makes to the Oblivious Target Resource, this diverges from typical HTTP
 assumptions about the use of a connection (see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-3.3" class="relref">Section 3.3</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>) in that
 the request and response are encrypted rather than sent over a connection.
 The Oblivious Relay Resource and the Oblivious Gateway Resource also act as HTTP
-clients toward the Oblivious Gateway Resource and oblivious target resource
+clients toward the Oblivious Gateway Resource and Oblivious Target Resource
 respectively.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">The Oblivious Relay Resource interacts with the Oblivious Gateway Resource as an
 HTTP client by constructing a request using the same restrictions as the client
@@ -2065,7 +2065,7 @@ Oblivious Gateway Resource before removing protection (including being unable to
 remove encapsulation for any reason) result in the status code being sent
 without protection in response to the POST request made to that resource.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.2-3">Errors detected by the Oblivious Gateway Resource after successfully removing
-encapsulation and errors detected by the oblivious target resource <span class="bcp14">MUST</span> be sent
+encapsulation and errors detected by the Oblivious Target Resource <span class="bcp14">MUST</span> be sent
 in an Encapsulated Response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2303,7 +2303,7 @@ is a binary format that is defined in <a href="#response" class="xref">Section 4
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-7-1">In this design, a client wishes to make a request of a server that is
-authoritative for the oblivious target resource. The client wishes to make this
+authoritative for the Oblivious Target Resource. The client wishes to make this
 request without linking that request with either:<a href="#section-7-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-7-2">
 <li id="section-7-2.1">The identity at the network and transport layer of the client (that is, the
@@ -2330,7 +2330,7 @@ target resource<a href="#section-7-5.3" class="pilcrow">¶</a>
       </ul>
 <p id="section-7-6">To achieve the stated privacy goals, the Oblivious Relay Resource cannot be
 operated by the same entity as the Oblivious Gateway Resource. However,
-colocation of the Oblivious Gateway Resource and oblivious target resource
+colocation of the Oblivious Gateway Resource and Oblivious Target Resource
 simplifies the interactions between those resources without affecting client
 privacy.<a href="#section-7-6" class="pilcrow">¶</a></p>
 <p id="section-7-7">As a consequence of this configuration, Oblivious HTTP prevents linkability
@@ -2480,7 +2480,7 @@ providing larger sets of messages that need to be matched.<a href="#section-7.2.
         <h3 id="name-server-responsibilities">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-server-responsibilities" class="section-name selfRef">Server Responsibilities</a>
         </h3>
-<p id="section-7.3-1">A server that operates both Oblivious Gateway and oblivious target resources is
+<p id="section-7.3-1">A server that operates both Oblivious Gateway and Oblivious Target Resources is
 responsible for removing request encryption, generating a response to the
 Encapsulated Request, and encrypting the response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.3-2">Servers should account for traffic analysis based on response size or generation
@@ -2631,7 +2631,7 @@ limited by regular rotation of server keys.<a href="#section-7.6-5" class="pilcr
 <p id="section-8-1">One goal of this design is that independent client requests are only linkable by
 the chosen key configuration. The Oblivious Relay and request resources can link
 requests using the same key configuration by matching KeyConfig.key_id, or, if
-the oblivious target resource is willing to use trial decryption, a limited set
+the Oblivious Target Resource is willing to use trial decryption, a limited set
 of key configurations that share an identifier. An Oblivious Relay can link
 requests using the public key corresponding to KeyConfig.key_id.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">Request resources are capable of linking requests depending on how KeyConfigs
