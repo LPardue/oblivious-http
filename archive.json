@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-06-28T00:36:22.088098+00:00",
+  "timestamp": "2022-06-30T00:32:31.056327+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1865,15 +1865,15 @@
       "id": "I_kwDOE6fLGM5MpQ03",
       "title": "Incorrect size of test vector X25519 secret key",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/128",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "NickR23",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Hey,\r\nI may be wrong here, but the X25519 secret listed in [the test vectors](https://github.com/ietf-wg-ohai/oblivious-http/blob/main/draft-ietf-ohai-ohttp.md#complete-example-of-a-request-and-response) is the wrong size. \r\n\r\n>To begin the process, the oblivious request resource generates a key pair. In this example the server chooses DHKEM(X25519, HKDF-SHA256) and generates an X25519 key pair {{?X25519=RFC7748}}. The X25519 secret key is:\r\n\r\n>`e7693e454a94d999836f25294518c687b6ed95c1fcf6b0b93c71202793182`\r\n\r\nThis key is 61 characters long. The correct length should be 64 chars (32 bytes).\r\n\r\nThanks! \r\n",
       "createdAt": "2022-06-27T14:22:05Z",
-      "updatedAt": "2022-06-27T18:48:18Z",
-      "closedAt": null,
+      "updatedAt": "2022-06-28T15:18:24Z",
+      "closedAt": "2022-06-28T15:18:24Z",
       "comments": [
         {
           "author": "chris-wood",
@@ -1888,6 +1888,13 @@
           "body": "I'm converting the test vectors from hex strings to a buffer of raw bytes for testing my implementation, where \r\n`buffer.size() == x25519Secret.len() / 2`.\r\nSince the string has an odd number of chars, the buffer size was a byte too small so I got a buffer overflow.\r\n\r\nOther than that the format of the test vectors is perfect!\r\n\r\nThanks following up",
           "createdAt": "2022-06-27T18:48:18Z",
           "updatedAt": "2022-06-27T18:48:18Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Once again, the copy-paste demon strikes.  That's likely my fault.  I'll make another set.",
+          "createdAt": "2022-06-28T01:23:59Z",
+          "updatedAt": "2022-06-28T01:23:59Z"
         }
       ]
     }
@@ -8206,7 +8213,7 @@
       "labels": [],
       "body": "Closes #121.\r\n\r\n",
       "createdAt": "2022-06-27T13:30:33Z",
-      "updatedAt": "2022-06-28T00:18:37Z",
+      "updatedAt": "2022-06-29T01:23:37Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "17978ac4e4eaa34d6061a2b53f459d15ef435746",
@@ -8231,6 +8238,13 @@
           "body": "LGTM",
           "createdAt": "2022-06-27T22:24:38Z",
           "updatedAt": "2022-06-27T22:24:38Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "After chatting with @martinthomson offline, here's a proposal we came up with. First, redefine the entities to Client, Oblivious Relay, Oblivious Gateway, and Target. Based on these, we think the following names make sense:\r\n\r\n- Client -> Oblivious Relay: Oblivious Relay Request, carrying an Encrypted Request\r\n- Oblivious Relay -> Oblivious Gateway: Oblivious Gateway Request, carrying the same Encrypted Request\r\n- Oblivious Gateway -> Target: Request\r\n\r\nI'll take this to the list for the bike shed.",
+          "createdAt": "2022-06-29T01:19:02Z",
+          "updatedAt": "2022-06-29T01:23:36Z"
         }
       ],
       "reviews": [
@@ -8319,6 +8333,201 @@
               "updatedAt": "2022-06-27T22:22:04Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM482j9U",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I think that this is confusing.  Not the change from encapsulated request/response to encrypted request/response, that is good, but the names for the outer pieces are difficult for me to swallow.\r\n\r\nI don't have a suggestion here.  I'm not even sure that we need a name for the outer piece.  \"HTTP request/response\" might do.\r\n\r\nThe change in the resource name is maybe confusing and maybe a bit one-sided (it does decapsulation too), but I can probably reconcile myself to calling it by the longer name if I hold my nose.  I'm not defending \"request resource\"; that's a bad name too.\r\n\r\nWould \"gateway\" resource be a better name?  Then we have roles that roughly align with similar functions in HTTP.  Or is that worse?",
+          "createdAt": "2022-06-28T00:18:37Z",
+          "updatedAt": "2022-06-28T01:46:22Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "Except that the request that is encrypted is also encapsulated.  The outer request is encapsulating, not encapsulated.",
+              "createdAt": "2022-06-28T00:18:37Z",
+              "updatedAt": "2022-06-28T01:46:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM484bjb",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-28T09:32:54Z",
+          "updatedAt": "2022-06-28T09:32:55Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "To clarify, what do you mean when you say it's also encapsulated, and why is that an important detail?",
+              "createdAt": "2022-06-28T09:32:55Z",
+              "updatedAt": "2022-06-28T09:32:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4883mi",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-28T23:49:04Z",
+          "updatedAt": "2022-06-28T23:49:04Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "It's a word thing.  \"Encapsulated\" is a label you apply to something that has been put in a capsule.  The capsule and the thing it contains then becomes an encapsulation.  You don't encapsulate the capsule (except recursively, by putting into a larger capsule).\r\n\r\nIn this case, the request that was encrypted is the thing that has been encapsulated.  The thing you are calling the \"Encapsulated Request\" is a wrapper or encapsulation, it isn't encapsulated.  The outer request is maybe encapsulating (-ing), but that seems wrong for some reason too.\r\n\r\nWe generally don't have names for a container and their contents.  Which is what makes this hard.  A briefcase containing papers is just a briefcase.  A bus containing passengers is a bus.  A safe containing a valuable item is a safe.  A bathroom stall is still a bathroom stall, even when it is occupied.  But in all cases, the containing thing is not defined by its contents in quite the same way as we might like here.",
+              "createdAt": "2022-06-28T23:49:04Z",
+              "updatedAt": "2022-06-28T23:49:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4884kd",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-28T23:57:28Z",
+          "updatedAt": "2022-06-28T23:57:29Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "Maybe instead of Encapsulated Request we call it a Proxied Request? The proxy would then take Proxy Requests as input and output Proxied Requests. \n\nI would prefer to keep the Encapsulation Resource name for now, as that's at least more precise than Request Resource. \n\nThoughts?",
+              "createdAt": "2022-06-28T23:57:29Z",
+              "updatedAt": "2022-06-28T23:57:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM48863_",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-29T00:17:21Z",
+          "updatedAt": "2022-06-29T00:17:21Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "But all of the requests are proxied, so it isn't very descriptive.  And I don't think that Encapsulation is better (it's not worse) than Request.\r\n\r\nThought: which of the requests are \"oblivious\"?  Could the outer one be oblivious?",
+              "createdAt": "2022-06-29T00:17:21Z",
+              "updatedAt": "2022-06-29T00:17:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM488_EY",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-29T00:56:44Z",
+          "updatedAt": "2022-06-29T00:56:44Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "Note that the client's request to the proxy in this proposal is a \"proxy request,\" as in, \"a request to have something proxied\", whereas the proxy's request to the target is a \"proxied request,\" as in, \"a request that has _been_ proxied.\" This distinction seems pretty clear to me. ",
+              "createdAt": "2022-06-29T00:56:44Z",
+              "updatedAt": "2022-06-29T00:56:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM488_dh",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-29T01:00:29Z",
+          "updatedAt": "2022-06-29T01:00:29Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "> Thought: which of the requests are \"oblivious\"?  Could the outer one be oblivious?\n\nThe problem with this question is that it's not specific to _which_ request. Is it the client to proxy request or the proxy to target request? I think we need different names for these two things. ",
+              "createdAt": "2022-06-29T01:00:29Z",
+              "updatedAt": "2022-06-29T01:00:29Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 129,
+      "id": "PR_kwDOE6fLGM46ddWY",
+      "title": "New new example",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/129",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Copy-paste error on my behalf trimmed the last three characters from\r\nprivate keys.  I almost made the same error again.  The output (which I\r\nwill add below) wraps in my terminal at exactly that point.  And this\r\nparticular terminal treats a wrapped string as two strings: yay.  Bug\r\nreport time.\r\n\r\nIn any case, I didn't miss the extra characters this time.  I think.\r\n\r\n```\r\n[TRACE ohttp::nss::hpke] Generated key pair: sk=PrivateKey 3cf36bbc17111f07e816aa895ff42de8d1a029af16580c232a68e15feefa1073 pk=PublicKey a2baf3a20a6c551df011f02e7b5e87afded5f9d584c1071e439abc1cc5ffc345\r\n[TRACE ohttp::test] Config: 010020a2baf3a20a6c551df011f02e7b5e87afded5f9d584c1071e439abc1cc5ffc34500080001000100010003\r\n[TRACE ohttp::nss::hpke] Generated key pair: sk=PrivateKey a9ebdb1efc14e3ea8956f8688b47b424160c1e93d82a0301dddbb710363b3941 pk=PublicKey 984880a3350e0223e10a56c37e95c77a77cd0e4a056405b5cdce8f813d562d06\r\n[TRACE ohttp::test] Request: 00034745540568747470730b6578616d706c652e636f6d012f\r\n[TRACE ohttp::test] Encapsulated Request: 01002000010001984880a3350e0223e10a56c37e95c77a77cd0e4a056405b5cdce8f813d562d06a76430f42315a26fe661b11b6d1ce64de152733af519628f4fe3cb3e239aa4f4c42729d165029e6c26\r\n[TRACE ohttp::nss::hkdf] HKDF extract: salt=984880a3350e0223e10a56c37e95c77a77cd0e4a056405b5cdce8f813d562d064bbf6a36b9a9783914cfdb66670419b9 ikm=cec71c150d58bdcadbf4a1d27a20967e prk=ea9b0f025b63d4d2693b23eea2ed9772acb483f05db7a95d99d6b4ef15c4b766\r\n[TRACE ohttp::nss::hkdf] HKDF expand_key: prk=ea9b0f025b63d4d2693b23eea2ed9772acb483f05db7a95d99d6b4ef15c4b766 info=6b6579 okm=afe1375849f14b7e7c7ab9f4b570c0b5\r\n[TRACE ohttp::nss::hkdf] HKDF expand_data: prk=ea9b0f025b63d4d2693b23eea2ed9772acb483f05db7a95d99d6b4ef15c4b766 info=6e6f6e6365 okm=88b2cf64bfcc447a9dd9b427\r\n[TRACE ohttp::nss::aead] New AEAD: key=afe1375849f14b7e7c7ab9f4b570c0b5 nonce_base=88b2cf64bfcc447a9dd9b427\r\n[TRACE ohttp::test] Encapsulated Response: 4bbf6a36b9a9783914cfdb66670419b9517faaa500d3c547a0da2cd407b77151421ef3\r\n[TRACE ohttp::nss::hkdf] HKDF extract: salt=984880a3350e0223e10a56c37e95c77a77cd0e4a056405b5cdce8f813d562d064bbf6a36b9a9783914cfdb66670419b9 ikm=cec71c150d58bdcadbf4a1d27a20967e prk=ea9b0f025b63d4d2693b23eea2ed9772acb483f05db7a95d99d6b4ef15c4b766\r\n[TRACE ohttp::nss::hkdf] HKDF expand_key: prk=ea9b0f025b63d4d2693b23eea2ed9772acb483f05db7a95d99d6b4ef15c4b766 info=6b6579 okm=afe1375849f14b7e7c7ab9f4b570c0b5\r\n[TRACE ohttp::nss::hkdf] HKDF expand_data: prk=ea9b0f025b63d4d2693b23eea2ed9772acb483f05db7a95d99d6b4ef15c4b766 info=6e6f6e6365 okm=88b2cf64bfcc447a9dd9b427\r\n[TRACE ohttp::nss::aead] New AEAD: key=afe1375849f14b7e7c7ab9f4b570c0b5 nonce_base=88b2cf64bfcc447a9dd9b427\r\n[TRACE ohttp::test] Response: 0140c8\r\ntest test::request_response ... ok\r\n```",
+      "createdAt": "2022-06-28T01:34:56Z",
+      "updatedAt": "2022-06-28T15:18:24Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "17978ac4e4eaa34d6061a2b53f459d15ef435746",
+      "headRepository": "martinthomson/oblivious-http",
+      "headRefName": "new-example",
+      "headRefOid": "51c448e81ace400467483e4958b492ba85b0e26e",
+      "closedAt": "2022-06-28T15:18:24Z",
+      "mergedAt": "2022-06-28T15:18:24Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "9970cad7de6f0c2b3348e1be8325f349473e0084"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4827KZ",
+          "commit": {
+            "abbreviatedOid": "51c448e"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-06-28T02:54:18Z",
+          "updatedAt": "2022-06-28T02:54:18Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOE6fLGM486XdS",
+          "commit": {
+            "abbreviatedOid": "51c448e"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-06-28T15:18:19Z",
+          "updatedAt": "2022-06-28T15:18:19Z",
+          "comments": []
         }
       ]
     }
