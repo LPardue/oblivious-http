@@ -948,11 +948,11 @@ Table of Contents
    target.  Any such differential treatment can reveal information to
    the target that would not be revealed otherwise and therefore reduce
    the size of the anonymity set of clients at a target server.  For
-   example, if a proxy chooses to rate limit or block an abusive client,
-   this means that any client requests which are not treated this way
-   are known to be non-abusive by the target.  Clients should consider
-   the likelihood of such differential treatment and the privacy risks
-   when using a proxy.
+   example, if a proxy chooses to block an abusive client, this means
+   that any client requests which are not treated this way are known to
+   be non-abusive by the target.  Clients should consider the likelihood
+   of such differential treatment and the privacy risks when using a
+   proxy.
 
    Finally, a proxy can also generate responses, though it assumed to
    not be able to examine the content of a request (other than to
