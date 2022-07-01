@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 1 January 2023                                       Cloudflare
-                                                            30 June 2022
+Expires: 2 January 2023                                       Cloudflare
+                                                             1 July 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 January 2023.
+   This Internet-Draft will expire on 2 January 2023.
 
 Copyright Notice
 
@@ -168,8 +168,7 @@ Table of Contents
       requests carrying an encapsulated request as its content and
       forward the content in these requests to a single Oblivious
       Gateway Resource.  See Section 9.2 for more information about the
-      mapping between Oblivious Relay and oblivious encapsulation
-      resources.
+      mapping between Oblivious Relay and Gateway Resources.
 
    This information allows the client to make a request of an oblivious
    target resource with that resource having only a limited ability to
