@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-06-30T00:32:31.056327+00:00",
+  "timestamp": "2022-07-03T00:36:30.649234+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1779,7 +1779,7 @@
       "labels": [],
       "body": "We are defining a media type here that has some limitations (mostly lack of streaming, #75).  If we want to define a more capable media type, what would the system need to do to allow that to happen?\r\n\r\nAt face value, this seems simple: the oblivious request resource consumes the media type.  It already needs to make its key known to clients, so adding a set of acceptable media types to that information seems entirely reasonable.\r\n\r\nQuestions:\r\n\r\n* Should we enrich the key configuration with other meta-information?  Or is this supplementary information?\r\n* Is there any value in an in-band signaling mechanism?  We've already seen that feedback about time is ...challenging.\r\n* Supported media types convey information that might be used to distinguish clients in the same way that key selection could.  What do we need to do about ensuring consistency?",
       "createdAt": "2022-06-17T02:07:28Z",
-      "updatedAt": "2022-06-17T15:51:00Z",
+      "updatedAt": "2022-06-30T21:01:41Z",
       "closedAt": null,
       "comments": [
         {
@@ -1792,9 +1792,9 @@
         {
           "author": "tfpauly",
           "authorAssociation": "COLLABORATOR",
-          "body": "So far, the models I've seen would know the median type a priori. So, I'd agree with Chris for this.",
+          "body": "So far, the models I've seen would know the media type a priori. So, I'd agree with Chris for this.",
           "createdAt": "2022-06-17T15:51:00Z",
-          "updatedAt": "2022-06-17T15:51:00Z"
+          "updatedAt": "2022-06-30T21:01:41Z"
         }
       ]
     },
@@ -8213,13 +8213,13 @@
       "labels": [],
       "body": "Closes #121.\r\n\r\n",
       "createdAt": "2022-06-27T13:30:33Z",
-      "updatedAt": "2022-06-29T01:23:37Z",
+      "updatedAt": "2022-07-01T10:46:37Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "17978ac4e4eaa34d6061a2b53f459d15ef435746",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "caw/new-terminology",
-      "headRefOid": "08bc6ca70f2a12f95f3829646b56f78fe9485423",
+      "headRefOid": "f16bb3be3a7407abd9a61b39def7b3ee8c4ed3d7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -8245,6 +8245,13 @@
           "body": "After chatting with @martinthomson offline, here's a proposal we came up with. First, redefine the entities to Client, Oblivious Relay, Oblivious Gateway, and Target. Based on these, we think the following names make sense:\r\n\r\n- Client -> Oblivious Relay: Oblivious Relay Request, carrying an Encrypted Request\r\n- Oblivious Relay -> Oblivious Gateway: Oblivious Gateway Request, carrying the same Encrypted Request\r\n- Oblivious Gateway -> Target: Request\r\n\r\nI'll take this to the list for the bike shed.",
           "createdAt": "2022-06-29T01:19:02Z",
           "updatedAt": "2022-06-29T01:23:36Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK, new terminology updates applied. I reverted the encryption/encapsulation change to keep this PR focused on the new terms. I also tried to use consistency capitalization when referring to these types throughout the doc.\r\n\r\n@martinthomson, @tfpauly, @LPardue: please review!",
+          "createdAt": "2022-06-30T11:50:32Z",
+          "updatedAt": "2022-06-30T11:50:32Z"
         }
       ],
       "reviews": [
@@ -8473,6 +8480,341 @@
               "updatedAt": "2022-06-29T01:00:29Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FAzY",
+          "commit": {
+            "abbreviatedOid": "08bc6ca"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T11:45:38Z",
+          "updatedAt": "2022-06-30T11:45:38Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "Resolving based on latest email thread. Thanks for working through this!",
+              "createdAt": "2022-06-30T11:45:38Z",
+              "updatedAt": "2022-06-30T11:45:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FHuB",
+          "commit": {
+            "abbreviatedOid": "55f4215"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:05:14Z",
+          "updatedAt": "2022-06-30T12:05:15Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "does `oblivious target resources` here need capitalization?",
+              "createdAt": "2022-06-30T12:05:14Z",
+              "updatedAt": "2022-06-30T12:05:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FMrF",
+          "commit": {
+            "abbreviatedOid": "55f4215"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:20:21Z",
+          "updatedAt": "2022-06-30T12:20:21Z",
+          "comments": [
+            {
+              "originalPosition": 147,
+              "body": "is this correct? My understanding of the old text was comparing an \"end-to-end request\" (a request from client to target) with just a normal HTTP request operation. \r\n\r\nMaybe I was wrong before and the intent was to talk about the Gateway. But saying the Gateway requires two requests doesn't seem seem right either.\r\n",
+              "createdAt": "2022-06-30T12:20:21Z",
+              "updatedAt": "2022-06-30T12:20:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FNFG",
+          "commit": {
+            "abbreviatedOid": "55f4215"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:21:42Z",
+          "updatedAt": "2022-06-30T12:21:43Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "Let's use content instead of body here and subsequent defs",
+              "createdAt": "2022-06-30T12:21:42Z",
+              "updatedAt": "2022-06-30T12:21:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FNSe",
+          "commit": {
+            "abbreviatedOid": "0f40539"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:22:24Z",
+          "updatedAt": "2022-06-30T12:22:24Z",
+          "comments": [
+            {
+              "originalPosition": 147,
+              "body": "Good catch! This change is wrong. The original text is right.",
+              "createdAt": "2022-06-30T12:22:24Z",
+              "updatedAt": "2022-06-30T12:22:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FNUe",
+          "commit": {
+            "abbreviatedOid": "55f4215"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:22:30Z",
+          "updatedAt": "2022-06-30T12:22:31Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "```suggestion\r\n: An HTTP request from Client to Relay that contains an encapsulated request as the content.\r\n```",
+              "createdAt": "2022-06-30T12:22:30Z",
+              "updatedAt": "2022-06-30T12:22:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FNVJ",
+          "commit": {
+            "abbreviatedOid": "0f40539"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:22:32Z",
+          "updatedAt": "2022-06-30T12:22:33Z",
+          "comments": [
+            {
+              "originalPosition": 147,
+              "body": "```suggestion\r\n* Each oblivious request requires at least two regular HTTP requests, which adds\r\n```",
+              "createdAt": "2022-06-30T12:22:32Z",
+              "updatedAt": "2022-06-30T12:22:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FNii",
+          "commit": {
+            "abbreviatedOid": "4226db6"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:23:09Z",
+          "updatedAt": "2022-06-30T12:23:10Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "ACK \ud83d\udc4d I'll do a pass over the doc to apply that change before we merge.",
+              "createdAt": "2022-06-30T12:23:09Z",
+              "updatedAt": "2022-06-30T12:23:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FOdW",
+          "commit": {
+            "abbreviatedOid": "4226db6"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:26:06Z",
+          "updatedAt": "2022-06-30T12:26:07Z",
+          "comments": [
+            {
+              "originalPosition": 291,
+              "body": "```suggestion\r\nAn Oblivious Gateway Resource, if it receives any response from the Oblivious\r\nTarget Resource, sends a single 200 response containing the encapsulated\r\n```",
+              "createdAt": "2022-06-30T12:26:06Z",
+              "updatedAt": "2022-06-30T12:26:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49FaWY",
+          "commit": {
+            "abbreviatedOid": "55f4215"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T12:59:27Z",
+          "updatedAt": "2022-06-30T12:59:27Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "@LPardue applied this series of fixes",
+              "createdAt": "2022-06-30T12:59:27Z",
+              "updatedAt": "2022-06-30T12:59:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49Fb1j",
+          "commit": {
+            "abbreviatedOid": "fa6e9e9"
+          },
+          "author": "LPardue",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-06-30T13:03:02Z",
+          "updatedAt": "2022-06-30T13:03:02Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49IsZ3",
+          "commit": {
+            "abbreviatedOid": "fa6e9e9"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I think that we have some inconsistent encapsulated vs. encrypted stuff here.\r\n\r\nI'm also not that enthusiastic about Proper Nouns, but don't care enough to fight for any particular outcome, except the one where they are used consistently.  You seem to have missed a few, that is.",
+          "createdAt": "2022-07-01T03:52:33Z",
+          "updatedAt": "2022-07-01T04:00:00Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nUse of an HTTP proxy can provide a degree of protection against servers\r\n```",
+              "createdAt": "2022-07-01T03:52:34Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 26,
+              "body": "Let's talk capiTaLiZaTiOn.\r\n\r\nI was fairly uniform in terms of not being overly Germanic.  These are not proper nouns, just names.  But you seem to have taken the opposite approach.\r\n\r\nI prefer all lowercase, but I don't object to lending the names a little pomp and grandeur either.\r\n\r\nYou missed a s/resource/Resource here, that's all.",
+              "createdAt": "2022-07-01T03:55:16Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 77,
+              "body": "```suggestion\r\n     | [+ Encrypted    |                    |              |\r\n```",
+              "createdAt": "2022-07-01T03:55:40Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "```suggestion\r\n     |                 | [+ Encrypted       |              |\r\n```",
+              "createdAt": "2022-07-01T03:55:57Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 89,
+              "body": "```suggestion\r\n     |                 |       [+ Encrypted |              |\r\n```",
+              "createdAt": "2022-07-01T03:56:19Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 93,
+              "body": "```suggestion\r\n     |    [+ Encrypted |                    |              |\r\n```",
+              "createdAt": "2022-07-01T03:56:36Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 43,
+              "body": "```suggestion\r\n  for more information about the mapping between Oblivious Relay and Oblivious\r\n  Gateway Resources.\r\n```\r\n\r\nMaybe even\r\n\r\n```suggestion\r\n  for more information about the mapping between Oblivious Relay and Gateway\r\n  Resources.\r\n```",
+              "createdAt": "2022-07-01T03:57:20Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            },
+            {
+              "originalPosition": 46,
+              "body": "Title Case Here As Well Perhaps?",
+              "createdAt": "2022-07-01T03:57:39Z",
+              "updatedAt": "2022-07-01T04:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49KE9N",
+          "commit": {
+            "abbreviatedOid": "705c6b1"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-01T10:42:26Z",
+          "updatedAt": "2022-07-01T10:42:26Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "We need something like this to make it clear that relay is basically a proxy, but I'll accept this suggestion and make a further change below.",
+              "createdAt": "2022-07-01T10:42:26Z",
+              "updatedAt": "2022-07-01T10:42:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49KFNE",
+          "commit": {
+            "abbreviatedOid": "2863a49"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-01T10:43:28Z",
+          "updatedAt": "2022-07-01T10:43:29Z",
+          "comments": [
+            {
+              "originalPosition": 77,
+              "body": "I kept Encapsulated here since that's the term we use to describe the Relay Request's content.",
+              "createdAt": "2022-07-01T10:43:28Z",
+              "updatedAt": "2022-07-01T10:43:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49KFot",
+          "commit": {
+            "abbreviatedOid": "fa6e9e9"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-01T10:45:18Z",
+          "updatedAt": "2022-07-01T10:45:18Z",
+          "comments": [
+            {
+              "originalPosition": 26,
+              "body": "Good catch -- fixed.",
+              "createdAt": "2022-07-01T10:45:18Z",
+              "updatedAt": "2022-07-01T10:45:18Z"
+            }
+          ]
         }
       ]
     },
@@ -8528,6 +8870,281 @@
           "createdAt": "2022-06-28T15:18:19Z",
           "updatedAt": "2022-06-28T15:18:19Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 130,
+      "id": "PR_kwDOE6fLGM46ovui",
+      "title": "Add text about privacy considerations that come from differential treatment",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/130",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #114.\r\n\r\nThis is a lot of words to explain the point, so I'm happy to take simplifying suggestions.\r\n\r\ncc @tireddy2",
+      "createdAt": "2022-06-30T12:10:31Z",
+      "updatedAt": "2022-07-01T12:13:55Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "9970cad7de6f0c2b3348e1be8325f349473e0084",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "caw/differential-treatment",
+      "headRefOid": "41c1f48d627c07e9f8f600be8a9a321ddca90320",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "tireddy2",
+          "authorAssociation": "NONE",
+          "body": "Changes look good to me. I also updated Section 4.1 of https://github.com/tireddy2/ohai/blob/main/draft-rdb-ohai-feedback-to-proxy-03.txt to demonstrate how rate-limiting will not impact the privacy of benign clients.",
+          "createdAt": "2022-07-01T07:56:25Z",
+          "updatedAt": "2022-07-01T07:56:25Z"
+        },
+        {
+          "author": "tireddy2",
+          "authorAssociation": "NONE",
+          "body": "To address the scenario of the target giving feedback to the gateway, I introduced a new header \"Ohttp-Outside-Encap\". The \"Ohttp-Outside-Encap\" header is added by the Oblivious request resource to the HTTP request to signal to the Oblivious target resource the list of header fields that it will be remove from the HTTP response. Please see Section 7 in https://github.com/tireddy2/ohai/blob/main/draft-rdb-ohai-feedback-to-proxy-03.txt for more details. ",
+          "createdAt": "2022-07-01T12:13:55Z",
+          "updatedAt": "2022-07-01T12:13:55Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM49HskW",
+          "commit": {
+            "abbreviatedOid": "088ff34"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T19:59:00Z",
+          "updatedAt": "2022-06-30T19:59:04Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "The target can't tell which requests are tied to the same client. How would the target recognize that a client is being rate-limited or blocked?",
+              "createdAt": "2022-06-30T19:59:00Z",
+              "updatedAt": "2022-06-30T19:59:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49Hzy2",
+          "commit": {
+            "abbreviatedOid": "088ff34"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T20:29:08Z",
+          "updatedAt": "2022-06-30T20:29:08Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "I gave a hypothetical example in the corresponding issue, but I'll give a simpler one here. Imagine there are two clients using a relay: one good and one bad. If the proxy decided to rate limit or block the bad client for whatever reason -- and the target knew the proxy would do this -- it can then conclude that requests which come _after_ the block is in place are the good client.\r\n\r\nThe underlying point is that differential treatment can change what clients interact with the target, and how they interact with it, which fundamentally leaks information to the target.",
+              "createdAt": "2022-06-30T20:29:08Z",
+              "updatedAt": "2022-06-30T20:29:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49H6NV",
+          "commit": {
+            "abbreviatedOid": "088ff34"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T20:56:47Z",
+          "updatedAt": "2022-06-30T20:56:47Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Got it. Yes, if the proxy only allows specific clients in that pass a certain bar of trust, then the target could know that the client is in that set of trusted clients.\r\n\r\nI think the blocking is an easier example here \u2014 rate limiting doesn't actually tell you as clearly, I think.",
+              "createdAt": "2022-06-30T20:56:47Z",
+              "updatedAt": "2022-06-30T20:56:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49H6fY",
+          "commit": {
+            "abbreviatedOid": "088ff34"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T20:58:03Z",
+          "updatedAt": "2022-06-30T20:58:03Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Yeah, true. Should we give an example with blocking to make this more clear?",
+              "createdAt": "2022-06-30T20:58:03Z",
+              "updatedAt": "2022-06-30T20:58:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49H7Ry",
+          "commit": {
+            "abbreviatedOid": "088ff34"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T21:01:20Z",
+          "updatedAt": "2022-06-30T21:01:20Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "I'd suggest simply changing this: \"proxy chooses to rate limit or block an abusive client\" to \"proxy chooses to block an abusive client\"?",
+              "createdAt": "2022-06-30T21:01:20Z",
+              "updatedAt": "2022-06-30T21:01:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49IDVE",
+          "commit": {
+            "abbreviatedOid": "088ff34"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T21:41:25Z",
+          "updatedAt": "2022-06-30T21:41:25Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nclients at a target server. For example, if a proxy chooses to\r\n```",
+              "createdAt": "2022-06-30T21:41:25Z",
+              "updatedAt": "2022-06-30T21:41:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49IDYj",
+          "commit": {
+            "abbreviatedOid": "41c1f48"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T21:41:42Z",
+          "updatedAt": "2022-06-30T21:41:43Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Done.",
+              "createdAt": "2022-06-30T21:41:42Z",
+              "updatedAt": "2022-06-30T21:41:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49IIwg",
+          "commit": {
+            "abbreviatedOid": "41c1f48"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T22:13:45Z",
+          "updatedAt": "2022-06-30T22:13:45Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "Check terminology: is target right? I think that gateway is now correct.",
+              "createdAt": "2022-06-30T22:13:45Z",
+              "updatedAt": "2022-06-30T22:13:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49ILCx",
+          "commit": {
+            "abbreviatedOid": "41c1f48"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-30T22:29:37Z",
+          "updatedAt": "2022-06-30T22:29:38Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "Yeah, I'll update this once we land the terminology PR. ",
+              "createdAt": "2022-06-30T22:29:38Z",
+              "updatedAt": "2022-06-30T22:29:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49IM-6",
+          "commit": {
+            "abbreviatedOid": "41c1f48"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Approved, once the terminology aligns",
+          "createdAt": "2022-06-30T22:44:43Z",
+          "updatedAt": "2022-06-30T22:44:43Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49Irgm",
+          "commit": {
+            "abbreviatedOid": "41c1f48"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "This is good.\r\n\r\nIt gives us a basis for thinking about how feedback might work.\r\n\r\nI don't know if you need to clarify the target->gateway->relay (target->request->proxy) feedback path though.  It seems like the distinction between target and gateway is a bit muddy here.",
+          "createdAt": "2022-07-01T03:42:49Z",
+          "updatedAt": "2022-07-01T03:48:20Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "I just wanted to get this clear.  Because target != gateway, which is important.\r\n\r\nIn the new terms, the relay might receive feedback from the gateway about specific requests.  If it does so and changes its treatment as a result, that generates a new type of signal.  The client needs to understand the sorts of changes in treatment that might occur and accept those before using a relay.\r\n\r\nThe target might also provide feedback to the gateway.  The gateway might use that feedback, but it is only if it forwards that information to the relay that it might have an effect on privacy.",
+              "createdAt": "2022-07-01T03:42:49Z",
+              "updatedAt": "2022-07-01T03:48:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49KD4z",
+          "commit": {
+            "abbreviatedOid": "41c1f48"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-01T10:37:55Z",
+          "updatedAt": "2022-07-01T10:37:56Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "Right -- the intent here is the gateway, not the target. ",
+              "createdAt": "2022-07-01T10:37:55Z",
+              "updatedAt": "2022-07-01T10:37:56Z"
+            }
+          ]
         }
       ]
     }
