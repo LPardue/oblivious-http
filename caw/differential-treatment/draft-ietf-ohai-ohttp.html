@@ -1204,10 +1204,13 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-relay-responsibilities" class="xref">Relay Responsibilities</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
-                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="xref">7.2.1</a>.  <a href="#name-denial-of-service" class="xref">Denial of Service</a></p>
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="xref">7.2.1</a>.  <a href="#name-differential-treatment" class="xref">Differential Treatment</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.2">
-                    <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="xref">7.2.2</a>.  <a href="#name-linkability-through-traffic" class="xref">Linkability Through Traffic Analysis</a></p>
+                    <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="xref">7.2.2</a>.  <a href="#name-denial-of-service" class="xref">Denial of Service</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.3">
+                    <p id="section-toc.1-1.7.2.2.2.3.1"><a href="#section-7.2.3" class="xref">7.2.3</a>.  <a href="#name-linkability-through-traffic" class="xref">Linkability Through Traffic Analysis</a></p>
 </li>
                 </ul>
 </li>
@@ -2349,7 +2352,7 @@ per-client keys.<a href="#section-7-8.2" class="pilcrow">¶</a>
 </li>
       </ol>
 <p id="section-7-9">Traffic analysis that might affect these properties are outside the scope of
-this document; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#section-7-9" class="pilcrow">¶</a></p>
+this document; see <a href="#ta" class="xref">Section 7.2.3</a>.<a href="#section-7-9" class="pilcrow">¶</a></p>
 <p id="section-7-10">A formal analysis of Oblivious HTTP is in <span>[<a href="#OHTTP-ANALYSIS" class="xref">OHTTP-ANALYSIS</a>]</span>.<a href="#section-7-10" class="pilcrow">¶</a></p>
 <div id="client-responsibilities">
 <section id="section-7.1">
@@ -2421,12 +2424,21 @@ information about the client, such as the Via field or the Forwarded field
 <span>[<a href="#FORWARDED" class="xref">FORWARDED</a>]</span>.  A relay <span class="bcp14">MUST NOT</span> add information when forwarding
 requests that might be used to identify clients, with the exception of
 information that a client is aware of.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.2-5">A relay <span class="bcp14">MAY</span> add information to requests if the client is aware of the nature of
+<p id="section-7.2-5">Finally, a relay can also generate responses, though it assumed to not be able
+to examine the content of a request (other than to observe the choice of key
+identifier, KDF, and AEAD), so it is also assumed that it cannot generate an
+Encapsulated Response.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
+<div id="differential-treatment">
+<section id="section-7.2.1">
+          <h4 id="name-differential-treatment">
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-differential-treatment" class="section-name selfRef">Differential Treatment</a>
+          </h4>
+<p id="section-7.2.1-1">A relay <span class="bcp14">MAY</span> add information to requests if the client is aware of the nature of
 the information that could be added.  The client does not need to be aware of
 the exact value added for each request, but needs to know the range of possible
 values the relay might use.  It is important to note that information added by
-the relay can reduce the size of the anonymity set of clients at a gateway.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.2-6">Relays <span class="bcp14">MAY</span> apply differential treatment to clients that engage in abusive
+the relay can reduce the size of the anonymity set of clients at a gateway.<a href="#section-7.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-2">Moreover, relays <span class="bcp14">MAY</span> apply differential treatment to clients that engage in abusive
 behavior, e.g., by sending too many requests in comparison to other clients,
 or as a response to rate limits signalled from the gateway. Any such
 differential treatment can reveal information to the gateway that would not
@@ -2435,52 +2447,55 @@ clients using a gateway. For example, if a relay chooses to rate limit or
 block an abusive client, this means that any client requests which are not
 treated this way are known to be non-abusive by the gateway. Clients should
 consider the likelihood of such differential treatment and the privacy
-risks when using a relay.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
-<p id="section-7.2-7">Finally, a relay can also generate responses, though it assumed to not be able
-to examine the content of a request (other than to observe the choice of key
-identifier, KDF, and AEAD), so it is also assumed that it cannot generate an
-Encapsulated Response.<a href="#section-7.2-7" class="pilcrow">¶</a></p>
+risks when using a relay.<a href="#section-7.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-3">Some patterns of abuse cannot be detected without access to the request that
+is made to the target. This means that only the gateway or target are in a
+position to identify abuse. A gateway <span class="bcp14">MAY</span> send signals toward the relay to
+provide feedback about specific requests. A relay that acts on this feedback
+could - either inadvertently or by design - lead to clients being deanonymized.<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="dos">
-<section id="section-7.2.1">
+<section id="section-7.2.2">
           <h4 id="name-denial-of-service">
-<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-denial-of-service" class="section-name selfRef">Denial of Service</a>
+<a href="#section-7.2.2" class="section-number selfRef">7.2.2. </a><a href="#name-denial-of-service" class="section-name selfRef">Denial of Service</a>
           </h4>
-<p id="section-7.2.1-1">As there are privacy benefits from having a large rate of requests forwarded by
-the same relay (see <a href="#ta" class="xref">Section 7.2.2</a>), servers that operate the Oblivious Gateway
+<p id="section-7.2.2-1">As there are privacy benefits from having a large rate of requests forwarded by
+the same relay (see <a href="#ta" class="xref">Section 7.2.3</a>), servers that operate the Oblivious Gateway
 resource might need an arrangement with proxies. This arrangement might be
 necessary to prevent having the large volume of requests being classified as an
-attack by the server.<a href="#section-7.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.2.1-2">If a server accepts a larger volume of requests from a relay, it needs to
+attack by the server.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-2">If a server accepts a larger volume of requests from a relay, it needs to
 trust that the relay does not allow abusive levels of request volumes from
 clients. That is, if a server allows requests from the relay to be exempt from
 rate limits, the server might want to ensure that the relay applies a rate
-limiting policy that is acceptable to the server.<a href="#section-7.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.2.1-3">Servers that enter into an agreement with a relay that enables a higher request
-rate might choose to authenticate the relay to enable the higher rate.<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
+limiting policy that is acceptable to the server.<a href="#section-7.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-3">Servers that enter into an agreement with a relay that enables a higher request
+rate might choose to authenticate the relay to enable the higher rate.<a href="#section-7.2.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ta">
-<section id="section-7.2.2">
+<section id="section-7.2.3">
           <h4 id="name-linkability-through-traffic">
-<a href="#section-7.2.2" class="section-number selfRef">7.2.2. </a><a href="#name-linkability-through-traffic" class="section-name selfRef">Linkability Through Traffic Analysis</a>
+<a href="#section-7.2.3" class="section-number selfRef">7.2.3. </a><a href="#name-linkability-through-traffic" class="section-name selfRef">Linkability Through Traffic Analysis</a>
           </h4>
-<p id="section-7.2.2-1">This document assumes that all communication between different entities is
+<p id="section-7.2.3-1">This document assumes that all communication between different entities is
 protected by HTTPS.  This protects information about which resources are the
 subject of request and prevents a network observer from being able to trivially
-correlate messages on either side of a relay.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-2">As the time at which Encapsulated Request or response messages are sent can
+correlate messages on either side of a relay.<a href="#section-7.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.3-2">As the time at which Encapsulated Request or response messages are sent can
 reveal information to a network observer. Though messages exchanged between the
 Oblivious Relay Resource and the Oblivious Gateway Resource might be sent in a
 single connection, traffic analysis could be used to match messages that are
-forwarded by the relay.<a href="#section-7.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-3">A relay could, as part of its function, add delays in order to increase the
+forwarded by the relay.<a href="#section-7.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.3-3">A relay could, as part of its function, add delays in order to increase the
 anonymity set into which each message is attributed. This could latency to the
 overall time clients take to receive a response, which might not be what some
-clients want.<a href="#section-7.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-4">A relay can use padding to reduce the effectiveness of traffic analysis.
-Padding is a capability provided by binary HTTP messages; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-binary-message-05#section-3.8" class="relref">Section 3.8</a> of [<a href="#BINARY" class="xref">BINARY</a>]</span>.<a href="#section-7.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-5">A relay that forwards large volumes of exchanges can provide better privacy by
-providing larger sets of messages that need to be matched.<a href="#section-7.2.2-5" class="pilcrow">¶</a></p>
+clients want.<a href="#section-7.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-7.2.3-4">A relay can use padding to reduce the effectiveness of traffic analysis.
+Padding is a capability provided by binary HTTP messages; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-binary-message-05#section-3.8" class="relref">Section 3.8</a> of [<a href="#BINARY" class="xref">BINARY</a>]</span>.<a href="#section-7.2.3-4" class="pilcrow">¶</a></p>
+<p id="section-7.2.3-5">A relay that forwards large volumes of exchanges can provide better privacy by
+providing larger sets of messages that need to be matched.<a href="#section-7.2.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2495,12 +2510,12 @@ responsible for removing request encryption, generating a response to the
 Encapsulated Request, and encrypting the response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.3-2">Servers should account for traffic analysis based on response size or generation
 time.  Techniques such as padding or timing delays can help protect against such
-attacks; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+attacks; see <a href="#ta" class="xref">Section 7.2.3</a>.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
 <p id="section-7.3-3">If separate entities provide the Oblivious Gateway Resource and oblivious target
 resource, these entities might need an arrangement similar to that between
-server and relay for managing denial of service; see <a href="#dos" class="xref">Section 7.2.1</a>. It is also
+server and relay for managing denial of service; see <a href="#dos" class="xref">Section 7.2.2</a>. It is also
 necessary to provide confidentiality protection for the unprotected requests and
-responses, plus protections for traffic analysis; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+responses, plus protections for traffic analysis; see <a href="#ta" class="xref">Section 7.2.3</a>.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 <p id="section-7.3-4">An Oblivious Gateway Resource needs to have a plan for replacing keys. This
 might include regular replacement of keys, which can be assigned new key
 identifiers. If an Oblivious Gateway Resource receives a request that contains a
