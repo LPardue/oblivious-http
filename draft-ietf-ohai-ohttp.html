@@ -13,21 +13,21 @@ This allows a client to make multiple requests of a server without the server be
 to link those requests to the client or to identify the requests as having come
 from the same client. 
     " name="description">
-<meta content="xml2rfc 3.12.10" name="generator">
+<meta content="xml2rfc 3.13.0" name="generator">
 <meta content="draft-ietf-ohai-ohttp-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.10
+  xml2rfc 3.13.0
     Python 3.10.4
     appdirs 1.4.4
     ConfigArgParse 1.5.3
-    google-i18n-address 2.5.1
+    google-i18n-address 2.5.2
     html5lib 1.1
     intervaltree 3.1.0
-    Jinja2 2.11.3
+    Jinja2 3.1.2
     kitchen 1.2.6
-    lxml 4.8.0
-    MarkupSafe 2.0.1
-    pycountry 20.7.3
+    lxml 4.9.1
+    MarkupSafe 2.1.1
+    pycountry 22.3.5
     pyflakes 2.4.0
     PyYAML 6.0
     requests 2.27.1
@@ -1029,11 +1029,11 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Oblivious HTTP</td>
-<td class="right">June 2022</td>
+<td class="right">July 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson &amp; Wood</td>
-<td class="center">Expires 30 December 2022</td>
+<td class="center">Expires 6 January 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ohai-ohttp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-06-28" class="published">28 June 2022</time>
+<time datetime="2022-07-05" class="published">5 July 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-12-30">30 December 2022</time></dd>
+<dd class="expires"><time datetime="2023-01-06">6 January 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1107,7 +1107,7 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 December 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1201,7 +1201,7 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-client-responsibilities" class="xref">Client Responsibilities</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-proxy-responsibilities" class="xref">Proxy Responsibilities</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-relay-responsibilities" class="xref">Relay Responsibilities</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
                     <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="xref">7.2.1</a>.  <a href="#name-denial-of-service" class="xref">Denial of Service</a></p>
@@ -1309,11 +1309,11 @@ exchanged and the CPU cost of cryptographic computations.<a href="#section-1-4" 
 <span>[<a href="#HPKE" class="xref">HPKE</a>]</span>). This protects the content of both requests and
 responses and enables a deployment architecture that can separate the identity
 of a requester from the request.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">Though this scheme requires that servers and proxies explicitly support it,
-this design represents a performance improvement over options that perform just
-one request in each connection. With limited trust placed in the proxy (see
-<a href="#security" class="xref">Section 7</a>), clients are assured that requests are not uniquely attributed to
-them or linked to other requests.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6">Though this scheme requires that servers and proxies (called relays in this document)
+explicitly support it, this design represents a performance improvement over options
+that perform just one request in each connection. With limited trust placed in the
+relay (see <a href="#security" class="xref">Section 7</a>), clients are assured that requests are not uniquely
+attributed to them or linked to other requests.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="overview">
@@ -1323,79 +1323,96 @@ them or linked to other requests.<a href="#section-1-6" class="pilcrow">¶</a></
       </h2>
 <p id="section-2-1">A client must initially know the following:<a href="#section-2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2-2.1">The identity of an oblivious request resource.  This might include some
-information about what oblivious target resources the oblivious request
-resource supports.<a href="#section-2-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-2-2.1">The identity of an Oblivious Gateway Resource.  This might include some
+information about what Oblivious Target Resources the Oblivious Gateway
+Resource supports.<a href="#section-2-2.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-2.2">The details of an HPKE public key that the oblivious request resource accepts,
-including an identifier for that key and the HPKE algorithms that are used
-with that key.<a href="#section-2-2.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-2.2">The details of an HPKE public key that the Oblivious Gateway Resource
+accepts, including an identifier for that key and the HPKE algorithms that
+are used with that key.<a href="#section-2-2.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-2.3">The identity of an oblivious proxy resource that will forward encapsulated
-requests and responses to a single oblivious request resource. See <a href="#proxy-state" class="xref">Section 9.2</a>
-for more information about the mapping between oblivious proxy and oblivious
-request resources.<a href="#section-2-2.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-2.3">The identity of an Oblivious Relay Resource that will accept relay requests
+carrying an encapsulated request as its content and forward the content in
+these requests to a single Oblivious Gateway Resource. See <a href="#proxy-state" class="xref">Section 9.2</a>
+for more information about the mapping between Oblivious Relay and Gateway
+Resources.<a href="#section-2-2.3" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-2-3">This information allows the client to make a request of an oblivious target
-resource with that resource having only a limited ability to correlate that
+<p id="section-2-3">This information allows the client to make a request of an Oblivious Target
+Resource with that resource having only a limited ability to correlate that
 request with the client IP or other requests that the client might make to that
 server.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <span id="name-overview-of-oblivious-http"></span><div id="fig-overview">
 <figure id="figure-1">
         <div id="section-2-4.1">
           <div class="alignLeft art-svg artwork" id="section-2-4.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="336" width="528" viewBox="0 0 528 336" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="464" width="536" viewBox="0 0 536 464" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 8,32 L 8,80" fill="none" stroke="black"></path>
-              <path d="M 48,80 L 48,320" fill="none" stroke="black"></path>
+              <path d="M 48,80 L 48,448" fill="none" stroke="black"></path>
               <path d="M 88,32 L 88,80" fill="none" stroke="black"></path>
               <path d="M 152,32 L 152,80" fill="none" stroke="black"></path>
-              <path d="M 192,80 L 192,320" fill="none" stroke="black"></path>
+              <path d="M 192,80 L 192,448" fill="none" stroke="black"></path>
               <path d="M 240,32 L 240,80" fill="none" stroke="black"></path>
-              <path d="M 304,32 L 304,80" fill="none" stroke="black"></path>
-              <path d="M 344,80 L 344,320" fill="none" stroke="black"></path>
-              <path d="M 392,32 L 392,80" fill="none" stroke="black"></path>
-              <path d="M 432,32 L 432,80" fill="none" stroke="black"></path>
-              <path d="M 472,80 L 472,320" fill="none" stroke="black"></path>
-              <path d="M 520,32 L 520,80" fill="none" stroke="black"></path>
+              <path d="M 296,32 L 296,80" fill="none" stroke="black"></path>
+              <path d="M 360,80 L 360,448" fill="none" stroke="black"></path>
+              <path d="M 384,32 L 384,80" fill="none" stroke="black"></path>
+              <path d="M 440,32 L 440,80" fill="none" stroke="black"></path>
+              <path d="M 480,80 L 480,448" fill="none" stroke="black"></path>
+              <path d="M 528,32 L 528,80" fill="none" stroke="black"></path>
               <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
               <path d="M 152,32 L 240,32" fill="none" stroke="black"></path>
-              <path d="M 304,32 L 392,32" fill="none" stroke="black"></path>
-              <path d="M 432,32 L 520,32" fill="none" stroke="black"></path>
+              <path d="M 296,32 L 384,32" fill="none" stroke="black"></path>
+              <path d="M 440,32 L 528,32" fill="none" stroke="black"></path>
               <path d="M 8,80 L 88,80" fill="none" stroke="black"></path>
               <path d="M 152,80 L 240,80" fill="none" stroke="black"></path>
-              <path d="M 304,80 L 392,80" fill="none" stroke="black"></path>
-              <path d="M 432,80 L 520,80" fill="none" stroke="black"></path>
-              <path d="M 48,144 L 184,144" fill="none" stroke="black"></path>
-              <path d="M 192,176 L 336,176" fill="none" stroke="black"></path>
-              <path d="M 344,192 L 464,192" fill="none" stroke="black"></path>
-              <path d="M 352,240 L 472,240" fill="none" stroke="black"></path>
-              <path d="M 200,272 L 344,272" fill="none" stroke="black"></path>
-              <path d="M 56,304 L 192,304" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="472,192 460,186.4 460,197.6" fill="black" transform="rotate(0,464,192)"></polygon>
-              <polygon class="arrowhead" points="360,240 348,234.4 348,245.6" fill="black" transform="rotate(180,352,240)"></polygon>
-              <polygon class="arrowhead" points="344,176 332,170.4 332,181.6" fill="black" transform="rotate(0,336,176)"></polygon>
-              <polygon class="arrowhead" points="208,272 196,266.4 196,277.6" fill="black" transform="rotate(180,200,272)"></polygon>
-              <polygon class="arrowhead" points="192,144 180,138.4 180,149.6" fill="black" transform="rotate(0,184,144)"></polygon>
-              <polygon class="arrowhead" points="64,304 52,298.4 52,309.6" fill="black" transform="rotate(180,56,304)"></polygon>
+              <path d="M 296,80 L 384,80" fill="none" stroke="black"></path>
+              <path d="M 440,80 L 528,80" fill="none" stroke="black"></path>
+              <path d="M 48,176 L 184,176" fill="none" stroke="black"></path>
+              <path d="M 192,240 L 352,240" fill="none" stroke="black"></path>
+              <path d="M 360,256 L 472,256" fill="none" stroke="black"></path>
+              <path d="M 368,304 L 480,304" fill="none" stroke="black"></path>
+              <path d="M 200,368 L 360,368" fill="none" stroke="black"></path>
+              <path d="M 56,432 L 192,432" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="480,256 468,250.4 468,261.6" fill="black" transform="rotate(0,472,256)"></polygon>
+              <polygon class="arrowhead" points="376,304 364,298.4 364,309.6" fill="black" transform="rotate(180,368,304)"></polygon>
+              <polygon class="arrowhead" points="360,240 348,234.4 348,245.6" fill="black" transform="rotate(0,352,240)"></polygon>
+              <polygon class="arrowhead" points="208,368 196,362.4 196,373.6" fill="black" transform="rotate(180,200,368)"></polygon>
+              <polygon class="arrowhead" points="192,176 180,170.4 180,181.6" fill="black" transform="rotate(0,184,176)"></polygon>
+              <polygon class="arrowhead" points="64,432 52,426.4 52,437.6" fill="black" transform="rotate(180,56,432)"></polygon>
               <g class="text">
                 <text x="44" y="52">Client</text>
-                <text x="184" y="52">Proxy</text>
-                <text x="344" y="52">Request</text>
-                <text x="468" y="52">Target</text>
+                <text x="184" y="52">Relay</text>
+                <text x="336" y="52">Gateway</text>
+                <text x="476" y="52">Target</text>
                 <text x="196" y="68">Resource</text>
-                <text x="348" y="68">Resource</text>
-                <text x="476" y="68">Resource</text>
-                <text x="108" y="116">Encapsulated</text>
+                <text x="340" y="68">Resource</text>
+                <text x="484" y="68">Resource</text>
+                <text x="80" y="116">Relay</text>
                 <text x="88" y="132">Request</text>
-                <text x="252" y="148">Encapsulated</text>
-                <text x="232" y="164">Request</text>
-                <text x="384" y="180">Request</text>
-                <text x="428" y="228">Response</text>
-                <text x="284" y="244">Encapsulated</text>
-                <text x="300" y="260">Response</text>
-                <text x="132" y="276">Encapsulated</text>
-                <text x="148" y="292">Response</text>
+                <text x="68" y="148">[+</text>
+                <text x="132" y="148">Encapsulated</text>
+                <text x="112" y="164">Request</text>
+                <text x="152" y="164">]</text>
+                <text x="232" y="180">Gateway</text>
+                <text x="232" y="196">Request</text>
+                <text x="212" y="212">[+</text>
+                <text x="276" y="212">Encapsulated</text>
+                <text x="256" y="228">Request</text>
+                <text x="296" y="228">]</text>
+                <text x="400" y="244">Request</text>
+                <text x="436" y="292">Response</text>
+                <text x="320" y="308">Gateway</text>
+                <text x="316" y="324">Response</text>
+                <text x="236" y="340">[+</text>
+                <text x="300" y="340">Encapsulated</text>
+                <text x="300" y="356">Response</text>
+                <text x="344" y="356">]</text>
+                <text x="160" y="372">Relay</text>
+                <text x="148" y="388">Response</text>
+                <text x="68" y="404">[+</text>
+                <text x="132" y="404">Encapsulated</text>
+                <text x="132" y="420">Response</text>
+                <text x="176" y="420">]</text>
               </g>
             </svg><a href="#section-2-4.1.1" class="pilcrow">¶</a>
 </div>
@@ -1404,34 +1421,34 @@ server.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <a href="#name-overview-of-oblivious-http" class="selfRef">Overview of Oblivious HTTP</a>
         </figcaption></figure>
 </div>
-<p id="section-2-5">In order to make a request to an oblivious target resource, the following steps
+<p id="section-2-5">In order to make a request to an Oblivious Target Resource, the following steps
 occur, as shown in <a href="#fig-overview" class="xref">Figure 1</a>:<a href="#section-2-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-2-6">
-<li id="section-2-6.1">The client constructs an HTTP request for an oblivious target resource.<a href="#section-2-6.1" class="pilcrow">¶</a>
+<li id="section-2-6.1">The client constructs an HTTP request for an Oblivious Target Resource.<a href="#section-2-6.1" class="pilcrow">¶</a>
 </li>
         <li id="section-2-6.2">The client encodes the HTTP request in a binary HTTP message and then
 encapsulates that message using HPKE and the process from <a href="#request" class="xref">Section 4.1</a>.<a href="#section-2-6.2" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.3">The client sends a POST request to the oblivious proxy resource with the
-encapsulated request as the content of that message.<a href="#section-2-6.3" class="pilcrow">¶</a>
+        <li id="section-2-6.3">The client sends a POST request to the Oblivious Relay Resource with the
+Encapsulated Request as the content of that message.<a href="#section-2-6.3" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.4">The oblivious proxy resource forwards this request to the oblivious request
+        <li id="section-2-6.4">The Oblivious Relay Resource forwards this request to the Oblivious Gateway
 resource.<a href="#section-2-6.4" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.5">The oblivious request resource receives this request and removes
+        <li id="section-2-6.5">The Oblivious Gateway Resource receives this request and removes
 the HPKE protection to obtain an HTTP request.<a href="#section-2-6.5" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.6">The oblivious request resource makes an HTTP request that includes the target
+        <li id="section-2-6.6">The Oblivious Gateway Resource makes an HTTP request that includes the target
 URI, method, fields, and content of the request it acquires.<a href="#section-2-6.6" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.7">The oblivious target resource answers this HTTP request with an HTTP
+        <li id="section-2-6.7">The Oblivious Target Resource answers this HTTP request with an HTTP
 response.<a href="#section-2-6.7" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.8">The oblivious request resource encapsulates the HTTP response following the
+        <li id="section-2-6.8">The Oblivious Gateway Resource encapsulates the HTTP response following the
 process in <a href="#response" class="xref">Section 4.2</a> and sends this in response to the request from the
-oblivious proxy resource.<a href="#section-2-6.8" class="pilcrow">¶</a>
+Oblivious Relay Resource.<a href="#section-2-6.8" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-6.9">The oblivious proxy resource forwards this response to the client.<a href="#section-2-6.9" class="pilcrow">¶</a>
+        <li id="section-2-6.9">The Oblivious Relay Resource forwards this response to the client.<a href="#section-2-6.9" class="pilcrow">¶</a>
 </li>
         <li id="section-2-6.10">The client removes the encapsulation to obtain the response to the original
 request.<a href="#section-2-6.10" class="pilcrow">¶</a>
@@ -1516,16 +1533,16 @@ used; see <a href="#http-usage" class="xref">Section 5</a>.<a href="#section-2.2
 <a href="#response" class="xref">Section 4.2</a>.<a href="#section-2.2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-2.2-2.7">Oblivious Proxy Resource:</dt>
+<dt id="section-2.2-2.7">Oblivious Relay Resource:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.8">
-            <p id="section-2.2-2.8.1">An intermediary that forwards requests and responses between clients and a
-single oblivious request resource.<a href="#section-2.2-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-2.8.1">An intermediary that forwards encapsulated requests and responses between
+clients and a single Oblivious Gateway Resource.<a href="#section-2.2-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-2.2-2.9">Oblivious Request Resource:</dt>
+<dt id="section-2.2-2.9">Oblivious Gateway Resource:</dt>
           <dd style="margin-left: 1.5em" id="section-2.2-2.10">
             <p id="section-2.2-2.10.1">A resource that can receive an encapsulated request, extract the contents of
-that request, forward it to an oblivious target resource, receive a response,
+that request, forward it to an Oblivious Target Resource, receive a response,
 encapsulate that response, then return that response.<a href="#section-2.2-2.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
@@ -1534,6 +1551,26 @@ encapsulate that response, then return that response.<a href="#section-2.2-2.10.
             <p id="section-2.2-2.12.1">The resource that is the target of an encapsulated request.  This resource
 logically handles only regular HTTP requests and responses and so might be
 ignorant of the use of oblivious HTTP to reach it.<a href="#section-2.2-2.12.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-2.2-2.13">Relay Request:</dt>
+          <dd style="margin-left: 1.5em" id="section-2.2-2.14">
+            <p id="section-2.2-2.14.1">An HTTP request from Client to Relay that contains an encapsulated request as the content.<a href="#section-2.2-2.14.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-2.2-2.15">Relay Response:</dt>
+          <dd style="margin-left: 1.5em" id="section-2.2-2.16">
+            <p id="section-2.2-2.16.1">An HTTP response from Relay to Client that contains an encapsulated response as the content.<a href="#section-2.2-2.16.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-2.2-2.17">Gateway Request:</dt>
+          <dd style="margin-left: 1.5em" id="section-2.2-2.18">
+            <p id="section-2.2-2.18.1">An HTTP request from Relay to Gateway that contains an encapsulated request as the content.<a href="#section-2.2-2.18.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-2.2-2.19">Gateway Response:</dt>
+          <dd style="margin-left: 1.5em" id="section-2.2-2.20">
+            <p id="section-2.2-2.20.1">An HTTP response from Gateway to Relay that contains an encapsulated response as the content.<a href="#section-2.2-2.20.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1554,7 +1591,7 @@ bytes.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-key-configuration" class="section-name selfRef">Key Configuration</a>
       </h2>
 <p id="section-3-1">A client needs to acquire information about the key configuration of the
-oblivious request resource in order to send encapsulated requests.
+Oblivious Gateway Resource in order to send encapsulated requests.
 In order to ensure that clients do not encapsulate messages that other entities
 can intercept, the key configuration <span class="bcp14">MUST</span> be authenticated and have integrity
 protection.<a href="#section-3-1" class="pilcrow">¶</a></p>
@@ -1770,7 +1807,7 @@ Encapsulated Request {
         </figcaption></figure>
 </div>
 <p id="section-4-6">The Nenc parameter corresponding to the HpkeKdfId can be found in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>.<a href="#section-4-6" class="pilcrow">¶</a></p>
-<p id="section-4-7">An encapsulated HTTP response includes a binary-encoded HTTP message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>
+<p id="section-4-7">An encrypted HTTP response includes a binary-encoded HTTP message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>
 and no other content; see <a href="#fig-res-pt" class="xref">Figure 5</a>.<a href="#section-4-7" class="pilcrow">¶</a></p>
 <span id="name-plaintext-response-content"></span><div id="fig-res-pt">
 <figure id="figure-5">
@@ -1821,7 +1858,7 @@ identified by <code>kemID</code>,<a href="#section-4.1-2.1" class="pilcrow">¶</
 <code>aeadID</code>.<a href="#section-4.1-2.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-4.1-3">The client then constructs an encapsulated request, <code>enc_request</code>, from a binary
+<p id="section-4.1-3">The client then constructs an Encapsulated Request, <code>enc_request</code>, from a binary
 encoded HTTP request, <code>request</code>, as follows:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-4">
 <li id="section-4.1-4.1">Compute an HPKE context using <code>pkR</code> and a label of "message/bhttp request",
@@ -1834,7 +1871,7 @@ integers, respectively, each in network byte order.<a href="#section-4.1-4.2" cl
           <li id="section-4.1-4.3">Encrypt (seal) <code>request</code> with <code>aad</code> as associated data using <code>context</code>,
 yielding ciphertext <code>ct</code>.<a href="#section-4.1-4.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.1-4.4">Concatenate the values of <code>aad</code>, <code>enc</code>, and <code>ct</code>, yielding an Encapsulated
+          <li id="section-4.1-4.4">Concatenate the values of <code>aad</code>, <code>enc</code>, and <code>ct</code>, yielding an Encrypted
 Request <code>enc_request</code>.<a href="#section-4.1-4.4" class="pilcrow">¶</a>
 </li>
         </ol>
@@ -1940,7 +1977,7 @@ ct = Seal(aead_key, aead_nonce, "", response)
 enc_response = concat(response_nonce, ct)
 </pre><a href="#section-4.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-4.2-5">Clients decrypt an Encapsulated Request by reversing this process. That is,
+<p id="section-4.2-5">Clients decrypt an Encapsulated Response by reversing this process. That is,
 they first parse <code>enc_response</code> into <code>response_nonce</code> and <code>ct</code>. They then
 follow the same process to derive values for <code>aead_key</code> and <code>aead_nonce</code>.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.2-6">The client uses these values to decrypt <code>ct</code> using the Open function provided by
@@ -1959,43 +1996,43 @@ reponse, error = Open(aead_key, aead_nonce, "", ct)
       <h2 id="name-http-usage">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-http-usage" class="section-name selfRef">HTTP Usage</a>
       </h2>
-<p id="section-5-1">A client interacts with the oblivious proxy resource by constructing an
-encapsulated request.  This encapsulated request is included as the content of a
-POST request to the oblivious proxy resource.  This request <span class="bcp14">MUST</span> only contain
-those fields necessary to carry the encapsulated request: a method of POST, a
-target URI of the oblivious proxy resource, a header field containing
-the content type (see (<a href="#media-types" class="xref">Section 6</a>), and the encapsulated request as the
-request content. In the request to the oblivious proxy resource, clients <span class="bcp14">MAY</span>
+<p id="section-5-1">A client interacts with the Oblivious Relay Resource by constructing an
+Encapsulated Request.  This Encapsulated Request is included as the content of a
+POST request to the Oblivious Relay Resource.  This request <span class="bcp14">MUST</span> only contain
+those fields necessary to carry the Encapsulated Request: a method of POST, a
+target URI of the Oblivious Relay Resource, a header field containing
+the content type (see (<a href="#media-types" class="xref">Section 6</a>), and the Encapsulated Request as the
+request content. In the request to the Oblivious Relay Resource, clients <span class="bcp14">MAY</span>
 include additional fields. However, those fields <span class="bcp14">MUST</span> be independent of the
-encapsulated request and <span class="bcp14">MUST</span> be fields that the oblivious proxy resource will
-remove before forwarding the encapsulated request towards the target, such as the
+Encapsulated Request and <span class="bcp14">MUST</span> be fields that the Oblivious Relay Resource will
+remove before forwarding the Encapsulated Request towards the target, such as the
 Connection or Proxy-Authorization header fields <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">The client role in this protocol acts as an HTTP client both with respect to the
-oblivious proxy resource and the oblivious target resource.  For the request the
-clients makes to the oblivious target resource, this diverges from typical HTTP
+Oblivious Relay Resource and the Oblivious Target Resource.  For the request the
+clients makes to the Oblivious Target Resource, this diverges from typical HTTP
 assumptions about the use of a connection (see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-3.3" class="relref">Section 3.3</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>) in that
-the request and response are encapsulated rather than sent over a connection.
-The oblivious proxy resource and the oblivious request resource also act as HTTP
-clients toward the oblivious request resource and oblivious target resource
+the request and response are encrypted rather than sent over a connection.
+The Oblivious Relay Resource and the Oblivious Gateway Resource also act as HTTP
+clients toward the Oblivious Gateway Resource and Oblivious Target Resource
 respectively.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">The oblivious proxy resource interacts with the oblivious request resource as an
+<p id="section-5-3">The Oblivious Relay Resource interacts with the Oblivious Gateway Resource as an
 HTTP client by constructing a request using the same restrictions as the client
-request, except that the target URI is the oblivious request resource.  The
-content of this request is copied from the client.  The oblivious proxy resource
+request, except that the target URI is the Oblivious Gateway Resource.  The
+content of this request is copied from the client.  The Oblivious Relay Resource
 <span class="bcp14">MUST NOT</span> add information to the request without the client being aware of
 the type of information that might be added; see
-<a href="#proxy-responsibilities" class="xref">Section 7.2</a> for more information on proxy responsibilities.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">When a response is received from the oblivious request resource, the oblivious
-proxy resource forwards the response according to the rules of an HTTP proxy;
-see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-7.6" class="relref">Section 7.6</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">An oblivious request resource, if it receives any response from the oblivious
-target resource, sends a single 200 response containing the encapsulated
+<a href="#relay-responsibilities" class="xref">Section 7.2</a> for more information on relay responsibilities.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">When a response is received from the Oblivious Gateway Resource, the
+Oblivious Relay Resource forwards the response according to the rules of an
+HTTP proxy; see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-7.6" class="relref">Section 7.6</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">An Oblivious Gateway Resource, if it receives any response from the Oblivious
+Target Resource, sends a single 200 response containing the encapsulated
 response.  Like the request from the client, this response <span class="bcp14">MUST</span> only contain
 those fields necessary to carry the encapsulated response: a 200 status code, a
 header field indicating the content type, and the encapsulated response as the
 response content.  As with requests, additional fields <span class="bcp14">MAY</span> be used to convey
 information that does not reveal information about the encapsulated response.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">An oblivious request resource acts as a gateway for requests to the oblivious
+<p id="section-5-6">An Oblivious Gateway Resource acts as a gateway for requests to the oblivious
 target resource (see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-7.6" class="relref">Section 7.6</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>).  The one exception is that any
 information it might forward in a response <span class="bcp14">MUST</span> be encapsulated, unless it is
 responding to errors it detects before removing encapsulation of the request;
@@ -2023,13 +2060,13 @@ received.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-5.2-1">A server that receives an invalid message for any reason <span class="bcp14">MUST</span> generate an HTTP
 response with a 4xx status code.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Errors detected by the oblivious proxy resource and errors detected by the
-oblivious request resource before removing protection (including being unable to
+<p id="section-5.2-2">Errors detected by the Oblivious Relay Resource and errors detected by the
+Oblivious Gateway Resource before removing protection (including being unable to
 remove encapsulation for any reason) result in the status code being sent
 without protection in response to the POST request made to that resource.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Errors detected by the oblivious request resource after successfully removing
-encapsulation and errors detected by the oblivious target resource <span class="bcp14">MUST</span> be sent
-in an encapsulated response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">Errors detected by the Oblivious Gateway Resource after successfully removing
+encapsulation and errors detected by the Oblivious Target Resource <span class="bcp14">MUST</span> be sent
+in an Encapsulated Response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2039,15 +2076,15 @@ in an encapsulated response.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
       <h2 id="name-media-types">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-media-types" class="section-name selfRef">Media Types</a>
       </h2>
-<p id="section-6-1">Media types are used to identify encapsulated requests and responses.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">Evolution of the format of encapsulated requests and responses is supported
+<p id="section-6-1">Media types are used to identify Encapsulated Requests and Responses.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Evolution of the format of Encapsulated Requests and Responses is supported
 through the definition of new formats that are identified by new media types.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <div id="messageohttp-req-media-type">
 <section id="section-6.1">
         <h3 id="name-message-ohttp-req-media-typ">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-message-ohttp-req-media-typ" class="section-name selfRef">message/ohttp-req Media Type</a>
         </h3>
-<p id="section-6.1-1">The "message/ohttp-req" identifies an encapsulated binary HTTP request.  This
+<p id="section-6.1-1">The "message/ohttp-req" identifies an encrypted binary HTTP request.  This
 is a binary format that is defined in <a href="#request" class="xref">Section 4.1</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-6.1-2">
           <dt id="section-6.1-2.1">Type name:</dt>
@@ -2155,7 +2192,7 @@ is a binary format that is defined in <a href="#request" class="xref">Section 4.
         <h3 id="name-message-ohttp-res-media-typ">
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-message-ohttp-res-media-typ" class="section-name selfRef">message/ohttp-res Media Type</a>
         </h3>
-<p id="section-6.2-1">The "message/ohttp-res" identifies an encapsulated binary HTTP response. This
+<p id="section-6.2-1">The "message/ohttp-res" identifies an encrypted binary HTTP response. This
 is a binary format that is defined in <a href="#response" class="xref">Section 4.2</a>.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-6.2-2">
           <dt id="section-6.2-2.1">Type name:</dt>
@@ -2266,7 +2303,7 @@ is a binary format that is defined in <a href="#response" class="xref">Section 4
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-7-1">In this design, a client wishes to make a request of a server that is
-authoritative for the oblivious target resource. The client wishes to make this
+authoritative for the Oblivious Target Resource. The client wishes to make this
 request without linking that request with either:<a href="#section-7-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-7-2">
 <li id="section-7-2.1">The identity at the network and transport layer of the client (that is, the
@@ -2277,23 +2314,23 @@ connection).<a href="#section-7-2.1" class="pilcrow">¶</a>
 the future.<a href="#section-7-2.2" class="pilcrow">¶</a>
 </li>
       </ol>
-<p id="section-7-3">In order to ensure this, the client selects a proxy (that serves the
-oblivious proxy resource) that it trusts will protect this information
-by forwarding the encapsulated request and response without passing it
-to the server (that serves the oblivious request resource).<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-3">In order to ensure this, the client selects a relay (that serves the
+Oblivious Relay Resource) that it trusts will protect this information
+by forwarding the Encapsulated Request and Response without passing it
+to the server (that serves the Oblivious Gateway Resource).<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">In this section, a deployment where there are three entities is considered:<a href="#section-7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7-5.1">A client makes requests and receives responses<a href="#section-7-5.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-7-5.2">A proxy operates the oblivious proxy resource<a href="#section-7-5.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-7-5.2">A relay operates the Oblivious Relay Resource<a href="#section-7-5.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-7-5.3">A server operates both the oblivious request resource and the oblivious
+        <li class="normal" id="section-7-5.3">A server operates both the Oblivious Gateway Resource and the oblivious
 target resource<a href="#section-7-5.3" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-7-6">To achieve the stated privacy goals, the oblivious proxy resource cannot be
-operated by the same entity as the oblivious request resource. However,
-colocation of the oblivious request resource and oblivious target resource
+<p id="section-7-6">To achieve the stated privacy goals, the Oblivious Relay Resource cannot be
+operated by the same entity as the Oblivious Gateway Resource. However,
+colocation of the Oblivious Gateway Resource and Oblivious Target Resource
 simplifies the interactions between those resources without affecting client
 privacy.<a href="#section-7-6" class="pilcrow">¶</a></p>
 <p id="section-7-7">As a consequence of this configuration, Oblivious HTTP prevents linkability
@@ -2301,10 +2338,10 @@ described above. Informally, this means:<a href="#section-7-7" class="pilcrow">�
 <ol start="1" type="1" class="normal type-1" id="section-7-8">
 <li id="section-7-8.1">Requests and responses are known only to clients and targets in possession
 of the corresponding response encapsulation key and HPKE keying material.
-In particular, the oblivious proxy knows the origin and destination of an
-encapsulated request and response, yet does not know the decapsulated
-contents. Likewise, targets know only the oblivious request origin, i.e.,
-the proxy, and the decapsulated request. Only the client knows both the
+In particular, the Oblivious Relay knows the origin and destination of an
+Encapsulated Request and Response, yet does not know the decrypted
+contents. Likewise, targets know only the Oblivious Gateway origin, i.e.,
+the relay, and the decrypted request. Only the client knows both the
 plaintext request and response.<a href="#section-7-8.1" class="pilcrow">¶</a>
 </li>
         <li id="section-7-8.2">Targets cannot link requests from the same client in the absence of unique
@@ -2320,23 +2357,23 @@ this document; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#sectio
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-client-responsibilities" class="section-name selfRef">Client Responsibilities</a>
         </h3>
 <p id="section-7.1-1">Clients <span class="bcp14">MUST</span> ensure that the key configuration they select for generating
-encapsulated requests is integrity protected and authenticated so that it can
-be attributed to the oblivious request resource; see <a href="#key-configuration" class="xref">Section 3</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">Since clients connect directly to the proxy instead of the target, application
+Encapsulated Requests is integrity protected and authenticated so that it can
+be attributed to the Oblivious Gateway Resource; see <a href="#key-configuration" class="xref">Section 3</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">Since clients connect directly to the relay instead of the target, application
 configurations wherein clients make policy decisions about target connections,
 e.g., to apply certificate pinning, are incompatible with Oblivious HTTP.  In
 such cases, alternative technologies such as HTTP CONNECT
 (<span><a href="https://rfc-editor.org/rfc/rfc9110#section-9.3.6" class="relref">Section 9.3.6</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>) can be used. Applications could implement related
-policies on key configurations and proxy connections, though these might not
+policies on key configurations and relay connections, though these might not
 provide the same properties as policies enforced directly on target
 connections. When this difference is relevant, applications can instead connect
 directly to the target at the cost of either privacy or performance.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <p id="section-7.1-3">Clients <span class="bcp14">MUST NOT</span> include identifying information in the request that is
-encapsulated. Identifying information includes cookies <span>[<a href="#COOKIES" class="xref">COOKIES</a>]</span>,
+encrypted. Identifying information includes cookies <span>[<a href="#COOKIES" class="xref">COOKIES</a>]</span>,
 authentication credentials or tokens, and any information that might reveal
 client-specific information such as account credentials.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <p id="section-7.1-4">Clients cannot carry connection-level state between requests as they only
-establish direct connections to the proxy responsible for the oblivious proxy
+establish direct connections to the relay responsible for the Oblivious Relay
 resource. However, clients need to ensure that they construct requests without
 any information gained from previous requests. Otherwise, the server might be
 able to use that information to link requests. Cookies <span>[<a href="#COOKIES" class="xref">COOKIES</a>]</span> are
@@ -2346,70 +2383,70 @@ identity of resources.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 <p id="section-7.1-5">Clients <span class="bcp14">MUST</span> generate a new HPKE context for every request, using a good source
 of entropy (<span>[<a href="#RANDOM" class="xref">RANDOM</a>]</span>) for generating keys. Key reuse not only risks
 requests being linked, reuse could expose request and response contents to the
-proxy.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
-<p id="section-7.1-6">The request the client sends to the oblivious proxy resource only requires
+relay.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
+<p id="section-7.1-6">The request the client sends to the Oblivious Relay Resource only requires
 minimal information; see <a href="#http-usage" class="xref">Section 5</a>. The request that carries the
-encapsulated request and is sent to the oblivious proxy resource <span class="bcp14">MUST NOT</span>
+Encapsulated Request and is sent to the Oblivious Relay Resource <span class="bcp14">MUST NOT</span>
 include identifying information unless the client ensures that this information
-is removed by the proxy. A client <span class="bcp14">MAY</span> include information only for the
-oblivious proxy resource in header fields identified by the Connection header
-field if it trusts the proxy to remove these as required by Section 7.6.1 of
-<span>[<a href="#HTTP" class="xref">HTTP</a>]</span>. The client needs to trust that the proxy does not replicate the
+is removed by the relay. A client <span class="bcp14">MAY</span> include information only for the
+Oblivious Relay Resource in header fields identified by the Connection header
+field if it trusts the relay to remove these as required by Section 7.6.1 of
+<span>[<a href="#HTTP" class="xref">HTTP</a>]</span>. The client needs to trust that the relay does not replicate the
 source addressing information in the request it forwards.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
-<p id="section-7.1-7">Clients rely on the oblivious proxy resource to forward encapsulated requests
-and responses. However, the proxy can only refuse to forward messages, it
-cannot inspect or modify the contents of encapsulated requests or responses.<a href="#section-7.1-7" class="pilcrow">¶</a></p>
+<p id="section-7.1-7">Clients rely on the Oblivious Relay Resource to forward Encapsulated Requests
+and responses. However, the relay can only refuse to forward messages, it
+cannot inspect or modify the contents of Encapsulated Requests or responses.<a href="#section-7.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="proxy-responsibilities">
+<div id="relay-responsibilities">
 <section id="section-7.2">
-        <h3 id="name-proxy-responsibilities">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-proxy-responsibilities" class="section-name selfRef">Proxy Responsibilities</a>
+        <h3 id="name-relay-responsibilities">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-relay-responsibilities" class="section-name selfRef">Relay Responsibilities</a>
         </h3>
-<p id="section-7.2-1">The proxy that serves the oblivious proxy resource has a very simple function
+<p id="section-7.2-1">The relay that serves the Oblivious Relay Resource has a very simple function
 to perform. For each request it receives, it makes a request of the oblivious
 request resource that includes the same content. When it receives a response,
 it sends a response to the client that includes the content of the response
-from the oblivious request resource.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">When forwarding a request, the proxy <span class="bcp14">MUST</span> follow the forwarding rules in
+from the Oblivious Gateway Resource.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-2">When forwarding a request, the relay <span class="bcp14">MUST</span> follow the forwarding rules in
 <span><a href="https://rfc-editor.org/rfc/rfc9110#section-7.6" class="relref">Section 7.6</a> of [<a href="#HTTP" class="xref">HTTP</a>]</span>.  A generic HTTP intermediary implementation is suitable
-for the purposes of serving an oblivious proxy resource, but additional care is
+for the purposes of serving an Oblivious Relay Resource, but additional care is
 needed to ensure that client privacy is maintained.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <p id="section-7.2-3">Firstly, a generic implementation will forward unknown fields.  For oblivious
-HTTP, a proxy <span class="bcp14">SHOULD NOT</span> forward unknown fields.  Though clients are not
+HTTP, a relay <span class="bcp14">SHOULD NOT</span> forward unknown fields.  Though clients are not
 expected to include fields that might contain identifying information,
 removing unknown fields removes this privacy risk.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
 <p id="section-7.2-4">Secondly, generic implementations are often configured to augment requests with
 information about the client, such as the Via field or the Forwarded field
-<span>[<a href="#FORWARDED" class="xref">FORWARDED</a>]</span>.  A proxy <span class="bcp14">MUST NOT</span> add information when forwarding
+<span>[<a href="#FORWARDED" class="xref">FORWARDED</a>]</span>.  A relay <span class="bcp14">MUST NOT</span> add information when forwarding
 requests that might be used to identify clients, with the exception of
 information that a client is aware of.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.2-5">A proxy <span class="bcp14">MAY</span> add information to requests if the client is aware of the nature of
+<p id="section-7.2-5">A relay <span class="bcp14">MAY</span> add information to requests if the client is aware of the nature of
 the information that could be added.  The client does not need to be aware of
 the exact value added for each request, but needs to know the range of possible
-values the proxy might use.  It is important to note that information added by
-the proxy can reduce the size of the anonymity set of clients at a server.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.2-6">A proxy can also generate responses, though it assumed to not be able to
+values the relay might use.  It is important to note that information added by
+the relay can reduce the size of the anonymity set of clients at a server.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
+<p id="section-7.2-6">A relay can also generate responses, though it assumed to not be able to
 examine the content of a request (other than to observe the choice of key
 identifier, KDF, and AEAD), so it is also assumed that it cannot generate an
-encapsulated response.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
+Encapsulated Response.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
 <div id="dos">
 <section id="section-7.2.1">
           <h4 id="name-denial-of-service">
 <a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-denial-of-service" class="section-name selfRef">Denial of Service</a>
           </h4>
 <p id="section-7.2.1-1">As there are privacy benefits from having a large rate of requests forwarded by
-the same proxy (see <a href="#ta" class="xref">Section 7.2.2</a>), servers that operate the oblivious request
+the same relay (see <a href="#ta" class="xref">Section 7.2.2</a>), servers that operate the Oblivious Gateway
 resource might need an arrangement with proxies. This arrangement might be
 necessary to prevent having the large volume of requests being classified as an
 attack by the server.<a href="#section-7.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.2.1-2">If a server accepts a larger volume of requests from a proxy, it needs to
-trust that the proxy does not allow abusive levels of request volumes from
-clients. That is, if a server allows requests from the proxy to be exempt from
-rate limits, the server might want to ensure that the proxy applies a rate
+<p id="section-7.2.1-2">If a server accepts a larger volume of requests from a relay, it needs to
+trust that the relay does not allow abusive levels of request volumes from
+clients. That is, if a server allows requests from the relay to be exempt from
+rate limits, the server might want to ensure that the relay applies a rate
 limiting policy that is acceptable to the server.<a href="#section-7.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.2.1-3">Servers that enter into an agreement with a proxy that enables a higher request
-rate might choose to authenticate the proxy to enable the higher rate.<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.2.1-3">Servers that enter into an agreement with a relay that enables a higher request
+rate might choose to authenticate the relay to enable the higher rate.<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ta">
@@ -2420,19 +2457,19 @@ rate might choose to authenticate the proxy to enable the higher rate.<a href="#
 <p id="section-7.2.2-1">This document assumes that all communication between different entities is
 protected by HTTPS.  This protects information about which resources are the
 subject of request and prevents a network observer from being able to trivially
-correlate messages on either side of a proxy.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-2">As the time at which encapsulated request or response messages are sent can
+correlate messages on either side of a relay.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-2">As the time at which Encapsulated Request or response messages are sent can
 reveal information to a network observer. Though messages exchanged between the
-oblivious proxy resource and the oblivious request resource might be sent in a
+Oblivious Relay Resource and the Oblivious Gateway Resource might be sent in a
 single connection, traffic analysis could be used to match messages that are
-forwarded by the proxy.<a href="#section-7.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-3">A proxy could, as part of its function, add delays in order to increase the
+forwarded by the relay.<a href="#section-7.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-3">A relay could, as part of its function, add delays in order to increase the
 anonymity set into which each message is attributed. This could latency to the
 overall time clients take to receive a response, which might not be what some
 clients want.<a href="#section-7.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-4">A proxy can use padding to reduce the effectiveness of traffic analysis.
+<p id="section-7.2.2-4">A relay can use padding to reduce the effectiveness of traffic analysis.
 Padding is a capability provided by binary HTTP messages; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-binary-message-05#section-3.8" class="relref">Section 3.8</a> of [<a href="#BINARY" class="xref">BINARY</a>]</span>.<a href="#section-7.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.2.2-5">A proxy that forwards large volumes of exchanges can provide better privacy by
+<p id="section-7.2.2-5">A relay that forwards large volumes of exchanges can provide better privacy by
 providing larger sets of messages that need to be matched.<a href="#section-7.2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2443,29 +2480,29 @@ providing larger sets of messages that need to be matched.<a href="#section-7.2.
         <h3 id="name-server-responsibilities">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-server-responsibilities" class="section-name selfRef">Server Responsibilities</a>
         </h3>
-<p id="section-7.3-1">A server that operates both oblivious request and oblivious target resources is
-responsible for removing request encapsulation, generating a response the
-encapsulated request, and encapsulating the response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">A server that operates both Oblivious Gateway and Oblivious Target Resources is
+responsible for removing request encryption, generating a response to the
+Encapsulated Request, and encrypting the response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.3-2">Servers should account for traffic analysis based on response size or generation
 time.  Techniques such as padding or timing delays can help protect against such
 attacks; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
-<p id="section-7.3-3">If separate entities provide the oblivious request resource and oblivious target
+<p id="section-7.3-3">If separate entities provide the Oblivious Gateway Resource and oblivious target
 resource, these entities might need an arrangement similar to that between
-server and proxy for managing denial of service; see <a href="#dos" class="xref">Section 7.2.1</a>. It is also
+server and relay for managing denial of service; see <a href="#dos" class="xref">Section 7.2.1</a>. It is also
 necessary to provide confidentiality protection for the unprotected requests and
 responses, plus protections for traffic analysis; see <a href="#ta" class="xref">Section 7.2.2</a>.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
-<p id="section-7.3-4">An oblivious request resource needs to have a plan for replacing keys. This
+<p id="section-7.3-4">An Oblivious Gateway Resource needs to have a plan for replacing keys. This
 might include regular replacement of keys, which can be assigned new key
-identifiers. If an oblivious request resource receives a request that contains a
+identifiers. If an Oblivious Gateway Resource receives a request that contains a
 key identifier that it does not understand or that corresponds to a key that has
 been replaced, the server can respond with an HTTP 422 (Unprocessable Content)
 status code.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
 <p id="section-7.3-5">A server can also use a 422 status code if the server has a key that corresponds
-to the key identifier, but the encapsulated request cannot be successfully
+to the key identifier, but the Encapsulated Request cannot be successfully
 decrypted using the key.<a href="#section-7.3-5" class="pilcrow">¶</a></p>
 <p id="section-7.3-6">A server <span class="bcp14">MUST</span> ensure that the HPKE keys it uses are not valid for any other
 protocol that uses HPKE with the "message/bhttp request" label.  Designers of
-protocols that reuse this encapsulation format, especially new versions of this
+protocols that reuse this encryption format, especially new versions of this
 protocol, can ensure key diversity by choosing a different label in their use of
 HPKE.  The "message/bhttp response" label was chosen for symmetry only as it
 provides key diversity only within the HPKE context created using the
@@ -2480,10 +2517,10 @@ the effect of replays does not adversely affect clients or resources; see
         <h3 id="name-replay-attacks">
 <a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-replay-attacks" class="section-name selfRef">Replay Attacks</a>
         </h3>
-<p id="section-7.4-1">Encapsulated requests can be copied and replayed by the oblivious proxy
+<p id="section-7.4-1">Encrypted requests can be copied and replayed by the Oblivious Relay
 resource. The threat model for oblivious HTTP allows the possibility that an
-oblivious proxy resource might replay requests. Furthermore, if a client sends
-an encapsulated request in TLS early data (see <span><a href="https://rfc-editor.org/rfc/rfc8446#section-8" class="relref">Section 8</a> of [<a href="#TLS" class="xref">TLS</a>]</span> and
+Oblivious Relay Resource might replay requests. Furthermore, if a client sends
+an Encapsulated Request in TLS early data (see <span><a href="https://rfc-editor.org/rfc/rfc8446#section-8" class="relref">Section 8</a> of [<a href="#TLS" class="xref">TLS</a>]</span> and
 <span>[<a href="#RFC8470" class="xref">RFC8470</a>]</span>), a network-based adversary might be able to cause the request to
 be replayed. In both cases, the effect of a replay attack and the mitigations
 that might be employed are similar to TLS early data.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
@@ -2491,7 +2528,7 @@ that might be employed are similar to TLS early data.<a href="#section-7.4-1" cl
 reject replayed requests or to ensure that replayed requests have no adverse
 affects on their operation.  This section describes some approaches that are
 universally applicable and suggestions for more targeted techniques.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
-<p id="section-7.4-3">A client or oblivious proxy resource <span class="bcp14">MUST NOT</span> automatically attempt to retry a
+<p id="section-7.4-3">A client or Oblivious Relay Resource <span class="bcp14">MUST NOT</span> automatically attempt to retry a
 failed request unless it receives a positive signal indicating that the request
 was not processed or forwarded. The HTTP/2 REFUSED_STREAM error code (Section
 8.1.4 of <span>[<a href="#RFC7540" class="xref">RFC7540</a>]</span>), the HTTP/3 H3_REQUEST_REJECTED error code (Section 8.1
@@ -2523,7 +2560,7 @@ replayed.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
           <h4 id="name-use-of-date-for-anti-replay">
 <a href="#section-7.4.1" class="section-number selfRef">7.4.1. </a><a href="#name-use-of-date-for-anti-replay" class="section-name selfRef">Use of Date for Anti-Replay</a>
           </h4>
-<p id="section-7.4.1-1">Clients <span class="bcp14">SHOULD</span> include a <code>Date</code> header field in encapsulated requests.  Though
+<p id="section-7.4.1-1">Clients <span class="bcp14">SHOULD</span> include a <code>Date</code> header field in Encapsulated Requests.  Though
 HTTP requests often do not include a <code>Date</code> header field, the value of this
 field might be used by a server to limit the amount of requests it needs to
 track if it needs to prevent replay attacks.<a href="#section-7.4.1-1" class="pilcrow">¶</a></p>
@@ -2572,13 +2609,13 @@ confidentiality and integrity of a response until that response is consumed, so
 there is negligible risk associated with a client compromise.<a href="#section-7.6-2" class="pilcrow">¶</a></p>
 <p id="section-7.6-3">A server retains a secret key that might be used to remove protection from
 messages over much longer periods. A server compromise that provided access to
-the oblivious request resource secret key could allow an attacker to recover the
+the Oblivious Gateway Resource secret key could allow an attacker to recover the
 plaintext of all requests sent toward affected keys and all of the responses
 that were generated.<a href="#section-7.6-3" class="pilcrow">¶</a></p>
 <p id="section-7.6-4">Even if server keys are compromised, an adversary cannot access messages
-exchanged by the client with the oblivious proxy resource as messages are
-protected by TLS.  Use of a compromised key also requires that the oblivious
-proxy resource cooperate with the attacker or that the attacker is able to
+exchanged by the client with the Oblivious Relay Resource as messages are
+protected by TLS.  Use of a compromised key also requires that the Oblivious
+Relay Resource cooperate with the attacker or that the attacker is able to
 compromise these TLS connections.<a href="#section-7.6-4" class="pilcrow">¶</a></p>
 <p id="section-7.6-5">The total number of affected messages affected by server key compromise can be
 limited by regular rotation of server keys.<a href="#section-7.6-5" class="pilcrow">¶</a></p>
@@ -2592,10 +2629,10 @@ limited by regular rotation of server keys.<a href="#section-7.6-5" class="pilcr
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
 <p id="section-8-1">One goal of this design is that independent client requests are only linkable by
-the chosen key configuration. The oblivious proxy and request resources can link
+the chosen key configuration. The Oblivious Relay and request resources can link
 requests using the same key configuration by matching KeyConfig.key_id, or, if
-the oblivious target resource is willing to use trial decryption, a limited set
-of key configurations that share an identifier. An oblivious proxy can link
+the Oblivious Target Resource is willing to use trial decryption, a limited set
+of key configurations that share an identifier. An Oblivious Relay can link
 requests using the public key corresponding to KeyConfig.key_id.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">Request resources are capable of linking requests depending on how KeyConfigs
 are produced by servers and discovered by clients. Specifically, servers can
@@ -2620,7 +2657,7 @@ for ensuring the key configurations are consistent between different clients.<a 
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-performance-overhead" class="section-name selfRef">Performance Overhead</a>
         </h3>
 <p id="section-9.1-1">Using Oblivious HTTP adds both cryptographic and latency to requests relative to
-a simple HTTP request-response exchange.  Deploying proxy services that are on
+a simple HTTP request-response exchange.  Deploying relay services that are on
 path between clients and servers avoids adding significant additional delay due
 to network topology.  A study of a similar system <span>[<a href="#ODoH" class="xref">ODoH</a>]</span> found that deploying
 proxies close to servers was most effective in minimizing additional latency.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
@@ -2632,18 +2669,18 @@ proxies close to servers was most effective in minimizing additional latency.<a 
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-resource-mappings" class="section-name selfRef">Resource Mappings</a>
         </h3>
 <p id="section-9.2-1">This protocol assumes a fixed, one-to-one mapping between the Oblivious Proxy
-Resource and the Oblivious Request Resource. This means that any encapsulated
-request sent to the Oblivious Proxy Resource will always be forwarded to the
-Oblivious Request Resource. This constraint was imposed to simplify proxy
-configuration and mitigate against the Oblivious Proxy Resource being used as
-a generic proxy for unknown Oblivious Request Resources. The proxy will only
-forward for Oblivious Request Resources that it has explicitly configured and
+Resource and the Oblivious Gateway Resource. This means that any encrypted
+request sent to the Oblivious Relay Resource will always be forwarded to the
+Oblivious Gateway Resource. This constraint was imposed to simplify relay
+configuration and mitigate against the Oblivious Relay Resource being used as
+a generic relay for unknown Oblivious Gateway Resources. The relay will only
+forward for Oblivious Gateway Resources that it has explicitly configured and
 allowed.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.2-2">It is possible for a server to be configured with multiple Oblivious Proxy
-Resources, each for a different Oblivious Request Resource as needed.  If the
-goal is to support a large number of Oblivious Request Resources, clients might
+Resources, each for a different Oblivious Gateway Resource as needed.  If the
+goal is to support a large number of Oblivious Gateway Resources, clients might
 be provided with a URI template <span>[<a href="#TEMPLATE" class="xref">TEMPLATE</a>]</span>, from which multiple
-Oblivious Proxy Resources could be constructed.<a href="#section-9.2-2" class="pilcrow">¶</a></p>
+Oblivious Relay Resources could be constructed.<a href="#section-9.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="network-management">
@@ -2669,19 +2706,18 @@ content is accessible to middleboxes.<a href="#section-9.3-2" class="pilcrow">¶
       <h2 id="name-repurposing-the-encapsulati">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-repurposing-the-encapsulati" class="section-name selfRef">Repurposing the Encapsulation Format</a>
       </h2>
-<p id="section-10-1">The encapsulated payload of an OHTTP request and response is a binary HTTP
-message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>. Client and target agree on this encapsulated payload type by
-specifying the media type "message/bhttp" in the HPKE encapsulation info string
-and HPKE export context string for request and response encapsulation,
-respectively.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-10-1">The encrypted payload of an OHTTP request and response is a binary HTTP
+message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>. Client and target agree on this encrypted payload type by
+specifying the media type "message/bhttp" in the HPKE info string and HPKE
+export context string for request and response encryption, respectively.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">Future specifications may repurpose the encapsulation mechanism described in
-<a href="#hpke-encapsulation" class="xref">Section 4</a>, provided that the content type of the encapsulated
+<a href="#hpke-encapsulation" class="xref">Section 4</a>, provided that the content type of the encrypted
 payload is appropriately reflected in the HPKE info and context strings. For
-example, if a future specification were to use the encapsulation mechanism in
+example, if a future specification were to use the encryption mechanism in
 this specification for DNS messages, identified by the "application/dns-message"
 media type, then the HPKE info string <span class="bcp14">SHOULD</span> be "application/dns-message
-request" for request encapsulation, and the HPKE export context string should be
-"application/dns-message response" for response encapsulation.<a href="#section-10-2" class="pilcrow">¶</a></p>
+request" for request encryption, and the HPKE export context string should be
+"application/dns-message response" for response encryption.<a href="#section-10-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -2823,12 +2859,12 @@ and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
 configuration, secret keys, the content of messages, and intermediate values)
 are shown in hexadecimal. The request and response here are minimal;
 the purpose of this example is to show the cryptographic operations.
-In this example, the client is configured with the oblivious proxy URI
+In this example, the client is configured with the Oblivious Relay URI
 of <code>https://proxy.example.org/request.example.net/proxy</code>, and the proxy
-is configured to map requests to this URI to the oblivious request URI
+is configured to map requests to this URI to the Oblivious Gateway URI
 <code>https://example.com/oblivious/request</code>. The oblivious target URI, i.e.,
 the resource the client ultimately wishes to fetch, is <code>https://example.com</code>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">To begin the process, the oblivious request resource generates a key pair.
+<p id="appendix-A-2">To begin the process, the Oblivious Gateway Resource generates a key pair.
 In this example the server chooses DHKEM(X25519, HKDF-SHA256) and generates
 an X25519 key pair <span>[<a href="#X25519" class="xref">X25519</a>]</span>. The X25519 secret key is:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-3">
@@ -2836,7 +2872,7 @@ an X25519 key pair <span>[<a href="#X25519" class="xref">X25519</a>]</span>. The
 3cf36bbc17111f07e816aa895ff42de8d1a029af16580c232a68e15feefa1073
 </pre><a href="#appendix-A-3" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-4">The oblivious request resource constructs a key configuration that includes the
+<p id="appendix-A-4">The Oblivious Gateway Resource constructs a key configuration that includes the
 corresponding public key as follows:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-5">
 <pre>
@@ -2852,7 +2888,7 @@ it constructs the following binary HTTP message:<a href="#appendix-A-6" class="p
 00034745540568747470730b6578616d706c652e636f6d012f
 </pre><a href="#appendix-A-7" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-8">The client then reads the oblivious request resource key configuration and
+<p id="appendix-A-8">The client then reads the Oblivious Gateway Resource key configuration and
 selects a mutually supported KDF and AEAD. In this example, the client selects
 HKDF-SHA256 and AES-128-GCM. The client then generates an HPKE context that
 uses the server public key. This context is constructed from the following
@@ -2869,7 +2905,7 @@ a9ebdb1efc14e3ea8956f8688b47b424160c1e93d82a0301dddbb710363b3941
 </pre><a href="#appendix-A-11" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-12">Applying the Seal operation from the HPKE context produces an encrypted
-message, allowing the client to construct the following encapsulated request:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
+message, allowing the client to construct the following Encapsulated Request:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-13">
 <pre>
 01002000010001984880a3350e0223e10a56c37e95c77a77cd0e4a056405b5cd
@@ -2877,7 +2913,7 @@ ce8f813d562d06a76430f42315a26fe661b11b6d1ce64de152733af519628f4f
 e3cb3e239aa4f4c42729d165029e6c26
 </pre><a href="#appendix-A-13" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-14">The client then sends this to the oblivious proxy resource in a POST request,
+<p id="appendix-A-14">The client then sends this to the Oblivious Relay Resource in a POST request,
 which might look like the following HTTP/1.1 request:<a href="#appendix-A-14" class="pilcrow">¶</a></p>
 <div id="appendix-A-15">
 <pre class="lang-http-message sourcecode">
@@ -2886,11 +2922,11 @@ Host: proxy.example.org
 Content-Type: message/ohttp-req
 Content-Length: 78
 
-&lt;content is the encapsulated request above&gt;
+&lt;content is the Encapsulated Request above&gt;
 </pre><a href="#appendix-A-15" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-16">The oblivious proxy resource receives this request and forwards it to the
-oblivious request resource, which might look like:<a href="#appendix-A-16" class="pilcrow">¶</a></p>
+<p id="appendix-A-16">The Oblivious Relay Resource receives this request and forwards it to the
+Oblivious Gateway Resource, which might look like:<a href="#appendix-A-16" class="pilcrow">¶</a></p>
 <div id="appendix-A-17">
 <pre class="lang-http-message sourcecode">
 POST /oblivious/request HTTP/1.1
@@ -2898,7 +2934,7 @@ Host: example.com
 Content-Type: message/ohttp-req
 Content-Length: 78
 
-&lt;content is the encapsulated request above&gt;
+&lt;content is the Encapsulated Request above&gt;
 </pre><a href="#appendix-A-17" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-18">The oblivous request resource receives this request, selects the key it
@@ -2919,7 +2955,7 @@ code) as follows:<a href="#appendix-A-18" class="pilcrow">¶</a></p>
 cec71c150d58bdcadbf4a1d27a20967e
 </pre><a href="#appendix-A-21" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-22">The key derivation for the encapsulated response uses both the encapsulated KEM
+<p id="appendix-A-22">The key derivation for the Encapsulated Response uses both the encapsulated KEM
 key from the request and a randomly selected nonce. This produces a salt of:<a href="#appendix-A-22" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-23">
 <pre>
@@ -2949,14 +2985,14 @@ generate a 12-byte nonce:<a href="#appendix-A-28" class="pilcrow">¶</a></p>
 </pre><a href="#appendix-A-29" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A-30">The AEAD Seal function is then used to encrypt the response, which is added
-to the randomized nonce value to produce the encapsulated response:<a href="#appendix-A-30" class="pilcrow">¶</a></p>
+to the randomized nonce value to produce the Encapsulated Response:<a href="#appendix-A-30" class="pilcrow">¶</a></p>
 <div class="alignLeft art-hex-dump art-text artwork" id="appendix-A-31">
 <pre>
 4bbf6a36b9a9783914cfdb66670419b9517faaa500d3c547a0da2cd407b77151
 421ef3
 </pre><a href="#appendix-A-31" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-32">The oblivious request resource then constructs a response:<a href="#appendix-A-32" class="pilcrow">¶</a></p>
+<p id="appendix-A-32">The Oblivious Gateway Resource then constructs a response:<a href="#appendix-A-32" class="pilcrow">¶</a></p>
 <div id="appendix-A-33">
 <pre class="lang-http-message sourcecode">
 HTTP/1.1 200 OK
@@ -2965,12 +3001,12 @@ Cache-Control: private, no-store
 Content-Type: message/ohttp-res
 Content-Length: 38
 
-&lt;content is the encapsulated response&gt;
+&lt;content is the Encapsulated Response&gt;
 </pre><a href="#appendix-A-33" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A-34">The same response might then be generated by the oblivious proxy resource which
+<p id="appendix-A-34">The same response might then be generated by the Oblivious Relay Resource which
 might change as little as the Date header. The client is then able to use the
-HPKE context it created and the nonce from the encapsulated response to
+HPKE context it created and the nonce from the Encapsulated Response to
 construct the AEAD key and nonce and decrypt the response.<a href="#appendix-A-34" class="pilcrow">¶</a></p>
 </section>
 </div>
