@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-03T00:36:30.649234+00:00",
+  "timestamp": "2022-07-07T00:39:37.689792+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1520,15 +1520,15 @@
       "id": "I_kwDOE6fLGM5GjNzF",
       "title": "Proxies must treat target signals independently from client requests",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/114",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chris-wood",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Something that came up during Vienna during the rate limiting topic is how these signals are consumed and acted upon by proxies. We know that the proxy sending additional bits per client might allow the target to partition the anonymity set to detrimental effect. But we haven't fully explored how target->proxy signals, like rate limits, are consumed and applied. \r\n\r\nGenerally speaking, I think that proxies need to act on any target->proxy signals independently of client requests, as otherwise a target can use this signal to try and partition the anonymity set. That means, for example, that a proxy should not apply rate limits to just one bad-behaving client, but apply limits uniformly across all client requests.",
       "createdAt": "2022-03-28T15:49:40Z",
-      "updatedAt": "2022-06-21T05:54:02Z",
-      "closedAt": null,
+      "updatedAt": "2022-07-05T12:19:29Z",
+      "closedAt": "2022-07-05T12:19:29Z",
       "comments": [
         {
           "author": "martinthomson",
@@ -1727,19 +1727,19 @@
       "id": "I_kwDOE6fLGM5L6cda",
       "title": "Improve terminology",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/121",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chris-wood",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "We need to improve the terminology in this draft. In particular, we need a distinguished term for the request to the proxy, which includes the encapsulated request, as well as a distinguished term for the inner request from client to target. ",
       "createdAt": "2022-06-16T14:04:24Z",
-      "updatedAt": "2022-06-27T13:31:12Z",
-      "closedAt": null,
+      "updatedAt": "2022-07-05T12:03:41Z",
+      "closedAt": "2022-07-05T12:03:41Z",
       "comments": [
         {
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "This would IMO help. There seems to be important security properties related to demarcation between the requests and having terms that could lead to ambiguity doesn't seem good.",
           "createdAt": "2022-06-16T14:08:54Z",
           "updatedAt": "2022-06-16T14:08:54Z"
@@ -1897,6 +1897,22 @@
           "updatedAt": "2022-06-28T01:23:59Z"
         }
       ]
+    },
+    {
+      "number": 131,
+      "id": "I_kwDOE6fLGM5NR9c8",
+      "title": "keyID, etc., is not bound into enc_response",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/131",
+      "state": "OPEN",
+      "author": "davidben",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 4.1 seems to incorporates a bunch of information into the `enc_request` computation:\r\n\r\n```\r\nenc, context = SetupBaseS(pkR, \"message/bhttp request\")\r\naad = concat(encode(1, keyID),\r\n             encode(2, kemID),\r\n             encode(2, kdfID),\r\n             encode(2, aeadID))\r\nct = context.Seal(aad, request)\r\nenc_request = concat(aad, enc, ct)\r\n```\r\n\r\nHowever, since that context is in the `aad` parameter of `Seal`, and not the `info` parameter to `Setup`, that same information doesn't figure into `enc_response`:\r\n\r\n```\r\nsecret = context.Export(\"message/bhttp response\", Nk)\r\nresponse_nonce = random(max(Nn, Nk))\r\nsalt = concat(enc, response_nonce)\r\nprk = Extract(salt, secret)\r\naead_key = Expand(prk, \"key\", Nk)\r\naead_nonce = Expand(prk, \"nonce\", Nn)\r\nct = Seal(aead_key, aead_nonce, \"\", response)\r\nenc_response = concat(response_nonce, ct)\r\n```\r\n\r\nThis is a bit odd because `keyID`, etc., also apply to the response. Should those be moved to the `info` parameter instead?\r\n\r\n(Although, of those four fields, I think only authenticating `keyID` does anything. The three algorithm IDs already figure into the HPKE suite ID. Was the intention to authenticate the `OHTTP Key Config` instead?)",
+      "createdAt": "2022-07-06T22:26:05Z",
+      "updatedAt": "2022-07-06T22:26:05Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -8206,24 +8222,26 @@
       "id": "PR_kwDOE6fLGM46arZ0",
       "title": "Update terminology to align with functionality",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/127",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "chris-wood",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #121.\r\n\r\n",
       "createdAt": "2022-06-27T13:30:33Z",
-      "updatedAt": "2022-07-01T10:46:37Z",
+      "updatedAt": "2022-07-05T12:03:42Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "17978ac4e4eaa34d6061a2b53f459d15ef435746",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "caw/new-terminology",
       "headRefOid": "f16bb3be3a7407abd9a61b39def7b3ee8c4ed3d7",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2022-07-05T12:03:41Z",
+      "mergedAt": "2022-07-05T12:03:41Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "c2cc26f3d547bd78ea18e0aa7ff7cafa3fc06675"
+      },
       "comments": [
         {
           "author": "chris-wood",
@@ -8234,7 +8252,7 @@
         },
         {
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "LGTM",
           "createdAt": "2022-06-27T22:24:38Z",
           "updatedAt": "2022-06-27T22:24:38Z"
@@ -8252,6 +8270,13 @@
           "body": "OK, new terminology updates applied. I reverted the encryption/encapsulation change to keep this PR focused on the new terms. I also tried to use consistency capitalization when referring to these types throughout the doc.\r\n\r\n@martinthomson, @tfpauly, @LPardue: please review!",
           "createdAt": "2022-06-30T11:50:32Z",
           "updatedAt": "2022-06-30T11:50:32Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm going to merge this to avoid dragging this PR out. If there's anything left to fix, let's do it on top of the changes in `main`.",
+          "createdAt": "2022-07-05T12:03:37Z",
+          "updatedAt": "2022-07-05T12:03:37Z"
         }
       ],
       "reviews": [
@@ -8274,7 +8299,7 @@
             "abbreviatedOid": "1873db5"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-27T18:37:00Z",
@@ -8294,7 +8319,7 @@
             "abbreviatedOid": "1873db5"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "This reads better to me, I like it.",
           "createdAt": "2022-06-27T18:37:25Z",
@@ -8327,7 +8352,7 @@
             "abbreviatedOid": "08bc6ca"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-27T22:22:03Z",
@@ -8507,7 +8532,7 @@
             "abbreviatedOid": "55f4215"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-30T12:05:14Z",
@@ -8527,7 +8552,7 @@
             "abbreviatedOid": "55f4215"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-30T12:20:21Z",
@@ -8547,7 +8572,7 @@
             "abbreviatedOid": "55f4215"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-30T12:21:42Z",
@@ -8587,7 +8612,7 @@
             "abbreviatedOid": "55f4215"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-30T12:22:30Z",
@@ -8647,7 +8672,7 @@
             "abbreviatedOid": "4226db6"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2022-06-30T12:26:06Z",
@@ -8687,7 +8712,7 @@
             "abbreviatedOid": "fa6e9e9"
           },
           "author": "LPardue",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2022-06-30T13:03:02Z",
@@ -8878,24 +8903,26 @@
       "id": "PR_kwDOE6fLGM46ovui",
       "title": "Add text about privacy considerations that come from differential treatment",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/130",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "chris-wood",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #114.\r\n\r\nThis is a lot of words to explain the point, so I'm happy to take simplifying suggestions.\r\n\r\ncc @tireddy2",
       "createdAt": "2022-06-30T12:10:31Z",
-      "updatedAt": "2022-07-01T12:13:55Z",
+      "updatedAt": "2022-07-05T12:19:30Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
-      "baseRefOid": "9970cad7de6f0c2b3348e1be8325f349473e0084",
+      "baseRefOid": "c2cc26f3d547bd78ea18e0aa7ff7cafa3fc06675",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "caw/differential-treatment",
-      "headRefOid": "41c1f48d627c07e9f8f600be8a9a321ddca90320",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "e23c215493b66a8092d6e4ffeb51f08cc66d01c3",
+      "closedAt": "2022-07-05T12:19:29Z",
+      "mergedAt": "2022-07-05T12:19:29Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "d2e6e57f91f7f75aa80a6f1455ed9ea26cdebe7a"
+      },
       "comments": [
         {
           "author": "tireddy2",
@@ -8910,6 +8937,20 @@
           "body": "To address the scenario of the target giving feedback to the gateway, I introduced a new header \"Ohttp-Outside-Encap\". The \"Ohttp-Outside-Encap\" header is added by the Oblivious request resource to the HTTP request to signal to the Oblivious target resource the list of header fields that it will be remove from the HTTP response. Please see Section 7 in https://github.com/tireddy2/ohai/blob/main/draft-rdb-ohai-feedback-to-proxy-03.txt for more details. ",
           "createdAt": "2022-07-01T12:13:55Z",
           "updatedAt": "2022-07-01T12:13:55Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think that we want some extra text here, probably before the last sentence about clients understanding the extent to which they might be treated differently.\r\n\r\n> Some patterns of abuse cannot be detected without access to the request that is made to the target resource.  This means that only the oblivious gateway or target resource are in a position to identify abuse.  An oblivious gateway resource MAY send signals toward the oblivious relay resource to provide feedback about specific requests.  An oblivious relay resource that acts on this feedback could - either inadvertently or by design - lead to clients being deanonymized.\r\n\r\nI don't know if this is worth adding, but a relay acting on the HTTP Retry-After header field is a great example of something that might destroy anonymity.\r\n\r\n... and now I think we have enough material for a new section.",
+          "createdAt": "2022-07-05T01:34:15Z",
+          "updatedAt": "2022-07-05T01:34:15Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Applied @martinthomson's suggested text (as an addendum to the main content here, not inserted in the middle) and moved everything -- including proxies applying differential treatment to requests -- to a new subsection. Thanks, all!",
+          "createdAt": "2022-07-05T12:19:26Z",
+          "updatedAt": "2022-07-05T12:19:26Z"
         }
       ],
       "reviews": [
