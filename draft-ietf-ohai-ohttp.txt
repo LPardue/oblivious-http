@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 6 January 2023                                       Cloudflare
-                                                             5 July 2022
+Expires: 8 January 2023                                       Cloudflare
+                                                             7 July 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2023.
+   This Internet-Draft will expire on 8 January 2023.
 
 Copyright Notice
 
@@ -260,11 +260,11 @@ Table of Contents
 
    Oblivious HTTP is more costly than a direct connection to a server.
    Some costs, like those involved with connection setup, can be
-   amortized, but there are several ways in which oblivious HTTP is more
+   amortized, but there are several ways in which Oblivious HTTP is more
    expensive than a direct request:
 
-   *  Each oblivious request requires at least two regular HTTP
-      requests, which adds latency.
+   *  Each request requires at least two regular HTTP requests, which
+      adds latency.
 
    *  Each request is expanded in size with additional HTTP fields,
       encryption-related metadata, and AEAD expansion.
@@ -280,7 +280,7 @@ Table of Contents
       queries.
 
    *  Telemetry submission.  Applications that submit reports about
-      their usage to their developers might use oblivious HTTP for some
+      their usage to their developers might use Oblivious HTTP for some
       types of moderately sensitive data.
 
    These are examples of requests where there is information in a
@@ -321,7 +321,7 @@ Table of Contents
    Oblivious Target Resource:  The resource that is the target of an
       encapsulated request.  This resource logically handles only
       regular HTTP requests and responses and so might be ignorant of
-      the use of oblivious HTTP to reach it.
+      the use of Oblivious HTTP to reach it.
 
    Relay Request:  An HTTP request from Client to Relay that contains an
       encapsulated request as the content.
@@ -692,7 +692,7 @@ Table of Contents
    response.
 
    An Oblivious Gateway Resource acts as a gateway for requests to the
-   oblivious target resource (see Section 7.6 of [HTTP]).  The one
+   Oblivious Target Resource (see Section 7.6 of [HTTP]).  The one
    exception is that any information it might forward in a response MUST
    be encapsulated, unless it is responding to errors it detects before
    removing encapsulation of the request; see Section 5.2.
@@ -706,8 +706,8 @@ Table of Contents
 
    In particular, the Expect header field with 100-continue (see
    Section 10.1.1 of [HTTP]) cannot be used.  Clients MUST NOT construct
-   a request that includes a 100-continue expectation; the oblivious
-   request resource MUST generate an error if a 100-continue expectation
+   a request that includes a 100-continue expectation; the Oblivious
+   Gateway Resource MUST generate an error if a 100-continue expectation
    is received.
 
 5.2.  Errors
@@ -848,7 +848,7 @@ Table of Contents
    *  A relay operates the Oblivious Relay Resource
 
    *  A server operates both the Oblivious Gateway Resource and the
-      oblivious target resource
+      Oblivious Target Resource
 
    To achieve the stated privacy goals, the Oblivious Relay Resource
    cannot be operated by the same entity as the Oblivious Gateway
@@ -935,7 +935,7 @@ Table of Contents
 
    The relay that serves the Oblivious Relay Resource has a very simple
    function to perform.  For each request it receives, it makes a
-   request of the oblivious request resource that includes the same
+   request of the Oblivious Gateway Resource that includes the same
    content.  When it receives a response, it sends a response to the
    client that includes the content of the response from the Oblivious
    Gateway Resource.
@@ -947,10 +947,10 @@ Table of Contents
    maintained.
 
    Firstly, a generic implementation will forward unknown fields.  For
-   oblivious HTTP, a relay SHOULD NOT forward unknown fields.  Though
-   clients are not expected to include fields that might contain
-   identifying information, removing unknown fields removes this privacy
-   risk.
+   Oblivious HTTP, a Oblivious Relay Resource SHOULD NOT forward unknown
+   fields.  Though clients are not expected to include fields that might
+   contain identifying information, removing unknown fields removes this
+   privacy risk.
 
    Secondly, generic implementations are often configured to augment
    requests with information about the client, such as the Via field or
@@ -995,9 +995,10 @@ Table of Contents
 
    As there are privacy benefits from having a large rate of requests
    forwarded by the same relay (see Section 7.2.3), servers that operate
-   the Oblivious Gateway resource might need an arrangement with
-   proxies.  This arrangement might be necessary to prevent having the
-   large volume of requests being classified as an attack by the server.
+   the Oblivious Gateway Resource might need an arrangement with
+   Oblivious Relay Resources.  This arrangement might be necessary to
+   prevent having the large volume of requests being classified as an
+   attack by the server.
 
    If a server accepts a larger volume of requests from a relay, it
    needs to trust that the relay does not allow abusive levels of
@@ -1048,7 +1049,7 @@ Table of Contents
    help protect against such attacks; see Section 7.2.3.
 
    If separate entities provide the Oblivious Gateway Resource and
-   oblivious target resource, these entities might need an arrangement
+   Oblivious Target Resource, these entities might need an arrangement
    similar to that between server and relay for managing denial of
    service; see Section 7.2.2.  It is also necessary to provide
    confidentiality protection for the unprotected requests and
@@ -1082,7 +1083,7 @@ Table of Contents
 7.4.  Replay Attacks
 
    Encrypted requests can be copied and replayed by the Oblivious Relay
-   resource.  The threat model for oblivious HTTP allows the possibility
+   resource.  The threat model for Oblivious HTTP allows the possibility
    that an Oblivious Relay Resource might replay requests.  Furthermore,
    if a client sends an Encapsulated Request in TLS early data (see
    Section 8 of [TLS] and [RFC8470]), a network-based adversary might be
@@ -1090,7 +1091,7 @@ Table of Contents
    of a replay attack and the mitigations that might be employed are
    similar to TLS early data.
 
-   It is the responsibility of the application that uses oblivious HTTP
+   It is the responsibility of the application that uses Oblivious HTTP
    to either reject replayed requests or to ensure that replayed
    requests have no adverse affects on their operation.  This section
    describes some approaches that are universally applicable and
@@ -1107,7 +1108,7 @@ Table of Contents
    no processing occurred.
 
    The anti-replay mechanisms described in Section 8 of [TLS] are
-   generally applicable to oblivious HTTP requests.  The encapsulated
+   generally applicable to Oblivious HTTP requests.  The encapsulated
    keying material (or enc) can be used in place of a nonce to uniquely
    identify a request.  This value is a high-entropy value that is
    freshly generated for every request, so two valid requests will have
@@ -1203,11 +1204,11 @@ Table of Contents
 
    One goal of this design is that independent client requests are only
    linkable by the chosen key configuration.  The Oblivious Relay and
-   request resources can link requests using the same key configuration
+   Gateway resources can link requests using the same key configuration
    by matching KeyConfig.key_id, or, if the Oblivious Target Resource is
    willing to use trial decryption, a limited set of key configurations
-   that share an identifier.  An Oblivious Relay can link requests using
-   the public key corresponding to KeyConfig.key_id.
+   that share an identifier.  An Oblivious Relay Resource can link
+   requests using the public key corresponding to KeyConfig.key_id.
 
    Request resources are capable of linking requests depending on how
    KeyConfigs are produced by servers and discovered by clients.
@@ -1300,9 +1301,9 @@ Table of Contents
 
    [BINARY]   Thomson, M. and C. A. Wood, "Binary Representation of HTTP
               Messages", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-binary-message-05, 9 June 2022,
+              httpbis-binary-message-06, 6 July 2022,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
-              binary-message-05>.
+              binary-message-06>.
 
    [HPKE]     Barnes, R. L., Bhargavan, K., Lipp, B., and C. A. Wood,
               "Hybrid Public Key Encryption", Work in Progress,
@@ -1435,11 +1436,11 @@ Appendix A.  Complete Example of a Request and Response
    intermediate values) are shown in hexadecimal.  The request and
    response here are minimal; the purpose of this example is to show the
    cryptographic operations.  In this example, the client is configured
-   with the Oblivious Relay URI of
+   with the Oblivious Relay Resource URI of
    https://proxy.example.org/request.example.net/proxy, and the proxy is
    configured to map requests to this URI to the Oblivious Gateway URI
-   https://example.com/oblivious/request.  The oblivious target URI,
-   i.e., the resource the client ultimately wishes to fetch, is
+   https://example.com/oblivious/request.  The Oblivious Target Resource
+   URI, i.e., the resource the client ultimately wishes to query, is
    https://example.com.
 
    To begin the process, the Oblivious Gateway Resource generates a key
@@ -1501,12 +1502,12 @@ Appendix A.  Complete Example of a Request and Response
 
    <content is the Encapsulated Request above>
 
-   The oblivous request resource receives this request, selects the key
+   The Oblivous Gateway Resource receives this request, selects the key
    it generated previously using the key identifier from the message,
    and decrypts the message.  As this request is directed to the same
-   server, the oblivious request resource does not need to initiate an
-   HTTP request to the oblivious target resource.  The request can be
-   served directly by the oblivious target resource, which generates a
+   server, the Oblivious Gateway Resource does not need to initiate an
+   HTTP request to the Oblivious Target Resource.  The request can be
+   served directly by the Oblivious Target Resource, which generates a
    minimal response (consisting of just a 200 status code) as follows:
 
    0140c8
@@ -1564,7 +1565,7 @@ Appendix A.  Complete Example of a Request and Response
 
 Acknowledgments
 
-   This design is based on a design for oblivious DoH, described in
+   This design is based on a design for Oblivious DoH, described in
    [ODOH].  David Benjamin and Eric Rescorla made technical
    contributions.
 
