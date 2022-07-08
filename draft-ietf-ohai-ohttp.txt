@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 8 January 2023                                       Cloudflare
-                                                             7 July 2022
+Expires: 9 January 2023                                       Cloudflare
+                                                             8 July 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2023.
+   This Internet-Draft will expire on 9 January 2023.
 
 Copyright Notice
 
@@ -171,7 +171,7 @@ Table of Contents
       Gateway Resource.  See Section 9.2 for more information about the
       mapping between Oblivious Relay and Gateway Resources.
 
-   This information allows the client to make a request of an Target
+   This information allows the client to make a request of a Target
    Resource with that resource having only a limited ability to
    correlate that request with the client IP or other requests that the
    client might make to that server.
@@ -206,7 +206,7 @@ Table of Contents
 
                     Figure 1: Overview of Oblivious HTTP
 
-   In order to make a request to an Target Resource, the following steps
+   In order to make a request to a Target Resource, the following steps
    occur, as shown in Figure 1:
 
    1.   The client constructs an HTTP request for a Target Resource.
@@ -314,7 +314,7 @@ Table of Contents
 
    Oblivious Gateway Resource:  A resource that can receive an
       encapsulated request, extract the contents of that request,
-      forward it to an Target Resource, receive a response, encapsulate
+      forward it to a Target Resource, receive a response, encapsulate
       that response, then return that response.
 
    Target Resource:  The resource that is the target of an encapsulated
