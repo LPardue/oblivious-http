@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-07T00:39:37.689792+00:00",
+  "timestamp": "2022-07-10T00:40:49.553019+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1910,9 +1910,24 @@
       "labels": [],
       "body": "Section 4.1 seems to incorporates a bunch of information into the `enc_request` computation:\r\n\r\n```\r\nenc, context = SetupBaseS(pkR, \"message/bhttp request\")\r\naad = concat(encode(1, keyID),\r\n             encode(2, kemID),\r\n             encode(2, kdfID),\r\n             encode(2, aeadID))\r\nct = context.Seal(aad, request)\r\nenc_request = concat(aad, enc, ct)\r\n```\r\n\r\nHowever, since that context is in the `aad` parameter of `Seal`, and not the `info` parameter to `Setup`, that same information doesn't figure into `enc_response`:\r\n\r\n```\r\nsecret = context.Export(\"message/bhttp response\", Nk)\r\nresponse_nonce = random(max(Nn, Nk))\r\nsalt = concat(enc, response_nonce)\r\nprk = Extract(salt, secret)\r\naead_key = Expand(prk, \"key\", Nk)\r\naead_nonce = Expand(prk, \"nonce\", Nn)\r\nct = Seal(aead_key, aead_nonce, \"\", response)\r\nenc_response = concat(response_nonce, ct)\r\n```\r\n\r\nThis is a bit odd because `keyID`, etc., also apply to the response. Should those be moved to the `info` parameter instead?\r\n\r\n(Although, of those four fields, I think only authenticating `keyID` does anything. The three algorithm IDs already figure into the HPKE suite ID. Was the intention to authenticate the `OHTTP Key Config` instead?)",
       "createdAt": "2022-07-06T22:26:05Z",
-      "updatedAt": "2022-07-06T22:26:05Z",
+      "updatedAt": "2022-07-07T02:06:04Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The intent was to belt and braces this, but yeah, it seems like we missed the braces part.  A zero-length AAD is somewhat appealing when we already need to provide an info parameter, this would just make it a configurable one.\r\n\r\nI'm thinking \"message/bhttp request\" (the current info string), a 0 byte (to follow patterns elsewhere), and then the current AAD.  Then make the AAD zero length.\r\n\r\nThe only thing that gives me pause is that we already have an analysis that supports the current design.  That suggests that a tighter design might work, but @chris-wood might know how hard it would be to re-tool for a tweak.",
+          "createdAt": "2022-07-07T01:51:59Z",
+          "updatedAt": "2022-07-07T01:51:59Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't think moving the current AAD to the info parameter has a meaningful improvement beyond aesthetics, so I would be fine with this change. Updating the models should be pretty straightforward. (There is a ProVerif one not yet on GitHub, but I hope it will be soon.)\n\nAs David points out, the HPKE parameters are already implicitly authenticated by way of agreement on the HPKE context. I would claim the keyID is also implicitly authenticated in this way, since the keyID determines the private key used to produce the shared HPKE context. \n\nThe exception here being the case where there are two distinct keyID values that correspond to the same private key. In that case, if the response was generated _without_ examining the request, then it would be possible for client and gateway to disagree on the keyID value used. Would this actually happen in practice? Doubtful, but fixing by moving the AAD around does the trick. ",
+          "createdAt": "2022-07-07T02:06:04Z",
+          "updatedAt": "2022-07-07T02:06:04Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -9184,6 +9199,178 @@
               "body": "Right -- the intent here is the gateway, not the target. ",
               "createdAt": "2022-07-01T10:37:55Z",
               "updatedAt": "2022-07-01T10:37:56Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 132,
+      "id": "PR_kwDOE6fLGM46_qKh",
+      "title": "Bind HPKE info to the configuration",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/132",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We previously put the details from the key configuration (key id, KEM,\r\nKDF, AEAD) in the AAD for the request.  But @davidben noted that this\r\nmeant that this wasn't bound to the response.\r\n\r\nAnalysis shows that this isn't a security problem, but while that\r\ndepends on some very reasonable assumptions about how keys are used,\r\nthere is no reason not to do better.\r\n\r\nPerformance-wise, this change is a wash.  The AAD input is now empty,\r\nwhich should make this a tiny bit faster to execute.  The downside is\r\nthat the info is no longer static, which means that it is a tiny bit\r\nslower, especially on the server side where it is harder to just pass a\r\nconstant value into SetupBaseR and the bits from the header into the\r\nAAD.  But those are extraordinarily trivial differences.\r\n\r\nThe spec doesn't really change much either, though I've taken this\r\nchance to be a bit more explicit about what functions in HPKE are run\r\nand what their inputs are.\r\n\r\nI will do examples in a follow-up so that you can see the effect on\r\nthose (the numbers change, that's all).\r\n\r\nCode changes are fairly simple also, see\r\nhttps://github.com/martinthomson/ohttp/pull/21 for an example.  Note\r\nthat the biggest part of this is down to a structural choice, the actual\r\nchanges are minor.  Response handling doesn't change at all.\r\n\r\nCloses #131.",
+      "createdAt": "2022-07-07T06:46:57Z",
+      "updatedAt": "2022-07-08T09:42:13Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "d2e6e57f91f7f75aa80a6f1455ed9ea26cdebe7a",
+      "headRepository": "martinthomson/oblivious-http",
+      "headRefName": "bind-info",
+      "headRefOid": "c01ca5b78b92127f53f13754b0c4e43f0f8b5c45",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM49jUoI",
+          "commit": {
+            "abbreviatedOid": "c01ca5b"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Verified [in my implementation](https://github.com/chris-wood/ohttp-go/pull/5).",
+          "createdAt": "2022-07-08T09:42:13Z",
+          "updatedAt": "2022-07-08T09:42:13Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 133,
+      "id": "PR_kwDOE6fLGM46_t4Q",
+      "title": "Consistency Is Important",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/133",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I Found A Few Instances Where Oblivious Wasn't Capitalized Consistently,\r\nWhich Would Be Bad.  There Were Also A Few Occurrences of \"oblivious\r\nrequest resource\", Which Is Worse.",
+      "createdAt": "2022-07-07T07:05:18Z",
+      "updatedAt": "2022-07-07T13:59:50Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "d2e6e57f91f7f75aa80a6f1455ed9ea26cdebe7a",
+      "headRepository": "martinthomson/oblivious-http",
+      "headRefName": "capital-consistency",
+      "headRefOid": "8c52530e05089d25eb9c8d4cbe0ea1002176bfe4",
+      "closedAt": "2022-07-07T13:59:50Z",
+      "mergedAt": "2022-07-07T13:59:50Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "232cdab8ada9440e46c6cb80c5b36ce97eb08c17"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM49fWc5",
+          "commit": {
+            "abbreviatedOid": "8c52530"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-07-07T13:59:39Z",
+          "updatedAt": "2022-07-07T13:59:39Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 134,
+      "id": "PR_kwDOE6fLGM46_uvS",
+      "title": "Just target",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/134",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "On top of #133 so that I don't have to deal with merge conflicts.",
+      "createdAt": "2022-07-07T07:09:19Z",
+      "updatedAt": "2022-07-08T10:05:52Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "d2e6e57f91f7f75aa80a6f1455ed9ea26cdebe7a",
+      "headRepository": "martinthomson/oblivious-http",
+      "headRefName": "just-target",
+      "headRefOid": "f874a55e81bb8dfafdef1fcd00cdae06b55b322a",
+      "closedAt": "2022-07-07T14:00:01Z",
+      "mergedAt": "2022-07-07T14:00:01Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "61e7302b4d82c8c02f09749e51c2d0bb3d645cbf"
+      },
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks @LPardue -- fixed directly on `main`.",
+          "createdAt": "2022-07-08T10:05:52Z",
+          "updatedAt": "2022-07-08T10:05:52Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM49fWSb",
+          "commit": {
+            "abbreviatedOid": "f874a55"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-07-07T13:59:16Z",
+          "updatedAt": "2022-07-07T13:59:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49gibD",
+          "commit": {
+            "abbreviatedOid": "f874a55"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-07T17:36:15Z",
+          "updatedAt": "2022-07-07T17:36:15Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "missed an `an Target` here",
+              "createdAt": "2022-07-07T17:36:15Z",
+              "updatedAt": "2022-07-07T17:36:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM49gimS",
+          "commit": {
+            "abbreviatedOid": "f874a55"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-07T17:36:52Z",
+          "updatedAt": "2022-07-07T17:36:53Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "few others peppered in the doc too",
+              "createdAt": "2022-07-07T17:36:52Z",
+              "updatedAt": "2022-07-07T17:36:53Z"
             }
           ]
         }
