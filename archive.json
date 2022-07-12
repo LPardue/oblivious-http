@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-10T00:40:49.553019+00:00",
+  "timestamp": "2022-07-12T00:37:26.701497+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1772,15 +1772,15 @@
       "id": "I_kwDOE6fLGM5L9XoM",
       "title": "What (encrypted) media types are acceptable",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/122",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "We are defining a media type here that has some limitations (mostly lack of streaming, #75).  If we want to define a more capable media type, what would the system need to do to allow that to happen?\r\n\r\nAt face value, this seems simple: the oblivious request resource consumes the media type.  It already needs to make its key known to clients, so adding a set of acceptable media types to that information seems entirely reasonable.\r\n\r\nQuestions:\r\n\r\n* Should we enrich the key configuration with other meta-information?  Or is this supplementary information?\r\n* Is there any value in an in-band signaling mechanism?  We've already seen that feedback about time is ...challenging.\r\n* Supported media types convey information that might be used to distinguish clients in the same way that key selection could.  What do we need to do about ensuring consistency?",
       "createdAt": "2022-06-17T02:07:28Z",
-      "updatedAt": "2022-06-30T21:01:41Z",
-      "closedAt": null,
+      "updatedAt": "2022-07-11T02:51:17Z",
+      "closedAt": "2022-07-11T02:51:17Z",
       "comments": [
         {
           "author": "chris-wood",
@@ -1795,6 +1795,13 @@
           "body": "So far, the models I've seen would know the media type a priori. So, I'd agree with Chris for this.",
           "createdAt": "2022-06-17T15:51:00Z",
           "updatedAt": "2022-06-30T21:01:41Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK, let's put this to bed then.  I've work to do on something more sophisticated for a streaming design, but this isn't critical for that.",
+          "createdAt": "2022-07-11T02:51:17Z",
+          "updatedAt": "2022-07-11T02:51:17Z"
         }
       ]
     },
@@ -1903,15 +1910,15 @@
       "id": "I_kwDOE6fLGM5NR9c8",
       "title": "keyID, etc., is not bound into enc_response",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/131",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "davidben",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Section 4.1 seems to incorporates a bunch of information into the `enc_request` computation:\r\n\r\n```\r\nenc, context = SetupBaseS(pkR, \"message/bhttp request\")\r\naad = concat(encode(1, keyID),\r\n             encode(2, kemID),\r\n             encode(2, kdfID),\r\n             encode(2, aeadID))\r\nct = context.Seal(aad, request)\r\nenc_request = concat(aad, enc, ct)\r\n```\r\n\r\nHowever, since that context is in the `aad` parameter of `Seal`, and not the `info` parameter to `Setup`, that same information doesn't figure into `enc_response`:\r\n\r\n```\r\nsecret = context.Export(\"message/bhttp response\", Nk)\r\nresponse_nonce = random(max(Nn, Nk))\r\nsalt = concat(enc, response_nonce)\r\nprk = Extract(salt, secret)\r\naead_key = Expand(prk, \"key\", Nk)\r\naead_nonce = Expand(prk, \"nonce\", Nn)\r\nct = Seal(aead_key, aead_nonce, \"\", response)\r\nenc_response = concat(response_nonce, ct)\r\n```\r\n\r\nThis is a bit odd because `keyID`, etc., also apply to the response. Should those be moved to the `info` parameter instead?\r\n\r\n(Although, of those four fields, I think only authenticating `keyID` does anything. The three algorithm IDs already figure into the HPKE suite ID. Was the intention to authenticate the `OHTTP Key Config` instead?)",
       "createdAt": "2022-07-06T22:26:05Z",
-      "updatedAt": "2022-07-07T02:06:04Z",
-      "closedAt": null,
+      "updatedAt": "2022-07-11T02:51:27Z",
+      "closedAt": "2022-07-11T02:51:27Z",
       "comments": [
         {
           "author": "martinthomson",
@@ -1928,6 +1935,38 @@
           "updatedAt": "2022-07-07T02:06:04Z"
         }
       ]
+    },
+    {
+      "number": 135,
+      "id": "I_kwDOE6fLGM5Nfoli",
+      "title": "Move media type registration template to iana considerations",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/135",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In reading through this, it is really distracting to have these massive sections full of N/A in the document.  Moving them means more connective tissue (forward references, section headings), but it should make this stuff get in the way less.",
+      "createdAt": "2022-07-11T02:59:40Z",
+      "updatedAt": "2022-07-11T02:59:40Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 136,
+      "id": "I_kwDOE6fLGM5NfowT",
+      "title": "Request-date reference",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/136",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There is a bunch of stuff that we normatively depend on regarding the use of Date.  As it seems like request-date isn't going anywhere, we should pull in the relevant pieces instead.",
+      "createdAt": "2022-07-11T03:01:16Z",
+      "updatedAt": "2022-07-11T03:01:16Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -9209,24 +9248,26 @@
       "id": "PR_kwDOE6fLGM46_qKh",
       "title": "Bind HPKE info to the configuration",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/132",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "We previously put the details from the key configuration (key id, KEM,\r\nKDF, AEAD) in the AAD for the request.  But @davidben noted that this\r\nmeant that this wasn't bound to the response.\r\n\r\nAnalysis shows that this isn't a security problem, but while that\r\ndepends on some very reasonable assumptions about how keys are used,\r\nthere is no reason not to do better.\r\n\r\nPerformance-wise, this change is a wash.  The AAD input is now empty,\r\nwhich should make this a tiny bit faster to execute.  The downside is\r\nthat the info is no longer static, which means that it is a tiny bit\r\nslower, especially on the server side where it is harder to just pass a\r\nconstant value into SetupBaseR and the bits from the header into the\r\nAAD.  But those are extraordinarily trivial differences.\r\n\r\nThe spec doesn't really change much either, though I've taken this\r\nchance to be a bit more explicit about what functions in HPKE are run\r\nand what their inputs are.\r\n\r\nI will do examples in a follow-up so that you can see the effect on\r\nthose (the numbers change, that's all).\r\n\r\nCode changes are fairly simple also, see\r\nhttps://github.com/martinthomson/ohttp/pull/21 for an example.  Note\r\nthat the biggest part of this is down to a structural choice, the actual\r\nchanges are minor.  Response handling doesn't change at all.\r\n\r\nCloses #131.",
       "createdAt": "2022-07-07T06:46:57Z",
-      "updatedAt": "2022-07-08T09:42:13Z",
+      "updatedAt": "2022-07-11T02:51:30Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "d2e6e57f91f7f75aa80a6f1455ed9ea26cdebe7a",
       "headRepository": "martinthomson/oblivious-http",
       "headRefName": "bind-info",
       "headRefOid": "c01ca5b78b92127f53f13754b0c4e43f0f8b5c45",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2022-07-11T02:51:27Z",
+      "mergedAt": "2022-07-11T02:51:27Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "27f32012cce112c898ff0ee570eb847af1831686"
+      },
       "comments": [],
       "reviews": [
         {
