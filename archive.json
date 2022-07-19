@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-12T00:37:26.701497+00:00",
+  "timestamp": "2022-07-19T00:43:00.345264+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1964,9 +1964,17 @@
       "labels": [],
       "body": "There is a bunch of stuff that we normatively depend on regarding the use of Date.  As it seems like request-date isn't going anywhere, we should pull in the relevant pieces instead.",
       "createdAt": "2022-07-11T03:01:16Z",
-      "updatedAt": "2022-07-11T03:01:16Z",
+      "updatedAt": "2022-07-18T16:08:35Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "That sounds reasonable like a reasonable way to unblock us and make forward progress.",
+          "createdAt": "2022-07-18T16:08:35Z",
+          "updatedAt": "2022-07-18T16:08:35Z"
+        }
+      ]
     }
   ],
   "pulls": [
