@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-19T00:43:00.345264+00:00",
+  "timestamp": "2022-07-21T00:39:07.158290+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -9424,6 +9424,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 137,
+      "id": "PR_kwDOE6fLGM47uCam",
+      "title": "Integrate request-date stuff",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/137",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This includes the time correction piece.  I'm interested in whether\r\npeople think that it is OK to include that.  The section could be\r\nremoved along with the corresponding IANA piece, but given the\r\nprevalence of clock skew, I'm inclined to leave it in.",
+      "createdAt": "2022-07-20T10:16:15Z",
+      "updatedAt": "2022-07-20T11:35:12Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "27f32012cce112c898ff0ee570eb847af1831686",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "date-integration",
+      "headRefOid": "3f7375782a02952a30a3e934f2a249f76d8f6236",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
