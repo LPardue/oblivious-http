@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 21 January 2023                                      Cloudflare
-                                                            20 July 2022
+Expires: 25 January 2023                                      Cloudflare
+                                                            24 July 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 January 2023.
+   This Internet-Draft will expire on 25 January 2023.
 
 Copyright Notice
 
@@ -1163,7 +1163,8 @@ Table of Contents
    be unique to each request, is sufficient.  The Oblivious Gateway
    Resource then rejects requests if the request is the same as one that
    was previously answered within that time window, or if the Date
-   header field is outside of the current time window.
+   header field from the decrypted request is outside of the current
+   time window.
 
    Oblivious Gateway Resources SHOULD allow for the time it takes
    requests to arrive from the client, with a time window that is large
