@@ -1208,6 +1208,26 @@ Table of Contents
    request, the client MUST create a fresh encryption of the modified
    request, using a new HPKE context.
 
+   +---------+       +-------------------+      +----------+
+   | Client  |       | Relay and Gateway |      | Target   |
+   |         |       |     Resources     |      | Resource |
+   +----+----+       +----+-----------+--+      +----+-----+
+        |                 |           |              |
+        |                 |           |              |
+        |  Request        |           |              |
+        +============================>+------------->|
+        |                 |           |              |
+        |                 |           | 400 Response |
+        |                 |           |       + Date |
+        |<============================+<-------------+
+        |                 |           |              |
+        |  Request        |           |              |
+        |  + Updated Date |           |              |
+        +============================>+------------->|
+        |                 |           |              |
+
+                Figure 8: Retrying with an Update Date Field
+
    Intermediaries can sometimes rewrite the Date field when forwarding
    responses.  This might cause problems if the Oblivious Gateway
    Resource and intermediary clocks differ by enough to cause the retry
