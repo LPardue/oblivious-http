@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-21T00:39:07.158290+00:00",
+  "timestamp": "2022-07-24T00:39:44.961075+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1975,6 +1975,22 @@
           "updatedAt": "2022-07-18T16:08:35Z"
         }
       ]
+    },
+    {
+      "number": 139,
+      "id": "I_kwDOE6fLGM5ObPeI",
+      "title": "Client should not buffer encrypted request messages",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/139",
+      "state": "OPEN",
+      "author": "ShivanKaul",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "1. Let's say HPKE public key A was valid from 2022-07-01 to 2022-07-02. The client encapsulates a request X using pubkey A, but buffers it because of network issues, in order to retry later.\r\n2. Now it rotates and public key B is valid as of 2022-07-03. \r\n3. X encapsulated using pubkey A would not be decryptable by pubkey B. So if you receive X on 2022-07-03, then you know that X was generated between 2022-07-01 and 2022-07-02.",
+      "createdAt": "2022-07-23T23:14:36Z",
+      "updatedAt": "2022-07-23T23:14:36Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -9437,13 +9453,102 @@
       "labels": [],
       "body": "This includes the time correction piece.  I'm interested in whether\r\npeople think that it is OK to include that.  The section could be\r\nremoved along with the corresponding IANA piece, but given the\r\nprevalence of clock skew, I'm inclined to leave it in.",
       "createdAt": "2022-07-20T10:16:15Z",
-      "updatedAt": "2022-07-20T11:35:12Z",
+      "updatedAt": "2022-07-21T19:31:09Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "27f32012cce112c898ff0ee570eb847af1831686",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "date-integration",
       "headRefOid": "3f7375782a02952a30a3e934f2a249f76d8f6236",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4-aHxp",
+          "commit": {
+            "abbreviatedOid": "3f73757"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "This LGTM. I wonder if it would be helpful to show the retry dance in a picture. Something like:\r\n\r\n```\r\n~~~ aasvg\r\n+---------+       +----------+      +----------+      +----------+\r\n| Client  |       | Relay    |      | Gateway  |      | Target   |\r\n|         |       | Resource |      | Resource |      | Resource |\r\n+----+----+       +----+-----+      +-------+--+      +----+-----+\r\n     |                 |                    |              |\r\n     | Relay           |                    |              |\r\n     | Request         |                    |              |\r\n     | [+ Encapsulated |                    |              |\r\n     |    Request ]    |                    |              |\r\n     +---------------->| Gateway            |              |\r\n     |                 | Request            |              |\r\n     |                 | [+ Encapsulated    |              |\r\n     |                 |    Request ]       |              |\r\n     |                 +------------------->| Request      |\r\n     |                 |                    +------------->|\r\n     |                 |                    |              |\r\n     |                 |                    | 400 Response |\r\n     |                 |                    |       + Date |    \r\n     |                 |            Gateway |<-------------+\r\n     |                 |           Response |              |\r\n     |                 |    [+ Encapsulated |              |\r\n     |                 |         Response ] |              |\r\n     |           Relay |<-------------------+              |\r\n     |        Response |                    |              |\r\n     | [+ Encapsulated |                    |              |\r\n     |      Response ] |                    |              |\r\n     |<----------------+                    |              |\r\n     |                 |                    |              |\r\n   Client              |                    |              |\r\n correction            |                    |              |\r\n     |                 |                    |              |\r\n     | Relay           |                    |              |\r\n     | Request         |                    |              |\r\n     | [+ Encapsulated |                    |              |\r\n     |    Retry        |                    |              |\r\n     |    Request ]    |                    |              |\r\n     +---------------->|        ...         |     ...      |\r\n~~~\r\n{: #fig-overview title=\"Overview of Oblivious HTTP\"}\r\n```",
+          "createdAt": "2022-07-21T19:25:21Z",
+          "updatedAt": "2022-07-21T19:31:09Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "```suggestion\r\nheader field of the decapsulated request is outside of the current time window.\r\n```",
+              "createdAt": "2022-07-21T19:25:21Z",
+              "updatedAt": "2022-07-21T19:31:09Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 138,
+      "id": "PR_kwDOE6fLGM4738fB",
+      "title": "Typo fix",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/138",
+      "state": "MERGED",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-07-21T18:09:04Z",
+      "updatedAt": "2022-07-22T08:56:00Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "0cbccb7b980ecc6010abb2c14f0b194aa588c1a9",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "chris-wood-patch-1",
+      "headRefOid": "6d656c90aed571f0ca2c59e5e2f173773a2f0ad3",
+      "closedAt": "2022-07-22T08:55:59Z",
+      "mergedAt": "2022-07-22T08:55:59Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "a8cfc319147c87e53423427e8788ee2596994060"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4-Z15P",
+          "commit": {
+            "abbreviatedOid": "6d656c9"
+          },
+          "author": "rillian",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-07-21T18:17:37Z",
+          "updatedAt": "2022-07-21T18:17:37Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 140,
+      "id": "PR_kwDOE6fLGM47_Pfn",
+      "title": "Don't buffer encrypted messages on the client",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/140",
+      "state": "OPEN",
+      "author": "ShivanKaul",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fix https://github.com/ietf-wg-ohai/oblivious-http/issues/139",
+      "createdAt": "2022-07-23T23:15:17Z",
+      "updatedAt": "2022-07-23T23:15:17Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "a8cfc319147c87e53423427e8788ee2596994060",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "ShivanKaul-patch-1",
+      "headRefOid": "9e086115a82e7b8ab8e46049b36d4f33ffbfa21b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
