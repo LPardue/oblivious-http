@@ -2596,23 +2596,24 @@ replayed.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
           <h4 id="name-use-of-date-for-anti-replay">
 <a href="#section-7.4.1" class="section-number selfRef">7.4.1. </a><a href="#name-use-of-date-for-anti-replay" class="section-name selfRef">Use of Date for Anti-Replay</a>
           </h4>
-<p id="section-7.4.1-1">Clients <span class="bcp14">SHOULD</span> include a <code>Date</code> header field in Encapsulated Requests.  Though
-HTTP requests often do not include a <code>Date</code> header field, the value of this
-field might be used by a server to limit the amount of requests it needs to
-track if it needs to prevent replay attacks.<a href="#section-7.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-2">An Oblivious Gateway Resource can maintain state for requests for a small window
+<p id="section-7.4.1-1">Clients <span class="bcp14">SHOULD</span> include a <code>Date</code> header field in Encapsulated Requests, unless
+the Oblivious Gateway Resource does not use <code>Date</code> for anti-replay purposes.<a href="#section-7.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-2">Though HTTP requests often do not include a <code>Date</code> header field, the value of
+this field might be used by a server to limit the amount of requests it needs to
+track if it needs to prevent replay attacks.<a href="#section-7.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-3">An Oblivious Gateway Resource can maintain state for requests for a small window
 of time over which it wishes to accept requests.  The Oblivious Gateway Resource
 can store all requests it processes within this window.  Storing just the <code>enc</code>
 field of a request, which should be unique to each request, is sufficient.  The
 Oblivious Gateway Resource then rejects requests if the request is the same as
 one that was previously answered within that time window, or if the <code>Date</code>
-header field from the decrypted request is outside of the current time window.<a href="#section-7.4.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-3">Oblivious Gateway Resources <span class="bcp14">SHOULD</span> allow for the time it takes requests to
+header field from the decrypted request is outside of the current time window.<a href="#section-7.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-4">Oblivious Gateway Resources <span class="bcp14">SHOULD</span> allow for the time it takes requests to
 arrive from the client, with a time window that is large enough to allow for
-differences in clocks.<a href="#section-7.4.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-4">Oblivious Gateway Resources <span class="bcp14">MUST NOT</span> treat the time window as secret
+differences in clocks.<a href="#section-7.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-5">Oblivious Gateway Resources <span class="bcp14">MUST NOT</span> treat the time window as secret
 information. An attacker can actively probe with different values for the <code>Date</code>
-field to determine the time window over which the server will accept responses.<a href="#section-7.4.1-4" class="pilcrow">¶</a></p>
+field to determine the time window over which the server will accept responses.<a href="#section-7.4.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="date-fix">
