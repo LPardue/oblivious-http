@@ -1038,7 +1038,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson &amp; Wood</td>
-<td class="center">Expires 23 January 2023</td>
+<td class="center">Expires 27 January 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1051,12 +1051,12 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ohai-ohttp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-07-22" class="published">22 July 2022</time>
+<time datetime="2022-07-26" class="published">26 July 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-01-23">23 January 2023</time></dd>
+<dd class="expires"><time datetime="2023-01-27">27 January 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1112,7 +1112,7 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1228,6 +1228,9 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4.2.1">
                     <p id="section-toc.1-1.7.2.4.2.1.1"><a href="#section-7.4.1" class="xref">7.4.1</a>.  <a href="#name-use-of-date-for-anti-replay" class="xref">Use of Date for Anti-Replay</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4.2.2">
+                    <p id="section-toc.1-1.7.2.4.2.2.1"><a href="#section-7.4.2" class="xref">7.4.2</a>.  <a href="#name-correcting-clock-difference" class="xref">Correcting Clock Differences</a></p>
+</li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
@@ -1235,6 +1238,9 @@ from the same client.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
                 <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="xref">7.6</a>.  <a href="#name-post-compromise-security" class="xref">Post-Compromise Security</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.7">
+                <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="xref">7.7</a>.  <a href="#name-client-clock-exposure" class="xref">Client Clock Exposure</a></p>
 </li>
             </ul>
 </li>
@@ -1313,10 +1319,9 @@ required by the request. In addition to having high latency, there are
 significant secondary costs, both in terms of the number of additional bytes
 exchanged and the CPU cost of cryptographic computations.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">This document describes a method of encapsulation for binary HTTP messages
-<span>[<a href="#BINARY" class="xref">BINARY</a>]</span> using Hybrid Public Key Encryption (HPKE;
-<span>[<a href="#HPKE" class="xref">HPKE</a>]</span>). This protects the content of both requests and
-responses and enables a deployment architecture that can separate the identity
-of a requester from the request.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<span>[<a href="#BINARY" class="xref">BINARY</a>]</span> using Hybrid Public Key Encryption (HPKE; <span>[<a href="#HPKE" class="xref">HPKE</a>]</span>). This
+protects the content of both requests and responses and enables a deployment
+architecture that can separate the identity of a requester from the request.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">Though this scheme requires that servers and proxies (called relays in this document)
 explicitly support it, this design represents a performance improvement over options
 that perform just one request in each connection. With limited trust placed in the
@@ -1812,7 +1817,7 @@ Encapsulated Request {
 <a href="#name-encapsulated-request" class="selfRef">Encapsulated Request</a>
         </figcaption></figure>
 </div>
-<p id="section-4-6">The Nenc parameter corresponding to the HpkeKdfId can be found in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-6">The Nenc parameter corresponding to the HpkeKdfId can be found in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>.<a href="#section-4-6" class="pilcrow">¶</a></p>
 <p id="section-4-7">An encrypted HTTP response includes a binary-encoded HTTP message <span>[<a href="#BINARY" class="xref">BINARY</a>]</span>
 and no other content; see <a href="#fig-res-pt" class="xref">Figure 5</a>.<a href="#section-4-7" class="pilcrow">¶</a></p>
 <span id="name-plaintext-response-content"></span><div id="fig-res-pt">
@@ -1874,10 +1879,10 @@ integers, respectively, each in network byte order.<a href="#section-4.1-4.1" cl
           <li id="section-4.1-4.2">Build <code>info</code> by concatenating the ASCII-encoded string "message/bhttp
 request", a zero byte, and the header.<a href="#section-4.1-4.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.1-4.3">Create a sending HPKE context by invoking <code>SetupBaseS()</code> (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>) with the public key of the receiver <code>pkR</code> and <code>info</code>.  This yields
+          <li id="section-4.1-4.3">Create a sending HPKE context by invoking <code>SetupBaseS()</code> (<span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>) with the public key of the receiver <code>pkR</code> and <code>info</code>.  This yields
 the context <code>sctxt</code> and an encapsulation key <code>enc</code>.<a href="#section-4.1-4.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.1-4.4">Encrypt <code>request</code> by invoking the <code>Seal()</code> method on <code>sctxt</code> (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-5.2" class="relref">Section 5.2</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>) with empty associated data <code>aad</code>, yielding ciphertext <code>ct</code>.<a href="#section-4.1-4.4" class="pilcrow">¶</a>
+          <li id="section-4.1-4.4">Encrypt <code>request</code> by invoking the <code>Seal()</code> method on <code>sctxt</code> (<span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.2" class="relref">Section 5.2</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>) with empty associated data <code>aad</code>, yielding ciphertext <code>ct</code>.<a href="#section-4.1-4.4" class="pilcrow">¶</a>
 </li>
           <li id="section-4.1-4.5">Concatenate the values of <code>hdr</code>, <code>enc</code>, and <code>ct</code>, yielding an Encrypted
 Request <code>enc_request</code>.<a href="#section-4.1-4.5" class="pilcrow">¶</a>
@@ -1918,9 +1923,9 @@ b. If <code>kdfID</code> and <code>aeadID</code> identify a combination of KDF a
 request", a zero byte, <code>keyID</code> as an 8-bit integer, plus <code>kemID</code>, <code>kdfID</code>,
 and <code>aeadID</code> as three 16-bit integers.<a href="#section-4.1-9.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.1-9.3">Create a receiving HPKE context by invoking <code>SetupBaseR()</code> (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>) with <code>skR</code>, <code>enc</code>, and <code>info</code>.  This produces a context <code>rctxt</code>.<a href="#section-4.1-9.3" class="pilcrow">¶</a>
+          <li id="section-4.1-9.3">Create a receiving HPKE context by invoking <code>SetupBaseR()</code> (<span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>) with <code>skR</code>, <code>enc</code>, and <code>info</code>.  This produces a context <code>rctxt</code>.<a href="#section-4.1-9.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-4.1-9.4">Decrypt <code>ct</code> by invoking the <code>Open()</code> method on <code>rctxt</code> (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12#section-5.2" class="relref">Section 5.2</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>), with an empty associated data <code>aad</code>, yielding <code>request</code> or an error
+          <li id="section-4.1-9.4">Decrypt <code>ct</code> by invoking the <code>Open()</code> method on <code>rctxt</code> (<span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.2" class="relref">Section 5.2</a> of [<a href="#HPKE" class="xref">HPKE</a>]</span>), with an empty associated data <code>aad</code>, yielding <code>request</code> or an error
 on failure. If decryption fails, the server returns an error.<a href="#section-4.1-9.4" class="pilcrow">¶</a>
 </li>
         </ol>
@@ -2595,25 +2600,136 @@ replayed.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
 HTTP requests often do not include a <code>Date</code> header field, the value of this
 field might be used by a server to limit the amount of requests it needs to
 track if it needs to prevent replay attacks.<a href="#section-7.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-2">A server can maintain state for requests for a small window of time over which
-it wishes to accept requests.  The server then rejects requests if the request
-is the same as one that was previously answered within that time window.
-Servers can reject requests outside of this window and signal that clients might
-retry with a different <code>Date</code> header field; see <span><a href="https://datatracker.ietf.org/doc/html/draft-thomson-httpapi-date-requests-00#section-4" class="relref">Section 4</a> of [<a href="#REQUEST-DATE" class="xref">REQUEST-DATE</a>]</span>.
-Servers can identify duplicate requests using the encapsulation (<code>enc</code>) value.<a href="#section-7.4.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-3">Servers <span class="bcp14">SHOULD</span> allow for the time it takes requests to arrive from the client,
-with a time window that is large enough to allow for differences in the clock of
-clients and servers.  How large a time window is needed could depend on the
-population of clients that the server needs to serve.<a href="#section-7.4.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-4">Servers <span class="bcp14">MUST NOT</span> treat the time window as secret information. An attacker can
-actively probe the server with specially crafted request timestamps to determine
-the time window over which the server will accept responses.<a href="#section-7.4.1-4" class="pilcrow">¶</a></p>
-<p id="section-7.4.1-5"><span>[<a href="#REQUEST-DATE" class="xref">REQUEST-DATE</a>]</span> contains further
-considerations for the use of the <code>Date</code> request header field.  This includes
-the way in which clients might correct for clock skew and the privacy
-considerations arising from that usage.  Servers that reject requests on the
-basis of the <code>Date</code> request header field <span class="bcp14">SHOULD</span> implement the feedback mechanism
-in <span><a href="https://datatracker.ietf.org/doc/html/draft-thomson-httpapi-date-requests-00#section-4" class="relref">Section 4</a> of [<a href="#REQUEST-DATE" class="xref">REQUEST-DATE</a>]</span> to support clock correction by clients.<a href="#section-7.4.1-5" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-2">An Oblivious Gateway Resource can maintain state for requests for a small window
+of time over which it wishes to accept requests.  The Oblivious Gateway Resource
+can store all requests it processes within this window.  Storing just the <code>enc</code>
+field of a request, which should be unique to each request, is sufficient.  The
+Oblivious Gateway Resource then rejects requests if the request is the same as
+one that was previously answered within that time window, or if the <code>Date</code>
+header field from the decrypted request is outside of the current time window.<a href="#section-7.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-3">Oblivious Gateway Resources <span class="bcp14">SHOULD</span> allow for the time it takes requests to
+arrive from the client, with a time window that is large enough to allow for
+differences in clocks.<a href="#section-7.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-4">Oblivious Gateway Resources <span class="bcp14">MUST NOT</span> treat the time window as secret
+information. An attacker can actively probe with different values for the <code>Date</code>
+field to determine the time window over which the server will accept responses.<a href="#section-7.4.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="date-fix">
+<section id="section-7.4.2">
+          <h4 id="name-correcting-clock-difference">
+<a href="#section-7.4.2" class="section-number selfRef">7.4.2. </a><a href="#name-correcting-clock-difference" class="section-name selfRef">Correcting Clock Differences</a>
+          </h4>
+<p id="section-7.4.2-1">An Oblivious Gateway Resource can reject requests that contain a <code>Date</code> value
+that is outside of its active window with a 400 series status code.  The problem
+type <span>[<a href="#PROBLEM" class="xref">PROBLEM</a>]</span> of
+"https://iana.org/assignments/http-problem-types#date" is defined to allow the
+server to signal that the <code>Date</code> value in the request was unacceptable.<a href="#section-7.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-2"><a href="#fig-date-reject" class="xref">Figure 7</a> shows an example response in HTTP/1.1 format.<a href="#section-7.4.2-2" class="pilcrow">¶</a></p>
+<span id="name-example-rejection-of-reques"></span><div id="fig-date-reject">
+<figure id="figure-7">
+            <div id="section-7.4.2-3.1">
+<pre class="lang-http-message sourcecode">
+HTTP/1.1 400 Bad Request
+Date: Mon, 07 Feb 2022 00:28:05 GMT
+Content-Type: application/problem+json
+Content-Length: 128
+
+{"type":"https://iana.org/assignments/http-problem-types#date",
+"title": "date field in request outside of acceptable range"}
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-example-rejection-of-reques" class="selfRef">Example Rejection of Request Date Field</a>
+            </figcaption></figure>
+</div>
+<p id="section-7.4.2-4">Disagreements about time are unlikely if both client and Oblivious Gateway
+Resource have a good source of time; see <span>[<a href="#NTP" class="xref">NTP</a>]</span>. However, clock
+differences are known to be commonplace; see Section 7.1 of
+<span>[<a href="#CLOCKSKEW" class="xref">CLOCKSKEW</a>]</span>.<a href="#section-7.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-5">Including a <code>Date</code> header field in the response allows the client to correct
+clock errors by retrying the same request using the value of the <code>Date</code> field
+provided by the Oblivious Gateway Resource.  The value of the <code>Date</code> field can
+be copied if the request is fresh, with an adjustment based on the <code>Age</code> field
+otherwise.  When retrying a request, the client <span class="bcp14">MUST</span> create a fresh encryption
+of the modified request, using a new HPKE context.<a href="#section-7.4.2-5" class="pilcrow">¶</a></p>
+<span id="name-retrying-with-an-update-dat"></span><div id="fig-retry-date">
+<figure id="figure-8">
+            <div id="section-7.4.2-6.1">
+              <div class="alignLeft art-svg artwork" id="section-7.4.2-6.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="304" width="464" viewBox="0 0 464 304" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
+                  <path d="M 8,32 L 8,80" fill="none" stroke="black"></path>
+                  <path d="M 48,80 L 48,288" fill="none" stroke="black"></path>
+                  <path d="M 88,32 L 88,80" fill="none" stroke="black"></path>
+                  <path d="M 152,32 L 152,80" fill="none" stroke="black"></path>
+                  <path d="M 192,80 L 192,128" fill="none" stroke="black"></path>
+                  <path d="M 192,160 L 192,192" fill="none" stroke="black"></path>
+                  <path d="M 192,224 L 192,256" fill="none" stroke="black"></path>
+                  <path d="M 288,80 L 288,288" fill="none" stroke="black"></path>
+                  <path d="M 312,32 L 312,80" fill="none" stroke="black"></path>
+                  <path d="M 368,32 L 368,80" fill="none" stroke="black"></path>
+                  <path d="M 408,80 L 408,288" fill="none" stroke="black"></path>
+                  <path d="M 456,32 L 456,80" fill="none" stroke="black"></path>
+                  <path d="M 8,32 L 88,32" fill="none" stroke="black"></path>
+                  <path d="M 152,32 L 312,32" fill="none" stroke="black"></path>
+                  <path d="M 368,32 L 456,32" fill="none" stroke="black"></path>
+                  <path d="M 8,80 L 88,80" fill="none" stroke="black"></path>
+                  <path d="M 152,80 L 312,80" fill="none" stroke="black"></path>
+                  <path d="M 368,80 L 456,80" fill="none" stroke="black"></path>
+                  <path d="M 48,142 L 280,142" fill="none" stroke="black"></path>
+                  <path d="M 48,146 L 280,146" fill="none" stroke="black"></path>
+                  <path d="M 296,144 L 400,144" fill="none" stroke="black"></path>
+                  <path d="M 56,206 L 288,206" fill="none" stroke="black"></path>
+                  <path d="M 56,210 L 288,210" fill="none" stroke="black"></path>
+                  <path d="M 304,208 L 408,208" fill="none" stroke="black"></path>
+                  <path d="M 48,270 L 280,270" fill="none" stroke="black"></path>
+                  <path d="M 48,274 L 280,274" fill="none" stroke="black"></path>
+                  <path d="M 296,272 L 400,272" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="408,272 396,266.4 396,277.6" fill="black" transform="rotate(0,400,272)"></polygon>
+                  <polygon class="arrowhead" points="408,144 396,138.4 396,149.6" fill="black" transform="rotate(0,400,144)"></polygon>
+                  <polygon class="arrowhead" points="288,272 276,266.4 276,277.6" fill="black" transform="rotate(0,280,272)"></polygon>
+                  <polygon class="arrowhead" points="288,144 276,138.4 276,149.6" fill="black" transform="rotate(0,280,144)"></polygon>
+                  <polygon class="arrowhead" points="64,208 52,202.4 52,213.6" fill="black" transform="rotate(180,56,208)"></polygon>
+                  <g class="text">
+                    <text x="44" y="52">Client</text>
+                    <text x="184" y="52">Relay</text>
+                    <text x="224" y="52">and</text>
+                    <text x="272" y="52">Gateway</text>
+                    <text x="404" y="52">Target</text>
+                    <text x="232" y="68">Resources</text>
+                    <text x="412" y="68">Resource</text>
+                    <text x="96" y="132">Request</text>
+                    <text x="312" y="180">400</text>
+                    <text x="364" y="180">Response</text>
+                    <text x="352" y="196">+</text>
+                    <text x="380" y="196">Date</text>
+                    <text x="296" y="212">&lt;</text>
+                    <text x="96" y="244">Request</text>
+                    <text x="72" y="260">+</text>
+                    <text x="112" y="260">Updated</text>
+                    <text x="164" y="260">Date</text>
+                    <text x="192" y="292">|</text>
+                  </g>
+                </svg><a href="#section-7.4.2-6.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-retrying-with-an-update-dat" class="selfRef">Retrying with an Update Date Field</a>
+            </figcaption></figure>
+</div>
+<p id="section-7.4.2-7">Intermediaries can sometimes rewrite the <code>Date</code> field when forwarding responses.
+This might cause problems if the Oblivious Gateway Resource and intermediary
+clocks differ by enough to cause the retry to be rejected.  Therefore, clients
+<span class="bcp14">MUST NOT</span> retry a request with an adjusted date more than once.<a href="#section-7.4.2-7" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-8">Oblivious Gateway Resources that condition their responses on the <code>Date</code> header
+field <span class="bcp14">SHOULD</span> either ensure that intermediaries do not cache responses (by
+including a <code>Cache-Control</code> directive of <code>no-store</code>) or designate the response
+as conditional on the value of the <code>Date</code> request header field (by including the
+token "date" in a <code>Vary</code> header field).<a href="#section-7.4.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-9">Clients <span class="bcp14">MUST NOT</span> use the date provided by the Oblivious Gateway Resource for any
+other purpose, including future requests to any resource.  Any request that uses
+information provided by the Oblivious Gateway Resource might be correlated using
+that information.<a href="#section-7.4.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2650,6 +2766,20 @@ Relay Resource cooperate with the attacker or that the attacker is able to
 compromise these TLS connections.<a href="#section-7.6-4" class="pilcrow">¶</a></p>
 <p id="section-7.6-5">The total number of affected messages affected by server key compromise can be
 limited by regular rotation of server keys.<a href="#section-7.6-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="client-clock-exposure">
+<section id="section-7.7">
+        <h3 id="name-client-clock-exposure">
+<a href="#section-7.7" class="section-number selfRef">7.7. </a><a href="#name-client-clock-exposure" class="section-name selfRef">Client Clock Exposure</a>
+        </h3>
+<p id="section-7.7-1">Including a <code>Date</code> field in requests reveals some information about the client
+clock.  This might be used to fingerprint clients <span>[<a href="#UWT" class="xref">UWT</a>]</span> or to identify clients
+that are vulnerable to attacks that depend on incorrect clocks.<a href="#section-7.7-1" class="pilcrow">¶</a></p>
+<p id="section-7.7-2">Clients can randomize the value that they provide for <code>Date</code> to obscure the true
+value of their clock and reduce the chance of linking of requests over time.
+However, this increases the risk that their request is rejected as outside the
+acceptable window.<a href="#section-7.7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2756,10 +2886,34 @@ request" for request encryption, and the HPKE export context string should be
       <h2 id="name-iana-considerations">
 <a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-11-1">Please update the "Media Types" registry at
+<p id="section-11-1">IANA are request to update the "Media Types" registry at
 <a href="https://www.iana.org/assignments/media-types">https://www.iana.org/assignments/media-types</a> with the registration information
 in <a href="#media-types" class="xref">Section 6</a> for the media types "message/ohttp-req", "message/ohttp-res",
 and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
+<p id="section-11-2">IANA are requested to create a new entry in the "HTTP Problem Type" registry
+established by <span>[<a href="#PROBLEM" class="xref">PROBLEM</a>]</span>.<a href="#section-11-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-11-3">
+        <dt id="section-11-3.1">Type URI:</dt>
+        <dd style="margin-left: 1.5em" id="section-11-3.2">
+          <p id="section-11-3.2.1">https://iana.org/assignments/http-problem-types#date<a href="#section-11-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-11-3.3">Title:</dt>
+        <dd style="margin-left: 1.5em" id="section-11-3.4">
+          <p id="section-11-3.4.1">Date Not Acceptable<a href="#section-11-3.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-11-3.5">Recommended HTTP Status Code:</dt>
+        <dd style="margin-left: 1.5em" id="section-11-3.6">
+          <p id="section-11-3.6.1">400<a href="#section-11-3.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-11-3.7">Reference:</dt>
+        <dd style="margin-left: 1.5em" id="section-11-3.8">
+          <p id="section-11-3.8.1"><a href="#date-fix" class="xref">Section 7.4.2</a> of this document<a href="#section-11-3.8.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
 </section>
 </div>
 <section id="section-12">
@@ -2781,11 +2935,15 @@ and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
 <dd class="break"></dd>
 <dt id="HPKE">[HPKE]</dt>
         <dd>
-<span class="refAuthor">Barnes, R. L.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-hpke-12</span>, <time datetime="2021-09-02" class="refDate">2 September 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hpke-12</a>&gt;</span>. </dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
 <span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PROBLEM">[PROBLEM]</dt>
+        <dd>
+<span class="refAuthor">Nottingham, M.</span>, <span class="refAuthor">Wilde, E.</span>, and <span class="refAuthor">S. Dalal</span>, <span class="refTitle">"Problem Details for HTTP APIs"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpapi-rfc7807bis-03</span>, <time datetime="2022-05-25" class="refDate">25 May 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-rfc7807bis-03">https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-rfc7807bis-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC">[QUIC]</dt>
         <dd>
@@ -2794,10 +2952,6 @@ and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
 <dt id="QUIC-HTTP">[QUIC-HTTP]</dt>
         <dd>
 <span class="refAuthor">Bishop, M.</span>, <span class="refTitle">"HTTP/3"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-http-34</span>, <time datetime="2021-02-02" class="refDate">2 February 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-http-34">https://datatracker.ietf.org/doc/html/draft-ietf-quic-http-34</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="REQUEST-DATE">[REQUEST-DATE]</dt>
-        <dd>
-<span class="refAuthor">Thomson, M.</span>, <span class="refTitle">"Using The Date Header Field In HTTP Requests"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-thomson-httpapi-date-requests-00</span>, <time datetime="2022-02-08" class="refDate">8 February 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-thomson-httpapi-date-requests-00">https://datatracker.ietf.org/doc/html/draft-thomson-httpapi-date-requests-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2826,6 +2980,10 @@ and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
 <a href="#section-12.2" class="section-number selfRef">12.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="CLOCKSKEW">[CLOCKSKEW]</dt>
+        <dd>
+<span class="refAuthor">Acer, M.</span>, <span class="refAuthor">Stark, E.</span>, <span class="refAuthor">Felt, A.</span>, <span class="refAuthor">Fahl, S.</span>, <span class="refAuthor">Bhargava, R.</span>, <span class="refAuthor">Dev, B.</span>, <span class="refAuthor">Braithwaite, M.</span>, <span class="refAuthor">Sleevi, R.</span>, and <span class="refAuthor">P. Tabriz</span>, <span class="refTitle">"Where the Wild Warnings Are: Root Causes of Chrome HTTPS Certificate Errors"</span>, <span class="seriesInfo">Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security</span>, <span class="seriesInfo">DOI 10.1145/3133956.3134007</span>, <time datetime="2017-10" class="refDate">October 2017</time>, <span>&lt;<a href="https://doi.org/10.1145/3133956.3134007">https://doi.org/10.1145/3133956.3134007</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="CONSISTENCY">[CONSISTENCY]</dt>
         <dd>
 <span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Finkel, M.</span>, <span class="refAuthor">Thomson, M.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Key Consistency and Discovery"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-wood-key-consistency-02</span>, <time datetime="2022-03-04" class="refDate">4 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-wood-key-consistency-02">https://datatracker.ietf.org/doc/html/draft-wood-key-consistency-02</a>&gt;</span>. </dd>
@@ -2842,13 +3000,17 @@ and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Petersson, A.</span> and <span class="refAuthor">M. Nilsson</span>, <span class="refTitle">"Forwarded HTTP Extension"</span>, <span class="seriesInfo">RFC 7239</span>, <span class="seriesInfo">DOI 10.17487/RFC7239</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7239">https://www.rfc-editor.org/rfc/rfc7239</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="NTP">[NTP]</dt>
+        <dd>
+<span class="refAuthor">Mills, D.</span>, <span class="refAuthor">Martin, J., Ed.</span>, <span class="refAuthor">Burbank, J.</span>, and <span class="refAuthor">W. Kasch</span>, <span class="refTitle">"Network Time Protocol Version 4: Protocol and Algorithms Specification"</span>, <span class="seriesInfo">RFC 5905</span>, <span class="seriesInfo">DOI 10.17487/RFC5905</span>, <time datetime="2010-06" class="refDate">June 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5905">https://www.rfc-editor.org/rfc/rfc5905</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="ODoH">[ODoH]</dt>
         <dd>
 <span class="refAuthor">Singanamalla, S.</span>, <span class="refAuthor">Chunhapanya, S.</span>, <span class="refAuthor">Vavrusa, M.</span>, <span class="refAuthor">Verma, T.</span>, <span class="refAuthor">Wu, P.</span>, <span class="refAuthor">Fayed, M.</span>, <span class="refAuthor">Heimerl, K.</span>, <span class="refAuthor">Sullivan, N.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Oblivious DNS over HTTPS (ODoH): A Practical Privacy Enhancement to DNS"</span>, <time datetime="2021-01-07" class="refDate">7 January 2021</time>, <span>&lt;<a href="https://www.petsymposium.org/2021/files/papers/issue4/popets-2021-0085.pdf">https://www.petsymposium.org/2021/files/papers/issue4/popets-2021-0085.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ODOH">[ODOH]</dt>
         <dd>
-<span class="refAuthor">Kinnear, E.</span>, <span class="refAuthor">McManus, P.</span>, <span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Verma, T.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Oblivious DNS over HTTPS"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-pauly-dprive-oblivious-doh-11</span>, <time datetime="2022-02-17" class="refDate">17 February 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-pauly-dprive-oblivious-doh-11">https://datatracker.ietf.org/doc/html/draft-pauly-dprive-oblivious-doh-11</a>&gt;</span>. </dd>
+<span class="refAuthor">Kinnear, E.</span>, <span class="refAuthor">McManus, P.</span>, <span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Verma, T.</span>, and <span class="refAuthor">C.A. Wood</span>, <span class="refTitle">"Oblivious DNS over HTTPS"</span>, <span class="seriesInfo">RFC 9230</span>, <span class="seriesInfo">DOI 10.17487/RFC9230</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9230">https://www.rfc-editor.org/rfc/rfc9230</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="OHTTP-ANALYSIS">[OHTTP-ANALYSIS]</dt>
         <dd>
@@ -2877,6 +3039,10 @@ and "application/ohttp-keys".<a href="#section-11-1" class="pilcrow">¶</a></p>
 <dt id="TEMPLATE">[TEMPLATE]</dt>
         <dd>
 <span class="refAuthor">Gregorio, J.</span>, <span class="refAuthor">Fielding, R.</span>, <span class="refAuthor">Hadley, M.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">D. Orchard</span>, <span class="refTitle">"URI Template"</span>, <span class="seriesInfo">RFC 6570</span>, <span class="seriesInfo">DOI 10.17487/RFC6570</span>, <time datetime="2012-03" class="refDate">March 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6570">https://www.rfc-editor.org/rfc/rfc6570</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="UWT">[UWT]</dt>
+        <dd>
+<span class="refAuthor">Nottingham, M.</span>, <span class="refTitle">"Unsanctioned Web Tracking"</span>, <time datetime="2015-07-17" class="refDate">17 July 2015</time>, <span>&lt;<a href="https://www.w3.org/2001/tag/doc/unsanctioned-tracking/">https://www.w3.org/2001/tag/doc/unsanctioned-tracking/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="X25519">[X25519]</dt>
       <dd>
@@ -3056,7 +3222,7 @@ construct the AEAD key and nonce and decrypt the response.<a href="#appendix-A-3
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-B-1">This design is based on a design for Oblivious DoH, described in
-<span>[<a href="#ODOH" class="xref">ODOH</a>]</span>. David Benjamin and Eric Rescorla made
+<span>[<a href="#ODOH" class="xref">ODOH</a>]</span>. David Benjamin, Mark Nottingham, and Eric Rescorla made
 technical contributions.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
