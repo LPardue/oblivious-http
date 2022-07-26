@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-24T00:39:44.961075+00:00",
+  "timestamp": "2022-07-26T00:38:51.491073+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1988,9 +1988,38 @@
       "labels": [],
       "body": "1. Let's say HPKE public key A was valid from 2022-07-01 to 2022-07-02. The client encapsulates a request X using pubkey A, but buffers it because of network issues, in order to retry later.\r\n2. Now it rotates and public key B is valid as of 2022-07-03. \r\n3. X encapsulated using pubkey A would not be decryptable by pubkey B. So if you receive X on 2022-07-03, then you know that X was generated between 2022-07-01 and 2022-07-02.",
       "createdAt": "2022-07-23T23:14:36Z",
-      "updatedAt": "2022-07-23T23:14:36Z",
+      "updatedAt": "2022-07-25T14:20:13Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm not inclined to add this.  \"Don't do that\" seems pretty obvious to me, especially when we recommend that requests include a Date.",
+          "createdAt": "2022-07-24T18:58:11Z",
+          "updatedAt": "2022-07-24T18:58:11Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "While this advice seems fine, I agree that it's not really necessary. It also brings up more questions to me \u2014 what stops any layer below the OHTTP layer or an intermediary from arbitrarily buffering messages?\r\n\r\nMaybe just have a note that the key config that's used as well as explicit date markings can leak the time that the request was generated?",
+          "createdAt": "2022-07-25T14:09:58Z",
+          "updatedAt": "2022-07-25T14:09:58Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Maybe just have a note that the key config that's used as well as explicit date markings can leak the time that the request was generated?\r\n\r\nThis seems like a reasonable way to deal with the problem. Liveness information can leak in a number of places, including through noting which public key was used. It might also leak via the date. Maybe this can become part of the differential treatment section?\r\n\r\n```\r\nDifferential treatment may also occur based on the time time at which requests are generated. The liveness of this information may be revealed through the public key used to encapsulate a request or through the Date header that is attached to a request in the event of a client retry. Clients should account for this risk when using a particular relay and gateway.\r\n```",
+          "createdAt": "2022-07-25T14:16:34Z",
+          "updatedAt": "2022-07-25T14:16:34Z"
+        },
+        {
+          "author": "ShivanKaul",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That sounds good to me",
+          "createdAt": "2022-07-25T14:20:13Z",
+          "updatedAt": "2022-07-25T14:20:13Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -9453,18 +9482,33 @@
       "labels": [],
       "body": "This includes the time correction piece.  I'm interested in whether\r\npeople think that it is OK to include that.  The section could be\r\nremoved along with the corresponding IANA piece, but given the\r\nprevalence of clock skew, I'm inclined to leave it in.",
       "createdAt": "2022-07-20T10:16:15Z",
-      "updatedAt": "2022-07-21T19:31:09Z",
+      "updatedAt": "2022-07-24T17:51:33Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "27f32012cce112c898ff0ee570eb847af1831686",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "date-integration",
-      "headRefOid": "3f7375782a02952a30a3e934f2a249f76d8f6236",
+      "headRefOid": "0032c07abfd0b7141c7cb99abb8d6f4bddff9c2f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The picture might help, but it is also a lot of vertical real estate to dedicate to this.  Let's see if I can't compress it a little.",
+          "createdAt": "2022-07-24T17:39:47Z",
+          "updatedAt": "2022-07-24T17:39:47Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The picture might help, but it is also a lot of vertical real estate to dedicate to this.  Let's see if I can't compress it a little.\n\nMaybe an alternative style is to just list the happy path actions in a list? Client sends request, gets back response with 4xx and date header, retires request with new HPKE context, and then stops based on response, or something. These four simple steps are just spread across a lot of lines right now. But this is purely editorial, so I trust your judgement here.",
+          "createdAt": "2022-07-24T17:42:21Z",
+          "updatedAt": "2022-07-24T17:42:21Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOE6fLGM4-aHxp",
@@ -9483,6 +9527,26 @@
               "body": "```suggestion\r\nheader field of the decapsulated request is outside of the current time window.\r\n```",
               "createdAt": "2022-07-21T19:25:21Z",
               "updatedAt": "2022-07-21T19:31:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-gW5V",
+          "commit": {
+            "abbreviatedOid": "3f73757"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-24T17:37:22Z",
+          "updatedAt": "2022-07-24T17:37:23Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "```suggestion\r\nheader field of the decrypted request is outside of the current time window.\r\n```",
+              "createdAt": "2022-07-24T17:37:22Z",
+              "updatedAt": "2022-07-24T17:37:23Z"
             }
           ]
         }
@@ -9535,21 +9599,21 @@
       "id": "PR_kwDOE6fLGM47_Pfn",
       "title": "Don't buffer encrypted messages on the client",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/140",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ShivanKaul",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Fix https://github.com/ietf-wg-ohai/oblivious-http/issues/139",
       "createdAt": "2022-07-23T23:15:17Z",
-      "updatedAt": "2022-07-23T23:15:17Z",
+      "updatedAt": "2022-07-25T14:20:42Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "a8cfc319147c87e53423427e8788ee2596994060",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "ShivanKaul-patch-1",
       "headRefOid": "9e086115a82e7b8ab8e46049b36d4f33ffbfa21b",
-      "closedAt": null,
+      "closedAt": "2022-07-25T14:20:42Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
