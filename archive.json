@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-26T00:38:51.491073+00:00",
+  "timestamp": "2022-07-28T00:35:39.268242+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1957,15 +1957,15 @@
       "id": "I_kwDOE6fLGM5NfowT",
       "title": "Request-date reference",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/136",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "There is a bunch of stuff that we normatively depend on regarding the use of Date.  As it seems like request-date isn't going anywhere, we should pull in the relevant pieces instead.",
       "createdAt": "2022-07-11T03:01:16Z",
-      "updatedAt": "2022-07-18T16:08:35Z",
-      "closedAt": null,
+      "updatedAt": "2022-07-26T18:21:42Z",
+      "closedAt": "2022-07-26T18:21:42Z",
       "comments": [
         {
           "author": "chris-wood",
@@ -1973,6 +1973,13 @@
           "body": "That sounds reasonable like a reasonable way to unblock us and make forward progress.",
           "createdAt": "2022-07-18T16:08:35Z",
           "updatedAt": "2022-07-18T16:08:35Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed by #137.",
+          "createdAt": "2022-07-26T18:21:42Z",
+          "updatedAt": "2022-07-26T18:21:42Z"
         }
       ]
     },
@@ -1988,7 +1995,7 @@
       "labels": [],
       "body": "1. Let's say HPKE public key A was valid from 2022-07-01 to 2022-07-02. The client encapsulates a request X using pubkey A, but buffers it because of network issues, in order to retry later.\r\n2. Now it rotates and public key B is valid as of 2022-07-03. \r\n3. X encapsulated using pubkey A would not be decryptable by pubkey B. So if you receive X on 2022-07-03, then you know that X was generated between 2022-07-01 and 2022-07-02.",
       "createdAt": "2022-07-23T23:14:36Z",
-      "updatedAt": "2022-07-25T14:20:13Z",
+      "updatedAt": "2022-07-27T19:03:06Z",
       "closedAt": null,
       "comments": [
         {
@@ -2008,9 +2015,9 @@
         {
           "author": "chris-wood",
           "authorAssociation": "COLLABORATOR",
-          "body": "> Maybe just have a note that the key config that's used as well as explicit date markings can leak the time that the request was generated?\r\n\r\nThis seems like a reasonable way to deal with the problem. Liveness information can leak in a number of places, including through noting which public key was used. It might also leak via the date. Maybe this can become part of the differential treatment section?\r\n\r\n```\r\nDifferential treatment may also occur based on the time time at which requests are generated. The liveness of this information may be revealed through the public key used to encapsulate a request or through the Date header that is attached to a request in the event of a client retry. Clients should account for this risk when using a particular relay and gateway.\r\n```",
+          "body": "> Maybe just have a note that the key config that's used as well as explicit date markings can leak the time that the request was generated?\r\n\r\nThis seems like a reasonable way to deal with the problem. Liveness information can leak in a number of places, including through noting which public key was used. It might also leak via the date. Maybe this can become part of the differential treatment section?\r\n\r\n> Differential treatment may also occur based on the time time at which requests are generated. The liveness of this information may be revealed through the public key used to encapsulate a request or through the Date header that is attached to a request in the event of a client retry. Clients should account for this risk when using a particular relay and gateway.",
           "createdAt": "2022-07-25T14:16:34Z",
-          "updatedAt": "2022-07-25T14:16:34Z"
+          "updatedAt": "2022-07-26T18:23:02Z"
         },
         {
           "author": "ShivanKaul",
@@ -2018,8 +2025,127 @@
           "body": "That sounds good to me",
           "createdAt": "2022-07-25T14:20:13Z",
           "updatedAt": "2022-07-25T14:20:13Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think that while this text is true, I believe that it is also unnecessary.\r\n\r\nDiscussion of key liveness are dealt with in the key-consistency draft, so this is really about requests that are transmitted well after they are constructed.  If we start to document that, there are lots of other things that start to come up.",
+          "createdAt": "2022-07-26T19:04:45Z",
+          "updatedAt": "2022-07-26T19:04:45Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Discussion of key liveness are dealt with in the key-consistency draft, so this is really about requests that are transmitted well after they are constructed. If we start to document that, there are lots of other things that start to come up.\r\n\r\nI agree, but the content I'm proposing here relates to how liveness affects differential treatment. We've already noted a few key ways in which this can happen, so it seems pretty harmless to me to include one more. I don't think we need to say anything more about _how_ to deal with liveness or how it pertains to consistency. \r\n\r\nI'll propose some text to make this more clear. No more than one sentence.",
+          "createdAt": "2022-07-27T19:03:05Z",
+          "updatedAt": "2022-07-27T19:03:05Z"
         }
       ]
+    },
+    {
+      "number": 141,
+      "id": "I_kwDOE6fLGM5Ol6Zr",
+      "title": "The gateway gets the whole request",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/141",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This means that the client really needs to trust that the gateway doesn't muck with it.  As a practical matter, this incentivizes clients to choose a gateway that is effectively the same entity as the target.  They don't have to, but the amount of trust required of the gateway is higher if gateway and target aren't operated by the same entity.\r\n\r\nWe touch on this, but we could be clearer about it.",
+      "createdAt": "2022-07-26T17:38:39Z",
+      "updatedAt": "2022-07-26T17:38:39Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 144,
+      "id": "I_kwDOE6fLGM5OmD-L",
+      "title": "Potential Side-channel attacks...",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/144",
+      "state": "OPEN",
+      "author": "vparla",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Hi,\r\nSince the gateways are seeing request/response pairs, there is a potential here for a side-channel attack at the gateway itself or at a relay.\r\n(if I understood the draft correctly - if not, please clarify my misunderstanding here).   Are there mitigations planned for this type of issue that you could expand on in the Security Considerations section perhaps? ",
+      "createdAt": "2022-07-26T18:19:03Z",
+      "updatedAt": "2022-07-26T20:59:28Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Does the new text in #143 address this concern?",
+          "createdAt": "2022-07-26T18:21:16Z",
+          "updatedAt": "2022-07-26T18:21:16Z"
+        },
+        {
+          "author": "vparla",
+          "authorAssociation": "NONE",
+          "body": "I don't think so, because the claim is the gateway does not have intimate knowledge of the contents of the request/response.  If that assertion is true, the gateway shouldn't be able to ascertain information about the actual contents from those pairs (directly or indirectly, via a side-channel attack). \r\n\r\nIf the burden is on the application developer to ensure that request/response pairs traversing the gateway are to be resilient to side-channel attacks of those pairings, then it would be good to explicitly call that out in this spec (perhaps in the security considerations section?)  Thoughts?\r\n",
+          "createdAt": "2022-07-26T18:33:39Z",
+          "updatedAt": "2022-07-26T18:33:39Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@vparla the gateway necessarily sees all request and response pairs, and will therefore always learn information about each transaction. This is fundamental to the design. Whether or not the gateway uses that information for malicious purposes, e.g., by providing different responses to different requests for the same target resource, depends on the trust model. And the change in #143 addresses that. I don't think further text is needed here.",
+          "createdAt": "2022-07-26T19:08:36Z",
+          "updatedAt": "2022-07-26T19:08:36Z"
+        },
+        {
+          "author": "vparla",
+          "authorAssociation": "NONE",
+          "body": "\"Finally, a relay can also generate responses, **though it assumed to\r\n   not be able to examine the content of a request** (other than to\r\n   observe the choice of key identifier, KDF, and AEAD), so it is also\r\n   assumed that it cannot generate an Encapsulated Response.\"\r\n   I feel that a relay could certainly perform a side-channel attack here as well using R/R pairings.",
+          "createdAt": "2022-07-26T19:46:19Z",
+          "updatedAt": "2022-07-26T19:46:41Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I feel that a relay could certainly perform a side-channel attack here as well using R/R pairings.\r\n\r\nCan you please be more specific here? What type of attack could the relay do to violate client privacy that is not already documented in the draft?",
+          "createdAt": "2022-07-26T19:48:36Z",
+          "updatedAt": "2022-07-26T19:48:36Z"
+        },
+        {
+          "author": "vparla",
+          "authorAssociation": "NONE",
+          "body": "Typically in HTTPs scenarios, it is more difficult to perform side channel attacks as a flow observer, especially if multiplexing of requests and responses are performed.   In this design, if I understand it correctly, the requests and responses are being broken out into distinct exchanges that the relay can see and therefore it makes it easier for a relay to perform these types of attacks that would be more difficult had the relay not been used in the first place.  If my understanding of the protocol is incorrect here, please feel free to point that out. ",
+          "createdAt": "2022-07-26T20:00:33Z",
+          "updatedAt": "2022-07-26T20:00:33Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "You seem to be describing fingerprinting attacks, wherein the observer uses features extracted from otherwise encrypted traffic to try and learn information about the underlying (unencrypted) data. Yes, the relay does have a more fine-grained view of each exchange compared to a network observer in this protocol since it can see explicit message boundaries, and that might impact the efficacy of these attacks. This is partly already addressed in the document:\r\n\r\n> As the time at which Encapsulated Request or response messages are sent can reveal information to a network observer. Though messages exchanged between the Oblivious Relay Resource and the Oblivious Gateway Resource might be sent in a single connection, traffic analysis could be used to match messages that are forwarded by the relay.\r\n\r\nWe could extend this to note the relay's view of message boundaries. I don't think any additional text is needed for the gateway.",
+          "createdAt": "2022-07-26T20:05:44Z",
+          "updatedAt": "2022-07-26T20:05:44Z"
+        },
+        {
+          "author": "vparla",
+          "authorAssociation": "NONE",
+          "body": "Whatever you feel is best.  I think some language around the message level risks this creates vs non-relay scenarios might be helpful.   Does the client intentionally break things up in a way that crosses the underlying application message boundaries (e.g. more like packetization) with a relay?\r\n I have more questions about the gateway functionality that we can discuss separately.",
+          "createdAt": "2022-07-26T20:15:45Z",
+          "updatedAt": "2022-07-26T20:59:28Z"
+        }
+      ]
+    },
+    {
+      "number": 145,
+      "id": "I_kwDOE6fLGM5OmELz",
+      "title": "Imperfect consistency doesn't mean a total loss of privacy",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/145",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "...just a partial one.\r\n\r\nFrom IETF 114:\r\n\r\n> Richard Barnes: a passing thought: linkability != losing all OHTTP protection. in particular because linkability like Ben is talking about doesn't link to an IP address, which is substantially worse\r\n\r\n> Martin Thomson: @Richard Barnes yeah, that's true, there are lesser losses involved; a unique Target URL creates pseudonymity in place of anonymity, which isn't great, but it isn't a complete loss\r\n\r\nI don't know if it is worth enumerating all of the combinations is viable, but we might consider talking about the exact shape of the consistency requirements here.",
+      "createdAt": "2022-07-26T18:19:58Z",
+      "updatedAt": "2022-07-26T18:19:58Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -9475,24 +9601,26 @@
       "id": "PR_kwDOE6fLGM47uCam",
       "title": "Integrate request-date stuff",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/137",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This includes the time correction piece.  I'm interested in whether\r\npeople think that it is OK to include that.  The section could be\r\nremoved along with the corresponding IANA piece, but given the\r\nprevalence of clock skew, I'm inclined to leave it in.",
       "createdAt": "2022-07-20T10:16:15Z",
-      "updatedAt": "2022-07-24T17:51:33Z",
+      "updatedAt": "2022-07-26T17:39:03Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "27f32012cce112c898ff0ee570eb847af1831686",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "date-integration",
-      "headRefOid": "0032c07abfd0b7141c7cb99abb8d6f4bddff9c2f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "a85db2e4a25efbfd9ee25107557e2304e3f0090c",
+      "closedAt": "2022-07-26T17:39:01Z",
+      "mergedAt": "2022-07-26T17:39:01Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "aad02b907ea0e1078eb8bbb01b692c2d05148599"
+      },
       "comments": [
         {
           "author": "martinthomson",
@@ -9547,6 +9675,86 @@
               "body": "```suggestion\r\nheader field of the decrypted request is outside of the current time window.\r\n```",
               "createdAt": "2022-07-24T17:37:22Z",
               "updatedAt": "2022-07-24T17:37:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-pB2v",
+          "commit": {
+            "abbreviatedOid": "0032c07"
+          },
+          "author": "ShivanKaul",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-26T13:02:21Z",
+          "updatedAt": "2022-07-26T13:02:21Z",
+          "comments": [
+            {
+              "originalPosition": 150,
+              "body": "s/change/chance",
+              "createdAt": "2022-07-26T13:02:21Z",
+              "updatedAt": "2022-07-26T13:02:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-pDR2",
+          "commit": {
+            "abbreviatedOid": "0032c07"
+          },
+          "author": "ShivanKaul",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-26T13:06:14Z",
+          "updatedAt": "2022-07-26T13:06:14Z",
+          "comments": [
+            {
+              "originalPosition": 150,
+              "body": "Could the Oblivious Gateway Resource also indicate the right time window to the client? This would allow a privacy-sensitive client to randomize the `Date` value correctly to prevent clock fingerprinting, and also reduce chances of rejection.",
+              "createdAt": "2022-07-26T13:06:14Z",
+              "updatedAt": "2022-07-26T13:06:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-pET9",
+          "commit": {
+            "abbreviatedOid": "0032c07"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-26T13:09:02Z",
+          "updatedAt": "2022-07-26T13:09:04Z",
+          "comments": [
+            {
+              "originalPosition": 151,
+              "body": "```suggestion\r\nvalue of their clock and reduce the chance of linking of requests over time.\r\n```",
+              "createdAt": "2022-07-26T13:09:02Z",
+              "updatedAt": "2022-07-26T13:09:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-pXUQ",
+          "commit": {
+            "abbreviatedOid": "0032c07"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-26T13:55:54Z",
+          "updatedAt": "2022-07-26T13:55:55Z",
+          "comments": [
+            {
+              "originalPosition": 150,
+              "body": "I don't think that that is really necessary.  The idea is to carry the value of `now()`, which the response `Date` field does amply.  Having information about the window (e.g., 10s into the past, 5s into the future) might help if you have very long delays on request/response processing, but I don't see that as being very useful in most cases.  Anything less than 1s will just wash out.",
+              "createdAt": "2022-07-26T13:55:55Z",
+              "updatedAt": "2022-07-26T13:55:55Z"
             }
           ]
         }
@@ -9619,6 +9827,108 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 142,
+      "id": "PR_kwDOE6fLGM48IRer",
+      "title": "The Date isn't needed if you know it isn't needed",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/142",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-07-26T17:42:04Z",
+      "updatedAt": "2022-07-26T19:20:46Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "aad02b907ea0e1078eb8bbb01b692c2d05148599",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "date-optional",
+      "headRefOid": "cbc7782ac3c1557623a9c127df9dbf6dd291b783",
+      "closedAt": "2022-07-26T19:20:46Z",
+      "mergedAt": "2022-07-26T19:20:46Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "f95424a23ce45ad321779c0232be0c75772c1c07"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4-rKe1",
+          "commit": {
+            "abbreviatedOid": "cbc7782"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-07-26T19:20:41Z",
+          "updatedAt": "2022-07-26T19:20:41Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 143,
+      "id": "PR_kwDOE6fLGM48IURk",
+      "title": "Add text about deployment assumptions for servers",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/143",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@bifurcation noted that it was important to note that the Gateway needs\r\nto be trusted if gateway != target.  As a practical matter, that means\r\nthat you probably want gateway == target.",
+      "createdAt": "2022-07-26T17:56:18Z",
+      "updatedAt": "2022-07-27T18:27:19Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "aad02b907ea0e1078eb8bbb01b692c2d05148599",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "gateway-trust",
+      "headRefOid": "36c2eeb451f5950052844ecc182f180545f8b475",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4-rStF",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-07-26T19:53:05Z",
+          "updatedAt": "2022-07-26T19:53:05Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-w-r1",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "The trust model content is good, but I don't think we should restrict this to \"https\" only. ",
+          "createdAt": "2022-07-27T18:26:51Z",
+          "updatedAt": "2022-07-27T18:27:19Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "```suggestion\r\n```\r\nI don't think we should restrict OHTTP in this way. It's like saying clients MUST NOT use \"http\" in the first place (if they weren't using OHTTP). The protocol still has benefits for clients even in the event that the target resource is only accessible over HTTP. ",
+              "createdAt": "2022-07-27T18:26:51Z",
+              "updatedAt": "2022-07-27T18:27:19Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
