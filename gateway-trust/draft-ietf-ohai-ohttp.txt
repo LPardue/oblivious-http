@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 27 January 2023                                      Cloudflare
-                                                            26 July 2022
+Expires: 30 January 2023                                      Cloudflare
+                                                            29 July 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 January 2023.
+   This Internet-Draft will expire on 30 January 2023.
 
 Copyright Notice
 
@@ -1078,8 +1078,8 @@ Table of Contents
    protection for the unprotected requests and responses, plus
    protections for traffic analysis; see Section 7.2.3.
 
-   Unsecured requests - such those with the "http" scheme as opposed to
-   the "https" scheme - MUST NOT be used if the Oblivious Gateway and
+   Nonsecure requests - such those with the "http" scheme as opposed to
+   the "https" scheme - SHOULD NOT be used if the Oblivious Gateway and
    Target Resources are operated by different entities as that would
    expose both requests and response to modification or inspection by a
    network attacker.
