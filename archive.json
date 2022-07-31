@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-28T00:35:39.268242+00:00",
+  "timestamp": "2022-07-31T00:36:18.929502+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -9882,13 +9882,13 @@
       "labels": [],
       "body": "@bifurcation noted that it was important to note that the Gateway needs\r\nto be trusted if gateway != target.  As a practical matter, that means\r\nthat you probably want gateway == target.",
       "createdAt": "2022-07-26T17:56:18Z",
-      "updatedAt": "2022-07-27T18:27:19Z",
+      "updatedAt": "2022-07-29T22:11:41Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "aad02b907ea0e1078eb8bbb01b692c2d05148599",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "gateway-trust",
-      "headRefOid": "36c2eeb451f5950052844ecc182f180545f8b475",
+      "headRefOid": "42611ee77d02a77143897a6cfa21592eafb15e2a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -9925,6 +9925,206 @@
               "body": "```suggestion\r\n```\r\nI don't think we should restrict OHTTP in this way. It's like saying clients MUST NOT use \"http\" in the first place (if they weren't using OHTTP). The protocol still has benefits for clients even in the event that the target resource is only accessible over HTTP. ",
               "createdAt": "2022-07-27T18:26:51Z",
               "updatedAt": "2022-07-27T18:27:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2C-d",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T15:39:35Z",
+          "updatedAt": "2022-07-28T15:39:36Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "I think that this is important.  Do you have some scenario in mind where this would be a problem?  Because I can easily see how sending requests (and responses) without integrity or confidentiality would be bad, but I can't see how it might be could be useful.",
+              "createdAt": "2022-07-28T15:39:36Z",
+              "updatedAt": "2022-07-28T15:39:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2FOI",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T15:45:52Z",
+          "updatedAt": "2022-07-28T15:45:53Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "An example would be a client that wants to fetch an \"http\" resource. How is this materially different from accessing \"http\" resources without OHTTP? I don't think it is, and therefore this constraint seems unnecessarily restrictive, and is similar to requiring CONNECT only be used to access \"https\" resources. OHTTP is useful for _privacy_, not for response confidentiality.",
+              "createdAt": "2022-07-28T15:45:53Z",
+              "updatedAt": "2022-07-28T15:47:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2FlQ",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T15:46:52Z",
+          "updatedAt": "2022-07-28T15:46:53Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "@chris-wood I think this is OK to restrict in this way. Do we have any cases of unencrypted HTTP servers that need to be accessible over OHTTP?\r\n\r\nIn general, the gateway needs to be tightly associated with the target, not just some random server, since the HPKE key config effectively stands in for the TLS authentication and encryption that otherwise would occur to the target.\r\n\r\nIf the connection between the gateway and the target is something that traverses an open network, people could look at and modify the content. This might be OK if the client's only goal is the server not learning the client IP address, but the client would then need to be very very careful about what data this is. Writing the text to guide clients sounds hard, and doesn't seem to provide much benefit?",
+              "createdAt": "2022-07-28T15:46:52Z",
+              "updatedAt": "2022-07-28T15:46:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2I2b",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T15:56:09Z",
+          "updatedAt": "2022-07-28T15:56:09Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "For what it's worth, I would be comfortable with a \"SHOULD NOT,\" but I am not OK with \"MUST NOT.\"",
+              "createdAt": "2022-07-28T15:56:09Z",
+              "updatedAt": "2022-07-28T15:56:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2L-O",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T16:05:15Z",
+          "updatedAt": "2022-07-28T16:05:15Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "> In general, the gateway needs to be tightly associated with the target, not just some random server, since the HPKE key config effectively stands in for the TLS authentication and encryption that otherwise would occur to the target.\r\n\r\nThis is not the security model for OHTTP. The target can be _any_ type of resource for OHTTP to work as intended (hide the client IP address). \r\n\r\nOHTTP cannot provide the same authenticity guarantees as end-to-end TLS to the target, even with this constraint and under the assumption that the gateway is acting honestly. At the end of the day, end-to-end TLS between the target is a two party protocol between client and target. OHTTP with this constraint is still effectively a three-party protocol between client<>gateway<>target, which is fundamentally different. \r\n\r\nSaying it's not different basically amounts to saying that the gateway is an extension of the client, doing fetches on its behalf. And in that case, the gateway ought to be constrained (or not) the same way the client is constrained (or not) in its interaction with the target directly. In other words, if the target is only accessible over \"http\", then that should not influence how the client or the gateway directly interact with it. \r\n\r\nI'm OK changing this security model, but let's be clear about what OHTTP is and is not in its current form. The restriction proposed is not simply a clarification.",
+              "createdAt": "2022-07-28T16:05:15Z",
+              "updatedAt": "2022-07-28T17:18:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2Moq",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T16:07:12Z",
+          "updatedAt": "2022-07-28T16:07:13Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "```suggestion\r\nNonsecure requests - such those with the \"http\" scheme as opposed to the \"https\"\r\nscheme - SHOULD NOT be used if the Oblivious Gateway and Target Resources are\r\noperated by different entities as that would expose both requests and response\r\nto modification or inspection by a network attacker.\r\n```",
+              "createdAt": "2022-07-28T16:07:12Z",
+              "updatedAt": "2022-07-28T16:07:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2cOr",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T16:56:47Z",
+          "updatedAt": "2022-07-28T16:56:47Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "I just realized that maybe OHTTP could be used for CRL fetching, which a MUST NOT would exclude.  I'd still prefer something stronger, but I can live with this.",
+              "createdAt": "2022-07-28T16:56:47Z",
+              "updatedAt": "2022-07-28T16:56:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2iQx",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T17:14:16Z",
+          "updatedAt": "2022-07-28T17:14:16Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "> If the connection between the gateway and the target is something that traverses an open network, people could look at and modify the content. This might be OK if the client's only goal is the server not learning the client IP address, but the client would then need to be very very careful about what data this is. Writing the text to guide clients sounds hard, and doesn't seem to provide much benefit?\r\n\r\nI think this is why a SHOULD NOT works here. Clients that don't follow the guidance risk sending plaintext application data exposed to a network, which is no different from sending plaintext application data over a network if they were not using OHTTP, with one exception: use of OHTTP changes where the attacker has access to that plaintext data. ",
+              "createdAt": "2022-07-28T17:14:16Z",
+              "updatedAt": "2022-07-28T17:14:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2jr6",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T17:19:19Z",
+          "updatedAt": "2022-07-28T17:19:19Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "Bingo! Also, OCSP queries.",
+              "createdAt": "2022-07-28T17:19:19Z",
+              "updatedAt": "2022-07-28T17:19:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4-2j3C",
+          "commit": {
+            "abbreviatedOid": "36c2eeb"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-28T17:19:55Z",
+          "updatedAt": "2022-07-28T17:19:56Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "Citing CRL and OCSP queries as examples where the SHOULD is not followed seems like a good thing to do.",
+              "createdAt": "2022-07-28T17:19:56Z",
+              "updatedAt": "2022-07-28T17:19:56Z"
             }
           ]
         }
