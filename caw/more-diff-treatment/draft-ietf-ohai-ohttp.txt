@@ -1008,7 +1008,7 @@ Table of Contents
    For example, a gateway could respond differently to requests it
    cannot decapsulate, as mentioned in Section 5.2.  A relay that acts
    on this feedback could - either inadvertently or by design - lead to
-   client deaononymization.
+   client deanonymization.
 
 7.2.2.  Denial of Service
 
