@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 27 January 2023                                      Cloudflare
-                                                            26 July 2022
+Expires: 2 February 2023                                      Cloudflare
+                                                           1 August 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 January 2023.
+   This Internet-Draft will expire on 2 February 2023.
 
 Copyright Notice
 
@@ -92,12 +92,13 @@ Table of Contents
        7.2.2.  Denial of Service
        7.2.3.  Linkability Through Traffic Analysis
      7.3.  Server Responsibilities
-     7.4.  Replay Attacks
-       7.4.1.  Use of Date for Anti-Replay
-       7.4.2.  Correcting Clock Differences
-     7.5.  Forward Secrecy
-     7.6.  Post-Compromise Security
-     7.7.  Client Clock Exposure
+     7.4.  Key Management
+     7.5.  Replay Attacks
+       7.5.1.  Use of Date for Anti-Replay
+       7.5.2.  Correcting Clock Differences
+     7.6.  Forward Secrecy
+     7.7.  Post-Compromise Security
+     7.8.  Client Clock Exposure
    8.  Privacy Considerations
    9.  Operational and Deployment Considerations
      9.1.  Performance Overhead
@@ -1055,6 +1056,13 @@ Table of Contents
 
 7.3.  Server Responsibilities
 
+   The Oblivious Gateway Resource can be operated by a different entity
+   than the Target Resource.  However, this means that the client needs
+   to trust the Oblivious Gateway Resource not to modify requests or
+   responses.  This analysis concerns itself with a deployment scenario
+   where a single server provides both the Oblivious Gateway Resource
+   and Target Resource.
+
    A server that operates both Oblivious Gateway and Target Resources is
    responsible for removing request encryption, generating a response to
    the Encapsulated Request, and encrypting the response.
@@ -1069,6 +1077,14 @@ Table of Contents
    Section 7.2.2.  It is also necessary to provide confidentiality
    protection for the unprotected requests and responses, plus
    protections for traffic analysis; see Section 7.2.3.
+
+   Nonsecure requests - such those with the "http" scheme as opposed to
+   the "https" scheme - SHOULD NOT be used if the Oblivious Gateway and
+   Target Resources are operated by different entities as that would
+   expose both requests and response to modification or inspection by a
+   network attacker.
+
+7.4.  Key Management
 
    An Oblivious Gateway Resource needs to have a plan for replacing
    keys.  This might include regular replacement of keys, which can be
@@ -1091,11 +1107,11 @@ Table of Contents
    within the HPKE context created using the "message/bhttp request"
    label; see Section 10.
 
+7.5.  Replay Attacks
+
    A server is responsible for either rejecting replayed requests or
    ensuring that the effect of replays does not adversely affect clients
-   or resources; see Section 7.4.
-
-7.4.  Replay Attacks
+   or resources.
 
    Encrypted requests can be copied and replayed by the Oblivious Relay
    resource.  The threat model for Oblivious HTTP allows the possibility
@@ -1149,7 +1165,7 @@ Table of Contents
    field ensures that responses have unique AEAD keys and nonces even
    when requests are replayed.
 
-7.4.1.  Use of Date for Anti-Replay
+7.5.1.  Use of Date for Anti-Replay
 
    Clients SHOULD include a Date header field in Encapsulated Requests,
    unless the Oblivious Gateway Resource does not use Date for anti-
@@ -1178,7 +1194,7 @@ Table of Contents
    for the Date field to determine the time window over which the server
    will accept responses.
 
-7.4.2.  Correcting Clock Differences
+7.5.2.  Correcting Clock Differences
 
    An Oblivious Gateway Resource can reject requests that contain a Date
    value that is outside of its active window with a 400 series status
@@ -1250,14 +1266,14 @@ Table of Contents
    Oblivious Gateway Resource might be correlated using that
    information.
 
-7.5.  Forward Secrecy
+7.6.  Forward Secrecy
 
    This document does not provide forward secrecy for either requests or
    responses during the lifetime of the key configuration.  A measure of
    forward secrecy can be provided by generating a new key configuration
    then deleting the old keys after a suitable period.
 
-7.6.  Post-Compromise Security
+7.7.  Post-Compromise Security
 
    This design does not provide post-compromise security for responses.
 
@@ -1282,7 +1298,7 @@ Table of Contents
    The total number of affected messages affected by server key
    compromise can be limited by regular rotation of server keys.
 
-7.7.  Client Clock Exposure
+7.8.  Client Clock Exposure
 
    Including a Date field in requests reveals some information about the
    client clock.  This might be used to fingerprint clients [UWT] or to
@@ -1398,7 +1414,7 @@ Table of Contents
 
    Recommended HTTP Status Code:  400
 
-   Reference:  Section 7.4.2 of this document
+   Reference:  Section 7.5.2 of this document
 
 12.  References
 
