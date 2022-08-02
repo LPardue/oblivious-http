@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 2 February 2023                                      Cloudflare
-                                                           1 August 2022
+Expires: 3 February 2023                                      Cloudflare
+                                                           2 August 2022
 
 
                              Oblivious HTTP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 February 2023.
+   This Internet-Draft will expire on 3 February 2023.
 
 Copyright Notice
 
@@ -1030,11 +1030,12 @@ Table of Contents
 7.2.3.  Traffic Analysis
 
    This document assumes that all communication between different
-   Oblivious Client, Gateway, and Relay is protected by HTTPS.  This
-   protects information about which resources are the subject of request
-   and prevents a network observer from being able to trivially
-   correlate messages on either side of a relay.  However, it does not
-   mitigate traffic analysis by such network observers.
+   Oblivious Client, Oblivious Relay Resource, and Oblivious Gateway
+   Resource is protected by HTTPS.  This protects information about
+   which resources are the subject of request and prevents a network
+   observer from being able to trivially correlate messages on either
+   side of a relay.  However, it does not mitigate traffic analysis by
+   such network observers.
 
    The time at which Encapsulated Request or response messages are sent
    can reveal information to a network observer.  Though messages
