@@ -79,36 +79,37 @@ Table of Contents
    4.  HPKE Encapsulation
      4.1.  Encapsulation of Requests
      4.2.  Encapsulation of Responses
+     4.3.  Request and Response Media Types
    5.  HTTP Usage
      5.1.  Informational Responses
      5.2.  Errors
-   6.  Media Types
-     6.1.  message/ohttp-req Media Type
-     6.2.  message/ohttp-res Media Type
-   7.  Security Considerations
-     7.1.  Client Responsibilities
-     7.2.  Relay Responsibilities
-       7.2.1.  Differential Treatment
-       7.2.2.  Denial of Service
-       7.2.3.  Traffic Analysis
-     7.3.  Server Responsibilities
-     7.4.  Key Management
-     7.5.  Replay Attacks
-       7.5.1.  Use of Date for Anti-Replay
-       7.5.2.  Correcting Clock Differences
-     7.6.  Forward Secrecy
-     7.7.  Post-Compromise Security
-     7.8.  Client Clock Exposure
-   8.  Privacy Considerations
-   9.  Operational and Deployment Considerations
-     9.1.  Performance Overhead
-     9.2.  Resource Mappings
-     9.3.  Network Management
-   10. Repurposing the Encapsulation Format
-   11. IANA Considerations
-   12. References
-     12.1.  Normative References
-     12.2.  Informative References
+   6.  Security Considerations
+     6.1.  Client Responsibilities
+     6.2.  Relay Responsibilities
+       6.2.1.  Differential Treatment
+       6.2.2.  Denial of Service
+       6.2.3.  Traffic Analysis
+     6.3.  Server Responsibilities
+     6.4.  Key Management
+     6.5.  Replay Attacks
+       6.5.1.  Use of Date for Anti-Replay
+       6.5.2.  Correcting Clock Differences
+     6.6.  Forward Secrecy
+     6.7.  Post-Compromise Security
+     6.8.  Client Clock Exposure
+   7.  Privacy Considerations
+   8.  Operational and Deployment Considerations
+     8.1.  Performance Overhead
+     8.2.  Resource Mappings
+     8.3.  Network Management
+   9.  Repurposing the Encapsulation Format
+   10. IANA Considerations
+     10.1.  message/ohttp-keys Media Type
+     10.2.  message/ohttp-req Media Type
+     10.3.  message/ohttp-res Media Type
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Complete Example of a Request and Response
    Acknowledgments
    Authors' Addresses
@@ -153,7 +154,7 @@ Table of Contents
    in this document) explicitly support it, this design represents a
    performance improvement over options that perform just one request in
    each connection.  With limited trust placed in the relay (see
-   Section 7), clients are assured that requests are not uniquely
+   Section 6), clients are assured that requests are not uniquely
    attributed to them or linked to other requests.
 
 2.  Overview
@@ -171,7 +172,7 @@ Table of Contents
    *  The identity of an Oblivious Relay Resource that will accept relay
       requests carrying an encapsulated request as its content and
       forward the content in these requests to a single Oblivious
-      Gateway Resource.  See Section 9.2 for more information about the
+      Gateway Resource.  See Section 8.2 for more information about the
       mapping between Oblivious Relay and Gateway Resources.
 
    This information allows the client to make a request of a Target
@@ -364,7 +365,7 @@ Table of Contents
    might be used, for example with HTTPS, as part of a system for
    configuring or discovering key configurations.  Note however that
    such a system needs to consider the potential for key configuration
-   to be used to compromise client privacy; see Section 8.
+   to be used to compromise client privacy; see Section 7.
 
    A client might have multiple key configurations to select from when
    encapsulating a request.  Clients are responsible for selecting a
@@ -407,49 +408,11 @@ Table of Contents
    The "application/ohttp-keys" format is a media type that identifies a
    serialized collection of key configurations.  The content of this
    media type comprises one or more key configuration encodings (see
-   Section 3.1) that are concatenated.
+   Section 3.1) that are concatenated; see Section 10.1 for a definition
+   of the media type.
 
    Evolution of the key configuration format is supported through the
    definition of new formats that are identified by new media types.
-
-   Type name:  application
-
-   Subtype name:  ohttp-keys
-
-   Required parameters:  N/A
-
-   Optional parameters:  None
-
-   Encoding considerations:  only "8bit" or "binary" is permitted
-
-   Security considerations:  see Section 7
-
-   Interoperability considerations:  N/A
-
-   Published specification:  this specification
-
-   Applications that use this media type:  N/A
-
-   Fragment identifier considerations:  N/A
-
-   Additional information:  Magic number(s):  N/A
-
-                            Deprecated alias names for this type:  N/A
-
-                            File extension(s):  N/A
-
-                            Macintosh file type code(s):  N/A
-
-   Person and email address to contact for further information:  see Aut
-      hors' Addresses section
-
-   Intended usage:  COMMON
-
-   Restrictions on usage:  N/A
-
-   Author:  see Authors' Addresses section
-
-   Change controller:  IESG
 
 4.  HPKE Encapsulation
 
@@ -659,6 +622,16 @@ Table of Contents
 
    reponse, error = Open(aead_key, aead_nonce, "", ct)
 
+4.3.  Request and Response Media Types
+
+   Media types are used to identify Encapsulated Requests and Responses;
+   see Section 10.2 and Section 10.3 for definitions of these media
+   types.
+
+   Evolution of the format of Encapsulated Requests and Responses is
+   supported through the definition of new formats that are identified
+   by new media types.
+
 5.  HTTP Usage
 
    A client interacts with the Oblivious Relay Resource by constructing
@@ -667,8 +640,8 @@ Table of Contents
    request MUST only contain those fields necessary to carry the
    Encapsulated Request: a method of POST, a target URI of the Oblivious
    Relay Resource, a header field containing the content type (see
-   (Section 6), and the Encapsulated Request as the request content.  In
-   the request to the Oblivious Relay Resource, clients MAY include
+   (Section 10.2), and the Encapsulated Request as the request content.
+   In the request to the Oblivious Relay Resource, clients MAY include
    additional fields.  However, those fields MUST be independent of the
    Encapsulated Request and MUST be fields that the Oblivious Relay
    Resource will remove before forwarding the Encapsulated Request
@@ -690,7 +663,7 @@ Table of Contents
    Oblivious Gateway Resource.  The content of this request is copied
    from the client.  The Oblivious Relay Resource MUST NOT add
    information to the request without the client being aware of the type
-   of information that might be added; see Section 7.2 for more
+   of information that might be added; see Section 6.2 for more
    information on relay responsibilities.
 
    When a response is received from the Oblivious Gateway Resource, the
@@ -741,103 +714,7 @@ Table of Contents
    removing encapsulation and errors detected by the Target Resource
    MUST be sent in an Encapsulated Response.
 
-6.  Media Types
-
-   Media types are used to identify Encapsulated Requests and Responses.
-
-   Evolution of the format of Encapsulated Requests and Responses is
-   supported through the definition of new formats that are identified
-   by new media types.
-
-6.1.  message/ohttp-req Media Type
-
-   The "message/ohttp-req" identifies an encrypted binary HTTP request.
-   This is a binary format that is defined in Section 4.1.
-
-   Type name:  message
-
-   Subtype name:  ohttp-req
-
-   Required parameters:  N/A
-
-   Optional parameters:  None
-
-   Encoding considerations:  only "8bit" or "binary" is permitted
-
-   Security considerations:  see Section 7
-
-   Interoperability considerations:  N/A
-
-   Published specification:  this specification
-
-   Applications that use this media type:  N/A
-
-   Fragment identifier considerations:  N/A
-
-   Additional information:  Magic number(s):  N/A
-
-                            Deprecated alias names for this type:  N/A
-
-                            File extension(s):  N/A
-
-                            Macintosh file type code(s):  N/A
-
-   Person and email address to contact for further information:  see Aut
-      hors' Addresses section
-
-   Intended usage:  COMMON
-
-   Restrictions on usage:  N/A
-
-   Author:  see Authors' Addresses section
-
-   Change controller:  IESG
-
-6.2.  message/ohttp-res Media Type
-
-   The "message/ohttp-res" identifies an encrypted binary HTTP response.
-   This is a binary format that is defined in Section 4.2.
-
-   Type name:  message
-
-   Subtype name:  ohttp-res
-
-   Required parameters:  N/A
-
-   Optional parameters:  None
-
-   Encoding considerations:  only "8bit" or "binary" is permitted
-
-   Security considerations:  see Section 7
-
-   Interoperability considerations:  N/A
-
-   Published specification:  this specification
-
-   Applications that use this media type:  N/A
-
-   Fragment identifier considerations:  N/A
-
-   Additional information:  Magic number(s):  N/A
-
-                            Deprecated alias names for this type:  N/A
-
-                            File extension(s):  N/A
-
-                            Macintosh file type code(s):  N/A
-
-   Person and email address to contact for further information:  see Aut
-      hors' Addresses section
-
-   Intended usage:  COMMON
-
-   Restrictions on usage:  N/A
-
-   Author:  see Authors' Addresses section
-
-   Change controller:  IESG
-
-7.  Security Considerations
+6.  Security Considerations
 
    In this design, a client wishes to make a request of a server that is
    authoritative for the Target Resource.  The client wishes to make
@@ -888,11 +765,11 @@ Table of Contents
        of unique per-client keys.
 
    Traffic analysis that might affect these properties are outside the
-   scope of this document; see Section 7.2.3.
+   scope of this document; see Section 6.2.3.
 
    A formal analysis of Oblivious HTTP is in [OHTTP-ANALYSIS].
 
-7.1.  Client Responsibilities
+6.1.  Client Responsibilities
 
    Clients MUST ensure that the key configuration they select for
    generating Encapsulated Requests is integrity protected and
@@ -947,7 +824,7 @@ Table of Contents
    forward messages, it cannot inspect or modify the contents of
    Encapsulated Requests or responses.
 
-7.2.  Relay Responsibilities
+6.2.  Relay Responsibilities
 
    The relay that serves the Oblivious Relay Resource has a very simple
    function to perform.  For each request it receives, it makes a
@@ -979,7 +856,7 @@ Table of Contents
    observe the choice of key identifier, KDF, and AEAD), so it is also
    assumed that it cannot generate an Encapsulated Response.
 
-7.2.1.  Differential Treatment
+6.2.1.  Differential Treatment
 
    A relay MAY add information to requests if the client is aware of the
    nature of the information that could be added.  The client does not
@@ -1010,10 +887,10 @@ Table of Contents
    on this feedback could - either inadvertently or by design - lead to
    client deanonymization.
 
-7.2.2.  Denial of Service
+6.2.2.  Denial of Service
 
    As there are privacy benefits from having a large rate of requests
-   forwarded by the same relay (see Section 7.2.3), servers that operate
+   forwarded by the same relay (see Section 6.2.3), servers that operate
    the Oblivious Gateway Resource might need an arrangement with
    Oblivious Relay Resources.  This arrangement might be necessary to
    prevent having the large volume of requests being classified as an
@@ -1030,7 +907,7 @@ Table of Contents
    higher request rate might choose to authenticate the relay to enable
    the higher rate.
 
-7.2.3.  Traffic Analysis
+6.2.3.  Traffic Analysis
 
    This document assumes that all communication between different
    Oblivious Client, Oblivious Relay Resource, and Oblivious Gateway
@@ -1067,7 +944,7 @@ Table of Contents
    analysis.  Padding is a capability provided by binary HTTP messages;
    see Section 3.8 of [BINARY].
 
-7.3.  Server Responsibilities
+6.3.  Server Responsibilities
 
    The Oblivious Gateway Resource can be operated by a different entity
    than the Target Resource.  However, this means that the client needs
@@ -1082,14 +959,14 @@ Table of Contents
 
    Servers should account for traffic analysis based on response size or
    generation time.  Techniques such as padding or timing delays can
-   help protect against such attacks; see Section 7.2.3.
+   help protect against such attacks; see Section 6.2.3.
 
    If separate entities provide the Oblivious Gateway Resource and
    Target Resource, these entities might need an arrangement similar to
    that between server and relay for managing denial of service; see
-   Section 7.2.2.  It is also necessary to provide confidentiality
+   Section 6.2.2.  It is also necessary to provide confidentiality
    protection for the unprotected requests and responses, plus
-   protections for traffic analysis; see Section 7.2.3.
+   protections for traffic analysis; see Section 6.2.3.
 
    Nonsecure requests - such those with the "http" scheme as opposed to
    the "https" scheme - SHOULD NOT be used if the Oblivious Gateway and
@@ -1097,7 +974,7 @@ Table of Contents
    expose both requests and response to modification or inspection by a
    network attacker.
 
-7.4.  Key Management
+6.4.  Key Management
 
    An Oblivious Gateway Resource needs to have a plan for replacing
    keys.  This might include regular replacement of keys, which can be
@@ -1118,9 +995,9 @@ Table of Contents
    different label in their use of HPKE.  The "message/bhttp response"
    label was chosen for symmetry only as it provides key diversity only
    within the HPKE context created using the "message/bhttp request"
-   label; see Section 10.
+   label; see Section 9.
 
-7.5.  Replay Attacks
+6.5.  Replay Attacks
 
    A server is responsible for either rejecting replayed requests or
    ensuring that the effect of replays does not adversely affect clients
@@ -1178,7 +1055,7 @@ Table of Contents
    field ensures that responses have unique AEAD keys and nonces even
    when requests are replayed.
 
-7.5.1.  Use of Date for Anti-Replay
+6.5.1.  Use of Date for Anti-Replay
 
    Clients SHOULD include a Date header field in Encapsulated Requests,
    unless the Oblivious Gateway Resource does not use Date for anti-
@@ -1207,7 +1084,7 @@ Table of Contents
    for the Date field to determine the time window over which the server
    will accept responses.
 
-7.5.2.  Correcting Clock Differences
+6.5.2.  Correcting Clock Differences
 
    An Oblivious Gateway Resource can reject requests that contain a Date
    value that is outside of its active window with a 400 series status
@@ -1279,14 +1156,14 @@ Table of Contents
    Oblivious Gateway Resource might be correlated using that
    information.
 
-7.6.  Forward Secrecy
+6.6.  Forward Secrecy
 
    This document does not provide forward secrecy for either requests or
    responses during the lifetime of the key configuration.  A measure of
    forward secrecy can be provided by generating a new key configuration
    then deleting the old keys after a suitable period.
 
-7.7.  Post-Compromise Security
+6.7.  Post-Compromise Security
 
    This design does not provide post-compromise security for responses.
 
@@ -1311,7 +1188,7 @@ Table of Contents
    The total number of affected messages affected by server key
    compromise can be limited by regular rotation of server keys.
 
-7.8.  Client Clock Exposure
+6.8.  Client Clock Exposure
 
    Including a Date field in requests reveals some information about the
    client clock.  This might be used to fingerprint clients [UWT] or to
@@ -1323,7 +1200,7 @@ Table of Contents
    requests over time.  However, this increases the risk that their
    request is rejected as outside the acceptable window.
 
-8.  Privacy Considerations
+7.  Privacy Considerations
 
    One goal of this design is that independent client requests are only
    linkable by the chosen key configuration.  The Oblivious Relay and
@@ -1356,12 +1233,12 @@ Table of Contents
    configurations.  [CONSISTENCY] provides options for ensuring that
    configurations are consistent between clients.
 
-9.  Operational and Deployment Considerations
+8.  Operational and Deployment Considerations
 
    This section discusses various operational and deployment
    considerations.
 
-9.1.  Performance Overhead
+8.1.  Performance Overhead
 
    Using Oblivious HTTP adds both cryptographic and latency to requests
    relative to a simple HTTP request-response exchange.  Deploying relay
@@ -1370,7 +1247,7 @@ Table of Contents
    similar system [ODoH] found that deploying proxies close to servers
    was most effective in minimizing additional latency.
 
-9.2.  Resource Mappings
+8.2.  Resource Mappings
 
    This protocol assumes a fixed, one-to-one mapping between the
    Oblivious Relay Resource and the Oblivious Gateway Resource.  This
@@ -1389,14 +1266,15 @@ Table of Contents
    [TEMPLATE], from which multiple Oblivious Relay Resources could be
    constructed.
 
-9.3.  Network Management
+8.3.  Network Management
 
    Oblivious HTTP might be incompatible with network interception
    regimes, such as those that rely on configuring clients with trust
    anchors and intercepting TLS connections.  While TLS might be
    intercepted successfully, interception middleboxes devices might not
    receive updates that would allow Oblivious HTTP to be correctly
-   identified using the media types defined in Section 6.
+   identified using the media types defined in Section 10.2 and
+   Section 10.3.
 
    Oblivious HTTP has a simple key management design that is not
    trivially altered to enable interception by intermediaries.  Clients
@@ -1404,7 +1282,7 @@ Table of Contents
    Oblivious HTTP in order to ensure that content is accessible to
    middleboxes.
 
-10.  Repurposing the Encapsulation Format
+9.  Repurposing the Encapsulation Format
 
    The encrypted payload of an OHTTP request and response is a binary
    HTTP message [BINARY].  Client and target agree on this encrypted
@@ -1422,13 +1300,148 @@ Table of Contents
    encryption, and the HPKE export context string should be
    "application/dns-message response" for response encryption.
 
-11.  IANA Considerations
+10.  IANA Considerations
 
-   IANA are request to update the "Media Types" registry at
+   Please update the "Media Types" registry at
    https://www.iana.org/assignments/media-types
-   (https://www.iana.org/assignments/media-types) with the registration
-   information in Section 6 for the media types "message/ohttp-req",
-   "message/ohttp-res", and "application/ohttp-keys".
+   (https://www.iana.org/assignments/media-types) for the media types
+   "application/ohttp-keys" (Section 10.1), "message/ohttp-req"
+   (Section 10.2), and "message/ohttp-res" (Section 10.3).
+
+10.1.  message/ohttp-keys Media Type
+
+   The "application/ohttp-keys" media type identifies a key
+   configuration used by Oblivious HTTP.
+
+   Type name:  application
+
+   Subtype name:  ohttp-keys
+
+   Required parameters:  N/A
+
+   Optional parameters:  None
+
+   Encoding considerations:  only "8bit" or "binary" is permitted
+
+   Security considerations:  see Section 6
+
+   Interoperability considerations:  N/A
+
+   Published specification:  this specification
+
+   Applications that use this media type:  Oblivious HTTP and
+      applications that use Oblivious HTTP
+
+   Fragment identifier considerations:  N/A
+
+   Additional information:  Magic number(s):  N/A
+
+                            Deprecated alias names for this type:  N/A
+
+                            File extension(s):  N/A
+
+                            Macintosh file type code(s):  N/A
+
+   Person and email address to contact for further information:  see Aut
+      hors' Addresses section
+
+   Intended usage:  COMMON
+
+   Restrictions on usage:  N/A
+
+   Author:  see Authors' Addresses section
+
+   Change controller:  IESG
+
+10.2.  message/ohttp-req Media Type
+
+   The "message/ohttp-req" identifies an encrypted binary HTTP request.
+   This is a binary format that is defined in Section 4.1.
+
+   Type name:  message
+
+   Subtype name:  ohttp-req
+
+   Required parameters:  N/A
+
+   Optional parameters:  None
+
+   Encoding considerations:  only "8bit" or "binary" is permitted
+
+   Security considerations:  see Section 6
+
+   Interoperability considerations:  N/A
+
+   Published specification:  this specification
+
+   Applications that use this media type:  Oblivious HTTP and
+      applications that use Oblivious HTTP
+
+   Fragment identifier considerations:  N/A
+
+   Additional information:  Magic number(s):  N/A
+
+                            Deprecated alias names for this type:  N/A
+
+                            File extension(s):  N/A
+
+                            Macintosh file type code(s):  N/A
+
+   Person and email address to contact for further information:  see Aut
+      hors' Addresses section
+
+   Intended usage:  COMMON
+
+   Restrictions on usage:  N/A
+
+   Author:  see Authors' Addresses section
+
+   Change controller:  IESG
+
+10.3.  message/ohttp-res Media Type
+
+   The "message/ohttp-res" identifies an encrypted binary HTTP response.
+   This is a binary format that is defined in Section 4.2.
+
+   Type name:  message
+
+   Subtype name:  ohttp-res
+
+   Required parameters:  N/A
+
+   Optional parameters:  None
+
+   Encoding considerations:  only "8bit" or "binary" is permitted
+
+   Security considerations:  see Section 6
+
+   Interoperability considerations:  N/A
+
+   Published specification:  this specification
+
+   Applications that use this media type:  Oblivious HTTP and
+      applications that use Oblivious HTTP
+
+   Fragment identifier considerations:  N/A
+
+   Additional information:  Magic number(s):  N/A
+
+                            Deprecated alias names for this type:  N/A
+
+                            File extension(s):  N/A
+
+                            Macintosh file type code(s):  N/A
+
+   Person and email address to contact for further information:  see Aut
+      hors' Addresses section
+
+   Intended usage:  COMMON
+
+   Restrictions on usage:  N/A
+
+   Author:  see Authors' Addresses section
+
+   Change controller:  IESG
 
    IANA are requested to create a new entry in the "HTTP Problem Type"
    registry established by [PROBLEM].
@@ -1439,11 +1452,11 @@ Table of Contents
 
    Recommended HTTP Status Code:  400
 
-   Reference:  Section 7.5.2 of this document
+   Reference:  Section 6.5.2 of this document
 
-12.  References
+11.  References
 
-12.1.  Normative References
+11.1.  Normative References
 
    [ASCII]    Cerf, V., "ASCII format for network interchange", STD 80,
               RFC 20, DOI 10.17487/RFC0020, October 1969,
@@ -1503,7 +1516,7 @@ Table of Contents
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
 
-12.2.  Informative References
+11.2.  Informative References
 
    [CLOCKSKEW]
               Acer, M., Stark, E., Felt, A., Fahl, S., Bhargava, R.,
