@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-07-31T00:36:18.929502+00:00",
+  "timestamp": "2022-08-02T00:39:10.944494+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -1948,9 +1948,17 @@
       "labels": [],
       "body": "In reading through this, it is really distracting to have these massive sections full of N/A in the document.  Moving them means more connective tissue (forward references, section headings), but it should make this stuff get in the way less.",
       "createdAt": "2022-07-11T02:59:40Z",
-      "updatedAt": "2022-07-11T02:59:40Z",
+      "updatedAt": "2022-08-01T14:07:33Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@martinthomson I suggest we do this _during_ WGLC, unless you want to do it before cutting the next version.",
+          "createdAt": "2022-08-01T14:07:33Z",
+          "updatedAt": "2022-08-01T14:07:33Z"
+        }
+      ]
     },
     {
       "number": 136,
@@ -2047,15 +2055,15 @@
       "id": "I_kwDOE6fLGM5Ol6Zr",
       "title": "The gateway gets the whole request",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/141",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This means that the client really needs to trust that the gateway doesn't muck with it.  As a practical matter, this incentivizes clients to choose a gateway that is effectively the same entity as the target.  They don't have to, but the amount of trust required of the gateway is higher if gateway and target aren't operated by the same entity.\r\n\r\nWe touch on this, but we could be clearer about it.",
       "createdAt": "2022-07-26T17:38:39Z",
-      "updatedAt": "2022-07-26T17:38:39Z",
-      "closedAt": null,
+      "updatedAt": "2022-08-01T12:13:27Z",
+      "closedAt": "2022-08-01T12:13:27Z",
       "comments": []
     },
     {
@@ -2144,6 +2152,22 @@
       "body": "...just a partial one.\r\n\r\nFrom IETF 114:\r\n\r\n> Richard Barnes: a passing thought: linkability != losing all OHTTP protection. in particular because linkability like Ben is talking about doesn't link to an IP address, which is substantially worse\r\n\r\n> Martin Thomson: @Richard Barnes yeah, that's true, there are lesser losses involved; a unique Target URL creates pseudonymity in place of anonymity, which isn't great, but it isn't a complete loss\r\n\r\nI don't know if it is worth enumerating all of the combinations is viable, but we might consider talking about the exact shape of the consistency requirements here.",
       "createdAt": "2022-07-26T18:19:58Z",
       "updatedAt": "2022-07-26T18:19:58Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 149,
+      "id": "I_kwDOE6fLGM5O9i_L",
+      "title": "Suggestion on privacy language",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/issues/149",
+      "state": "OPEN",
+      "author": "vparla",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Hi,\r\nThe specification talks about State.  Could I suggest that it explicitly mention 'or other user identifiable payloads.'  Because things like JSON documents (e.g. a JWT) and SAML assertions are not 'cookies' but can carry information that might be user identifiable.  Thoughts?",
+      "createdAt": "2022-08-01T17:41:34Z",
+      "updatedAt": "2022-08-01T18:38:42Z",
       "closedAt": null,
       "comments": []
     }
@@ -9875,24 +9899,26 @@
       "id": "PR_kwDOE6fLGM48IURk",
       "title": "Add text about deployment assumptions for servers",
       "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/143",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "@bifurcation noted that it was important to note that the Gateway needs\r\nto be trusted if gateway != target.  As a practical matter, that means\r\nthat you probably want gateway == target.",
       "createdAt": "2022-07-26T17:56:18Z",
-      "updatedAt": "2022-07-29T22:11:41Z",
+      "updatedAt": "2022-08-01T12:13:27Z",
       "baseRepository": "ietf-wg-ohai/oblivious-http",
       "baseRefName": "main",
       "baseRefOid": "aad02b907ea0e1078eb8bbb01b692c2d05148599",
       "headRepository": "ietf-wg-ohai/oblivious-http",
       "headRefName": "gateway-trust",
       "headRefOid": "42611ee77d02a77143897a6cfa21592eafb15e2a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2022-08-01T12:13:27Z",
+      "mergedAt": "2022-08-01T12:13:27Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "eb044ff9891ac84027c01ba95042038b86ac6880"
+      },
       "comments": [],
       "reviews": [
         {
@@ -10127,6 +10153,161 @@
               "updatedAt": "2022-07-28T17:19:56Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOE6fLGM4_A4uD",
+          "commit": {
+            "abbreviatedOid": "42611ee"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-08-01T12:13:23Z",
+          "updatedAt": "2022-08-01T12:13:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 146,
+      "id": "PR_kwDOE6fLGM48bw-z",
+      "title": "Address relay traffic analysis",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/146",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #144.",
+      "createdAt": "2022-08-01T13:55:49Z",
+      "updatedAt": "2022-08-01T14:40:46Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "eb044ff9891ac84027c01ba95042038b86ac6880",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "caw/relay-ta",
+      "headRefOid": "7f37a81baa97c2d6cec544191733b575ea7cac4b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4_BuzW",
+          "commit": {
+            "abbreviatedOid": "7f37a81"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-08-01T14:40:46Z",
+          "updatedAt": "2022-08-01T14:40:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 147,
+      "id": "PR_kwDOE6fLGM48b0qX",
+      "title": "More differential treatment",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/147",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #139 ",
+      "createdAt": "2022-08-01T14:07:06Z",
+      "updatedAt": "2022-08-01T22:46:30Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "eb044ff9891ac84027c01ba95042038b86ac6880",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "caw/more-diff-treatment",
+      "headRefOid": "1e8854fea97bcba40d0edac9b1b90e0bc69935eb",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "ShivanKaul",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This seems fine to me, but doesn't seem to include https://github.com/ietf-wg-ohai/oblivious-http/issues/139#issuecomment-1194108521?",
+          "createdAt": "2022-08-01T21:54:48Z",
+          "updatedAt": "2022-08-01T21:54:48Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@ShivanKaul after trying to work that text in it became clear (to me) that a better outcome was modify the existing text we have about anonymity set reduction. So I went with that approach rather than open the can of consistency worms that @martinthomson alluded to.",
+          "createdAt": "2022-08-01T22:46:19Z",
+          "updatedAt": "2022-08-01T22:46:19Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4_BucU",
+          "commit": {
+            "abbreviatedOid": "5c9073f"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-08-01T14:39:47Z",
+          "updatedAt": "2022-08-01T14:39:48Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "```suggestion\r\ndesign - lead to client deanonymization.\r\n```",
+              "createdAt": "2022-08-01T14:39:48Z",
+              "updatedAt": "2022-08-01T14:39:48Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 148,
+      "id": "PR_kwDOE6fLGM48b3Xt",
+      "title": "Add text about consistency and privacy reduction",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/148",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #145.",
+      "createdAt": "2022-08-01T14:15:03Z",
+      "updatedAt": "2022-08-01T14:39:04Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "eb044ff9891ac84027c01ba95042038b86ac6880",
+      "headRepository": "ietf-wg-ohai/oblivious-http",
+      "headRefName": "caw/consistency-text",
+      "headRefOid": "da928b9aafa3b5865e6a62797513dd8ec8836d52",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4_BuKl",
+          "commit": {
+            "abbreviatedOid": "da928b9"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-08-01T14:39:04Z",
+          "updatedAt": "2022-08-01T14:39:04Z",
+          "comments": []
         }
       ]
     }
