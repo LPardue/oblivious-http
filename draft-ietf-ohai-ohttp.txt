@@ -984,8 +984,9 @@ Table of Contents
    A relay MAY add information to requests if the client is aware of the
    nature of the information that could be added.  The client does not
    need to be aware of the exact value added for each request, but needs
-   to know the range of possible values the relay might use.  It is
-   important to note that information added by the relay can reduce the
+   to know the range of possible values the relay might use.
+   Importantly, information added by the relay - beyond what is already
+   revealed through encapsulated requests from clients - can reduce the
    size of the anonymity set of clients at a gateway.
 
    Moreover, relays MAY apply differential treatment to clients that
@@ -1004,8 +1005,10 @@ Table of Contents
    request that is made to the target.  This means that only the gateway
    or target are in a position to identify abuse.  A gateway MAY send
    signals toward the relay to provide feedback about specific requests.
-   A relay that acts on this feedback could - either inadvertently or by
-   design - lead to clients being deanonymized.
+   For example, a gateway could respond differently to requests it
+   cannot decapsulate, as mentioned in Section 5.2.  A relay that acts
+   on this feedback could - either inadvertently or by design - lead to
+   client deanonymization.
 
 7.2.2.  Denial of Service
 
