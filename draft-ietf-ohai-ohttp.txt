@@ -5,8 +5,8 @@
 Oblivious HTTP Application Intermediation                     M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                              C. A. Wood
-Expires: 4 February 2023                                      Cloudflare
-                                                           3 August 2022
+Expires: 7 February 2023                                      Cloudflare
+                                                           6 August 2022
 
 
                              Oblivious HTTP
@@ -31,7 +31,8 @@ About This Document
    Discussion of this document takes place on the Oblivious HTTP
    Application Intermediation Working Group mailing list
    (mailto:ohai@ietf.org), which is archived at
-   https://mailarchive.ietf.org/arch/browse/ohai/.
+   https://mailarchive.ietf.org/arch/browse/ohai/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/ohai/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/ietf-wg-ohai/oblivious-http.
@@ -51,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 February 2023.
+   This Internet-Draft will expire on 7 February 2023.
 
 Copyright Notice
 
@@ -520,7 +521,7 @@ Table of Contents
    info = concat(encode_str("message/bhttp request"),
                  encode(1, 0),
                  hdr)
-   enc, sctxt = SetupBaseS(pkR, hdr)
+   enc, sctxt = SetupBaseS(pkR, info)
    ct = sctxt.Seal([], request)
    enc_request = concat(hdr, enc, ct)
 
