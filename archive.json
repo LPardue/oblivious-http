@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-08-04T00:40:17.688452+00:00",
+  "timestamp": "2022-08-07T00:41:01.150463+00:00",
   "repo": "ietf-wg-ohai/oblivious-http",
   "labels": [
     {
@@ -10605,6 +10605,48 @@
               "updatedAt": "2022-08-02T12:15:02Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 152,
+      "id": "PR_kwDOE6fLGM48uRh-",
+      "title": "Request encapsulation pseudocode fix.",
+      "url": "https://github.com/ietf-wg-ohai/oblivious-http/pull/152",
+      "state": "MERGED",
+      "author": "bjschnei",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Pass `info` to SetupBasS.",
+      "createdAt": "2022-08-05T14:40:43Z",
+      "updatedAt": "2022-08-06T04:26:19Z",
+      "baseRepository": "ietf-wg-ohai/oblivious-http",
+      "baseRefName": "main",
+      "baseRefOid": "5033cd92d36176cea84d96a8ffbbef2df04978c0",
+      "headRepository": "bjschnei/oblivious-http",
+      "headRefName": "patch-1",
+      "headRefOid": "9c341d6c479e298b3ca8bafb995971fda27d79b8",
+      "closedAt": "2022-08-06T04:26:19Z",
+      "mergedAt": "2022-08-06T04:26:19Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "f7f5f1e46e3660549a95c190795fd229b95b5f61"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOE6fLGM4_b3LO",
+          "commit": {
+            "abbreviatedOid": "9c341d6"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-08-06T04:26:00Z",
+          "updatedAt": "2022-08-06T04:26:00Z",
+          "comments": []
         }
       ]
     }
